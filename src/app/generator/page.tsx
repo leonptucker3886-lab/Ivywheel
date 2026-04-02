@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { categories } from "@/lib/categories";
 import { generateColoringPage } from "@/lib/generator";
 import { CategoryCard } from "@/components/CategoryCard";
+import { FallingLeaves } from "@/components/FallingLeaves";
 
 export default function GeneratorPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -85,8 +86,9 @@ export default function GeneratorPage() {
   }
 
   return (
-    <main className="min-h-screen bg-stone-950 text-white">
-      <div className="max-w-6xl mx-auto px-6 py-12">
+    <main className="min-h-screen bg-stone-950 text-white relative overflow-hidden">
+      <FallingLeaves />
+      <div className="max-w-6xl mx-auto px-6 py-12 relative z-10">
         <header className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
             Ivy&apos;s Peace

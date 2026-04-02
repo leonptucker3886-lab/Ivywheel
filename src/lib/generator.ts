@@ -295,92 +295,480 @@ function stem(x1: number, y1: number, x2: number, y2: number, curve: number, r: 
   return o;
 }
 
-function generatePitbulls(r: () => number): string {
-  let o = "";
-  const variant = ri(r, 0, 4);
-  const cx = C + rr(r, -80, 80);
-  const cy = C + rr(r, -40, 40);
-  const sc = rr(r, 0.9, 1.3);
+function pitbullHead(cx: number, cy: number, sc: number, facing: number, expression: number, earType: number, r: () => number): string {
+  let o = `<g transform="translate(${cx},${cy}) scale(${sc * facing},${sc})">`;
+  const hw = 52, hh = 48;
 
-  o += `<g transform="translate(${cx},${cy}) scale(${sc})">`;
+  o += P(`M${-hw} 0 C${-hw - 8} ${-hh * 0.5} ${-hw - 4} ${-hh - 5} ${-hw * 0.6} ${-hh - 10} C${-hw * 0.2} ${-hh - 16} ${hw * 0.2} ${-hh - 16} ${hw * 0.6} ${-hh - 10} C${hw + 4} ${-hh - 5} ${hw + 8} ${-hh * 0.5} ${hw} 0 C${hw + 2} ${hh * 0.3} ${hw - 5} ${hh * 0.7} ${hw * 0.7} ${hh} C${hw * 0.3} ${hh + 6} ${-hw * 0.3} ${hh + 6} ${-hw * 0.7} ${hh} C${-hw + 5} ${hh * 0.7} ${-hw - 2} ${hh * 0.3} ${-hw} 0Z`, 2.8);
+  o += P(`M${-hw + 2} 0 C${-hw - 6} ${-hh * 0.48} ${-hw - 2} ${-hh - 3} ${-hw * 0.58} ${-hh - 8} C${-hw * 0.18} ${-hh - 14} ${hw * 0.18} ${-hh - 14} ${hw * 0.58} ${-hh - 8} C${hw + 2} ${-hh - 3} ${hw + 6} ${-hh * 0.48} ${hw - 2} 0 C${hw} ${hh * 0.28} ${hw - 7} ${hh * 0.68} ${hw * 0.68} ${hh - 2} C${hw * 0.28} ${hh + 4} ${-hw * 0.28} ${hh + 4} ${-hw * 0.68} ${hh - 2} C${-hw + 7} ${hh * 0.68} ${-hw} ${hh * 0.28} ${-hw + 2} 0Z`, 0.8);
 
-  o += P(`M-110 40 C-130 0 -120 -60 -80 -90 C-50 -110 50 -110 80 -90 C120 -60 130 0 110 40 C100 80 80 120 60 140 L-60 140 C-80 120 -100 80 -110 40Z`, 3);
-  o += P(`M-108 40 C-128 0 -118 -58 -78 -88 C-48 -108 48 -108 78 -88 C118 -58 128 0 108 40 C98 78 78 118 58 138 L-58 138 C-78 118 -98 78 -108 40Z`, 0.8);
+  o += dotFill(0, -hh * 0.2, hw * 1.6, hh * 1.6, 35, r, 0.5);
 
-  o += P(`M-60 -100 C-70 -130 -55 -160 -40 -150 C-30 -140 -35 -115 -50 -100`, 2.5);
-  o += P(`M60 -100 C70 -130 55 -160 40 -150 C30 -140 35 -115 50 -100`, 2.5);
-  o += P(`M-58 -98 C-65 -125 -52 -150 -42 -145`, 0.8);
-  o += P(`M58 -98 C65 -125 52 -150 42 -145`, 0.8);
-  o += dotFill(-48, -125, 20, 25, 12, r, 0.8);
-  o += dotFill(48, -125, 20, 25, 12, r, 0.8);
+  o += P(`M${-hw * 0.4} ${-hh - 12} C${-hw * 0.5} ${-hh - 28} ${-hw * 0.25} ${-hh - 42} ${-hw * 0.05} ${-hh - 38} C${hw * 0.05} ${-hh - 34} ${-hw * 0.08} ${-hh - 18} ${-hw * 0.15} ${-hh - 6}`, 2.2);
+  o += P(`M${hw * 0.4} ${-hh - 12} C${hw * 0.5} ${-hh - 28} ${hw * 0.25} ${-hh - 42} ${hw * 0.05} ${-hh - 38} C${-hw * 0.05} ${-hh - 34} ${hw * 0.08} ${-hh - 18} ${hw * 0.15} ${-hh - 6}`, 2.2);
 
-  const esp = rr(r, 28, 38);
+  if (earType === 0) {
+    o += P(`M${-hw * 0.65} ${-hh * 0.8} C${-hw * 0.85} ${-hh * 1.5} ${-hw * 0.5} ${-hh * 1.8} ${-hw * 0.3} ${-hh * 1.3} C${-hw * 0.2} ${-hh * 1.0} ${-hw * 0.35} ${-hh * 0.75} ${-hw * 0.5} ${-hh * 0.7}`, 2);
+    o += P(`M${-hw * 0.63} ${-hh * 0.82} C${-hw * 0.8} ${-hh * 1.4} ${-hw * 0.48} ${-hh * 1.7} ${-hw * 0.32} ${-hh * 1.25}`, 0.7);
+    o += dotFill(-hw * 0.5, -hh * 1.2, 18, 22, 10, r, 0.6);
+    o += P(`M${hw * 0.65} ${-hh * 0.8} C${hw * 0.85} ${-hh * 1.5} ${hw * 0.5} ${-hh * 1.8} ${hw * 0.3} ${-hh * 1.3} C${hw * 0.2} ${-hh * 1.0} ${hw * 0.35} ${-hh * 0.75} ${hw * 0.5} ${-hh * 0.7}`, 2);
+    o += P(`M${hw * 0.63} ${-hh * 0.82} C${hw * 0.8} ${-hh * 1.4} ${hw * 0.48} ${-hh * 1.7} ${hw * 0.32} ${-hh * 1.25}`, 0.7);
+    o += dotFill(hw * 0.5, -hh * 1.2, 18, 22, 10, r, 0.6);
+  } else if (earType === 1) {
+    o += P(`M${-hw * 0.6} ${-hh * 0.85} C${-hw * 0.65} ${-hh * 1.1} ${-hw * 0.55} ${-hh * 1.3} ${-hw * 0.35} ${-hh * 1.1} C${-hw * 0.25} ${-hh * 0.95} ${-hw * 0.3} ${-hh * 0.8} ${-hw * 0.45} ${-hh * 0.75}`, 2.5);
+    o += P(`M${-hw * 0.58} ${-hh * 0.87} C${-hw * 0.62} ${-hh * 1.05} ${-hw * 0.53} ${-hh * 1.22} ${-hw * 0.37} ${-hh * 1.05}`, 0.8);
+    o += P(`M${hw * 0.6} ${-hh * 0.85} C${hw * 0.65} ${-hh * 1.1} ${hw * 0.55} ${-hh * 1.3} ${hw * 0.35} ${-hh * 1.1} C${hw * 0.25} ${-hh * 0.95} ${hw * 0.3} ${-hh * 0.8} ${hw * 0.45} ${-hh * 0.75}`, 2.5);
+    o += P(`M${hw * 0.58} ${-hh * 0.87} C${hw * 0.62} ${-hh * 1.05} ${hw * 0.53} ${-hh * 1.22} ${hw * 0.37} ${-hh * 1.05}`, 0.8);
+  } else {
+    o += P(`M${-hw * 0.6} ${-hh * 0.8} C${-hw * 0.75} ${-hh * 1.3} ${-hw * 0.65} ${-hh * 1.7} ${-hw * 0.4} ${-hh * 1.5} C${-hw * 0.2} ${-hh * 1.3} ${-hw * 0.25} ${-hh * 0.9} ${-hw * 0.4} ${-hh * 0.75}`, 2.2);
+    o += P(`M${-hw * 0.58} ${-hh * 0.82} C${-hw * 0.72} ${-hh * 1.25} ${-hw * 0.62} ${-hh * 1.6} ${-hw * 0.42} ${-hh * 1.45}`, 0.7);
+    o += dotFill(-hw * 0.5, -hh * 1.2, 15, 25, 10, r, 0.5);
+    o += P(`M${hw * 0.6} ${-hh * 0.8} C${hw * 0.75} ${-hh * 1.3} ${hw * 0.65} ${-hh * 1.7} ${hw * 0.4} ${-hh * 1.5} C${hw * 0.2} ${-hh * 1.3} ${hw * 0.25} ${-hh * 0.9} ${hw * 0.4} ${-hh * 0.75}`, 2.2);
+    o += P(`M${hw * 0.58} ${-hh * 0.82} C${hw * 0.72} ${-hh * 1.25} ${hw * 0.62} ${-hh * 1.6} ${hw * 0.42} ${-hh * 1.45}`, 0.7);
+    o += dotFill(hw * 0.5, -hh * 1.2, 15, 25, 10, r, 0.5);
+  }
+
   for (const s of [-1, 1]) {
-    const ex = s * esp;
-    o += E(ex, -45, 14, 16, 2);
-    o += E(ex, -45, 10, 12, 0.8);
-    o += C2(ex, -44, 7, 2, K);
-    o += C2(ex, -44, 3, 0, K);
-    o += dot(ex - 3, -48, 2);
-    const lashes = ri(r, 4, 7);
-    for (let l = 0; l < lashes; l++) {
-      const la = -Math.PI * 0.8 + (l / lashes) * Math.PI * 0.6;
-      o += P(`M${ex + Math.cos(la) * 14} ${-45 + Math.sin(la) * 16} Q${ex + Math.cos(la) * 22} ${-45 + Math.sin(la) * 22} ${ex + Math.cos(la) * 28} ${-45 + Math.sin(la) * 20}`, 0.7);
+    const ex = s * 20, ey = -12;
+    o += E(ex, ey, 10, 11, 2);
+    o += E(ex, ey, 7, 8, 0.8);
+    o += C2(ex, ey + 1, 5.5, 2, K);
+    o += C2(ex, ey + 1, 2.5, 0, K);
+    o += dot(ex - 2, ey - 3, 2.2);
+    o += dot(ex + 1, ey - 1, 0.8);
+    for (let l = 0; l < ri(r, 4, 7); l++) {
+      const la = -Math.PI * 0.8 + (l / 6) * Math.PI * 0.55;
+      o += P(`M${ex + Math.cos(la) * 10} ${ey + Math.sin(la) * 11} Q${ex + Math.cos(la) * 18} ${ey + Math.sin(la) * 17} ${ex + Math.cos(la) * 24} ${ey + Math.sin(la) * 15}`, 0.6);
+    }
+    for (let b = 0; b < ri(r, 3, 6); b++) {
+      const ba = -Math.PI * 0.65 + (b / 5) * Math.PI * 0.45;
+      o += P(`M${ex + Math.cos(ba) * 12} ${ey - 6 + Math.sin(ba) * 8} L${ex + Math.cos(ba) * 18} ${ey - 10 + Math.sin(ba) * 12}`, 0.5);
     }
   }
 
-  o += P(`M-20 -15 C-15 -5 15 -5 20 -15 C25 -5 20 5 0 8 C-20 5 -25 -5 -20 -15`, 2);
-  o += P(`M-18 -13 C-13 -5 13 -5 18 -13`, 0.8);
-  o += P(`M0 -5 L0 8`, 0.8);
-  o += dotFill(0, -10, 15, 8, 10, r, 0.8);
-  o += P(`M0 8 C-5 12 -10 10 -12 14`, 1.5);
-  o += P(`M0 8 C5 12 10 10 12 14`, 1.5);
-
-  o += P(`M-40 18 C-20 30 20 30 40 18`, 2.5);
-  o += P(`M-35 20 C-18 30 18 30 35 20`, 0.8);
-
-  for (let w = 0; w < ri(r, 4, 8); w++) {
-    const wy = -70 + w * 8;
-    const ww = rr(r, 25, 50);
-    o += P(`M${-ww} ${wy} C${-ww * 0.3} ${wy + rr(r, 3, 8)} ${ww * 0.3} ${wy + rr(r, 3, 8)} ${ww} ${wy}`, 1);
+  const browW = rr(r, 14, 20);
+  if (expression === 0) {
+    o += P(`M${-browW} ${-30} C${-browW + 5} ${-34} ${-5} ${-35} 0 ${-33}`, 1.8);
+    o += P(`M${browW} ${-30} C${browW - 5} ${-34} ${5} ${-35} 0 ${-33}`, 1.8);
+  } else if (expression === 1) {
+    o += P(`M${-browW} ${-28} C${-browW + 5} ${-32} ${-5} ${-33} 0 ${-31}`, 1.8);
+    o += P(`M${browW} ${-28} C${browW - 5} ${-32} ${5} ${-33} 0 ${-31}`, 1.8);
+  } else {
+    o += P(`M${-browW} ${-32} Q${-browW + 5} ${-28} 0 ${-29}`, 1.8);
+    o += P(`M${browW} ${-32} Q${browW - 5} ${-28} 0 ${-29}`, 1.8);
   }
 
-  const spots = ri(r, 2, 6);
-  for (let i = 0; i < spots; i++) {
-    const sx = rr(r, -60, 60);
-    const sy = rr(r, -80, 20);
-    const sr = rr(r, 8, 25);
-    o += P(`M${sx - sr} ${sy} C${sx - sr} ${sy - sr * 0.6} ${sx + sr} ${sy - sr * 0.6} ${sx + sr} ${sy} C${sx + sr} ${sy + sr * 0.6} ${sx - sr} ${sy + sr * 0.6} ${sx - sr} ${sy}`, 1.2);
-    o += dotFill(sx, sy, sr * 1.5, sr * 1.5, 15, r, 0.6);
+  o += P(`M${-hw * 0.35} ${-hh * 0.35} C${-hw * 0.4} ${-hh * 0.55} ${-hw * 0.25} ${-hh * 0.65} 0 ${-hh * 0.6} C${hw * 0.25} ${-hh * 0.65} ${hw * 0.4} ${-hh * 0.55} ${hw * 0.35} ${-hh * 0.35}`, 1);
+  for (let w = 0; w < ri(r, 5, 10); w++) {
+    const wy = -hh * 0.55 + w * 3;
+    const ww = rr(r, 15, 30);
+    o += P(`M${-ww} ${wy} C${-ww * 0.3} ${wy + rr(r, 1, 4)} ${ww * 0.3} ${wy + rr(r, 1, 4)} ${ww} ${wy}`, 0.6);
   }
 
-  o += P(`M-80 80 C-85 110 -75 150 -60 165 C-50 175 -35 175 -30 165 L-30 145 C-40 140 -50 135 -55 120 C-60 105 -70 85 -80 80`, 2.5);
-  o += P(`M80 80 C85 110 75 150 60 165 C50 175 35 175 30 165 L30 145 C40 140 50 135 55 120 C60 105 70 85 80 80`, 2.5);
+  o += P(`M-18 12 C-14 22 14 22 18 12 C22 22 18 32 0 35 C-18 32 -22 22 -18 12`, 2.2);
+  o += P(`M-16 14 C-12 22 12 22 16 14`, 0.7);
+  o += P(`M0 15 L0 33`, 0.7);
+  for (let n = 0; n < ri(r, 4, 8); n++) {
+    o += dot(rr(r, -10, 10), rr(r, 18, 30), rr(r, 0.4, 1));
+  }
+  o += P(`M0 35 C-4 38 -8 37 -10 40`, 1.3);
+  o += P(`M0 35 C4 38 8 37 10 40`, 1.3);
+
+  const mouthOpen = ri(r, 0, 3);
+  if (mouthOpen === 0) {
+    o += P(`M-25 38 C-10 48 10 48 25 38`, 2);
+    o += P(`M-22 40 C-10 46 10 46 22 40`, 0.8);
+    o += P(`M-20 42 C-12 52 12 52 20 42`, 1);
+    o += P(`M-18 44 Q0 50 18 44`, 0.6);
+    if (r() > 0.4) {
+      o += P(`M-8 44 L-5 50 L0 44 L5 50 L8 44`, 0.7);
+    }
+  } else if (mouthOpen === 1) {
+    o += P(`M-25 38 C-10 44 10 44 25 38`, 2);
+    o += P(`M-22 40 C-10 43 10 43 22 40`, 0.8);
+  } else {
+    o += P(`M-25 38 C-12 50 12 50 25 38`, 2.2);
+    o += P(`M-23 40 C-12 48 12 48 23 40`, 0.8);
+    o += P(`M-22 43 C-10 52 10 52 22 43`, 1.2);
+    o += P(`M-15 45 Q0 49 15 45`, 0.6);
+    o += dotFill(0, 47, 18, 8, 12, r, 0.7);
+  }
 
   for (const s of [-1, 1]) {
-    for (let t = 0; t < 3; t++) {
-      const tx = s * (42 + t * 8);
-      o += E(tx, 168, 5, 9, 1);
+    for (let w = 0; w < ri(r, 6, 12); w++) {
+      const wa = (s > 0 ? -0.1 : Math.PI - 0.1) + rr(r, -0.3, 0.3);
+      const wl = rr(r, 18, 35);
+      const wx = s * 22 + Math.cos(wa) * rr(r, 2, 6);
+      const wy = 35 + Math.sin(wa) * rr(r, 2, 6);
+      o += P(`M${wx} ${wy} C${wx + Math.cos(wa) * wl * 0.3} ${wy + Math.sin(wa) * wl * 0.3 - 3} ${wx + Math.cos(wa) * wl * 0.7} ${wy + Math.sin(wa) * wl * 0.7 - 2} ${wx + Math.cos(wa) * wl} ${wy + Math.sin(wa) * wl}`, 0.5);
+      o += dot(wx + Math.cos(wa) * wl, wy + Math.sin(wa) * wl, 0.8);
     }
   }
 
-  o += P(`M-55 140 C-55 145 -45 148 -30 148 C-15 148 15 148 30 148 C45 148 55 145 55 140`, 1.5);
-
-  const collar = ri(r, 0, 2);
-  if (collar === 0) {
-    o += P(`M-65 55 C-30 65 30 65 65 55`, 3);
-    o += P(`M-60 58 C-28 67 28 67 60 58`, 1);
-    o += C2(0, 62, 8, 2);
-    o += C2(0, 62, 3, 0, K);
+  const wrinkleCount = ri(r, 2, 5);
+  for (let w = 0; w < wrinkleCount; w++) {
+    const wy = -hh * 0.8 + w * 8;
+    const ww = rr(r, 15, 25);
+    o += P(`M${-ww} ${wy} Q0 ${wy + rr(r, 2, 5)} ${ww} ${wy}`, 0.5);
   }
-
-  o += P(`M105 20 C160 -30 200 -80 180 -40 C165 -10 140 10 110 25`, 3.5);
-  o += P(`M105 20 C155 -25 195 -70 178 -38`, 1.2);
-
-  o += dotFill(0, 20, 180, 120, 40, r, 0.7);
-  o += dotFill(0, -50, 150, 100, 35, r, 0.6);
 
   o += `</g>`;
+  return o;
+}
+
+function pitbullBody(cx: number, cy: number, sc: number, pose: number, facing: number, r: () => number): string {
+  let o = `<g transform="translate(${cx},${cy}) scale(${sc * facing},${sc})">`;
+
+  if (pose === 0) {
+    o += P(`M-95 0 C-115 -20 -120 -55 -100 -80 C-80 -100 -30 -115 0 -118 C30 -115 80 -100 100 -80 C120 -55 115 -20 95 0 C85 30 70 70 55 100 L-55 100 C-70 70 -85 30 -95 0Z`, 2.8);
+    o += P(`M-93 0 C-113 -18 -118 -53 -98 -78 C-78 -98 -28 -113 0 -116 C28 -113 78 -98 98 -78 C118 -53 113 -18 93 0 C83 28 68 68 53 98 L-53 98 C-68 68 -83 28 -93 0Z`, 0.8);
+    o += dotFill(0, -30, 160, 120, 35, r, 0.5);
+    o += P(`M-65 95 C-75 110 -70 130 -60 140 C-50 148 -38 148 -33 140 L-33 125 C-42 120 -50 115 -55 105 C-58 98 -62 95 -65 95`, 2.5);
+    o += P(`M65 95 C75 110 70 130 60 140 C50 148 38 148 33 140 L33 125 C42 120 50 115 55 105 C58 98 62 95 65 95`, 2.5);
+    o += P(`M-63 97 C-73 112 -68 128 -58 138`, 0.8);
+    o += P(`M63 97 C73 112 68 128 58 138`, 0.8);
+    for (const s of [-1, 1]) {
+      for (let t = 0; t < ri(r, 2, 4); t++) {
+        const tx = s * (40 + t * 10);
+        o += E(tx, 145, 5, 10, 1.2);
+      }
+    }
+    o += P(`M-52 100 C-52 104 -42 107 -30 107 C-15 107 15 107 30 107 C42 107 52 104 52 100`, 1.3);
+  } else if (pose === 1) {
+    o += P(`M-85 -10 C-105 -30 -110 -65 -90 -85 C-70 -100 -25 -110 0 -112 C25 -110 70 -100 90 -85 C110 -65 105 -30 85 -10 C75 15 60 50 45 75 L-45 75 C-60 50 -75 15 -85 -10Z`, 2.8);
+    o += dotFill(0, -25, 150, 100, 35, r, 0.5);
+    o += P(`M-60 70 C-72 90 -65 120 -50 135 C-40 145 -25 145 -22 135 L-22 118 C-32 112 -42 105 -48 92`, 2.5);
+    o += P(`M60 70 C72 90 65 120 50 135 C40 145 25 145 22 135 L22 118 C32 112 42 105 48 92`, 2.5);
+    o += P(`M-75 75 C-105 65 -130 50 -145 60 C-155 70 -145 85 -125 88 C-110 90 -90 82 -75 75`, 3);
+    o += P(`M-75 75 C-100 67 -125 55 -140 62`, 1);
+    o += P(`M-125 62 C-122 58 -118 60 -120 65`, 0.8);
+  } else if (pose === 2) {
+    o += P(`M-100 20 C-120 0 -118 -30 -95 -55 C-70 -75 -20 -85 0 -87 C20 -85 70 -75 95 -55 C118 -30 120 0 100 20 C88 45 70 65 50 78 L-50 78 C-70 65 -88 45 -100 20Z`, 2.8);
+    o += dotFill(0, -10, 170, 80, 35, r, 0.5);
+    o += P(`M-80 60 C-100 70 -110 90 -105 105 L-95 95`, 2.5);
+    o += P(`M80 60 C100 70 110 90 105 105 L95 95`, 2.5);
+    o += E(-95, 108, 20, 12, 1.5);
+    o += E(95, 108, 20, 12, 1.5);
+    o += P(`M-75 55 C-100 30 -115 10 -110 -10 C-105 -25 -95 -20 -85 -5`, 3);
+    o += P(`M-108 -8 C-112 -18 -105 -25 -100 -15`, 1.5);
+    o += P(`M-75 40 C-95 25 -110 15 -108 5`, 1);
+  } else if (pose === 3) {
+    o += P(`M-70 -20 C-90 -45 -85 -80 -60 -100 C-35 -115 35 -115 60 -100 C85 -80 90 -45 70 -20 C60 10 45 45 30 70 L-30 70 C-45 45 -60 10 -70 -20Z`, 2.8);
+    o += dotFill(0, -25, 120, 90, 35, r, 0.5);
+    o += P(`M-40 65 C-50 80 -45 100 -35 110 L-30 100`, 2.5);
+    o += P(`M40 65 C50 80 45 100 35 110 L30 100`, 2.5);
+    o += P(`M-55 55 C-80 45 -100 25 -110 35 C-118 45 -108 60 -90 62 C-75 63 -60 58 -55 55`, 3);
+    o += P(`M-88 38 C-85 32 -80 35 -82 40`, 0.8);
+  } else if (pose === 4) {
+    o += P(`M-80 0 C-100 -25 -95 -60 -70 -85 C-45 -105 45 -105 70 -85 C95 -60 100 -25 80 0 C70 30 55 65 40 90 L-40 90 C-55 65 -70 30 -80 0Z`, 2.8);
+    o += dotFill(0, -20, 140, 100, 35, r, 0.5);
+    o += P(`M-55 85 C-65 100 -60 130 -48 145 C-38 155 -25 155 -22 145 L-22 130 C-32 125 -42 115 -48 105`, 2.5);
+    o += P(`M55 85 C65 100 60 130 48 145 C38 155 25 155 22 145 L22 130 C32 125 42 115 48 105`, 2.5);
+    o += P(`M40 40 C70 20 100 -10 130 -5 C150 0 145 25 120 35 C100 42 70 40 50 38`, 3.5);
+    o += P(`M40 40 C65 22 95 -5 125 -2`, 1.2);
+  } else if (pose === 5) {
+    o += P(`M-60 -10 C-75 -35 -70 -70 -50 -90 C-30 -105 30 -105 50 -90 C70 -70 75 -35 60 -10 C50 15 38 50 25 75 L-25 75 C-38 50 -50 15 -60 -10Z`, 2.8);
+    o += dotFill(0, -15, 100, 85, 35, r, 0.5);
+    o += P(`M-35 70 C-42 85 -38 105 -30 115 L-27 105`, 2.5);
+    o += P(`M35 70 C42 85 38 105 30 115 L27 105`, 2.5);
+    o += P(`M-50 55 C-70 40 -85 20 -95 30 C-102 38 -93 52 -78 55 C-65 57 -55 55 -50 55`, 3);
+    o += P(`M50 55 C70 40 85 20 95 30 C102 38 93 52 78 55 C65 57 55 55 50 55`, 3);
+    o += P(`M-93 33 C-90 28 -85 31 -87 36`, 0.8);
+    o += P(`M93 33 C90 28 85 31 87 36`, 0.8);
+    o += P(`M-45 -85 C-55 -105 -45 -130 -35 -120 C-28 -112 -30 -90 -42 -80`, 2);
+    o += P(`M45 -85 C55 -105 45 -130 35 -120 C28 -112 30 -90 42 -80`, 2);
+  } else if (pose === 6) {
+    o += P(`M-90 -5 C-110 -25 -108 -58 -85 -78 C-60 -95 -15 -105 0 -107 C15 -105 60 -95 85 -78 C108 -58 110 -25 90 -5 C80 20 65 55 50 80 L-50 80 C-65 55 -80 20 -90 -5Z`, 2.8);
+    o += dotFill(0, -15, 155, 90, 35, r, 0.5);
+    o += P(`M-55 75 C-55 85 -42 90 -30 90 C-15 90 15 90 30 90 C42 90 55 85 55 75`, 1.5);
+    o += P(`M-60 75 C-80 85 -100 80 -115 90`, 2.5);
+    o += P(`M60 75 C70 85 80 95 85 110 C88 120 80 125 70 120 C62 116 58 108 60 100`, 2.5);
+    o += P(`M85 110 C90 118 82 125 72 120`, 0.8);
+  } else if (pose === 7) {
+    o += P(`M-85 10 C-105 -15 -102 -50 -80 -72 C-55 -90 -15 -100 0 -102 C15 -100 55 -90 80 -72 C102 -50 105 -15 85 10 C75 35 60 68 45 92 L-45 92 C-60 68 -75 35 -85 10Z`, 2.8);
+    o += dotFill(0, -10, 145, 95, 35, r, 0.5);
+    o += P(`M-50 87 C-58 100 -53 120 -43 130 L-40 118`, 2.5);
+    o += P(`M50 87 C58 100 53 120 43 130 L40 118`, 2.5);
+    o += P(`M45 30 C65 15 85 -5 105 0 C120 5 118 25 100 32 C85 37 65 35 50 33`, 3.5);
+    o += P(`M80 -2 C78 -8 72 -5 75 0`, 0.8);
+    o += P(`M-45 92 C-42 98 -35 100 -30 100 C-15 100 15 100 30 100 C35 100 42 98 45 92`, 1.2);
+  } else if (pose === 8) {
+    o += P(`M-75 -15 C-92 -40 -88 -72 -65 -92 C-42 -108 42 -108 65 -92 C88 -72 92 -40 75 -15 C65 12 52 48 38 72 L-38 72 C-52 48 -65 12 -75 -15Z`, 2.8);
+    o += dotFill(0, -18, 130, 85, 35, r, 0.5);
+    o += P(`M-45 68 C-52 80 -48 98 -40 108 L-37 98`, 2.5);
+    o += P(`M45 68 C52 80 48 98 40 108 L37 98`, 2.5);
+    o += P(`M-58 50 C-78 35 -95 15 -105 25 C-112 33 -103 47 -88 50 C-75 52 -63 52 -58 50`, 3);
+    o += P(`M58 50 C78 35 95 15 105 25 C112 33 103 47 88 50 C75 52 63 52 58 50`, 3);
+    o += P(`M-45 -88 C-52 -108 -42 -125 -32 -118 C-25 -112 -28 -92 -40 -85`, 2);
+    o += P(`M45 -88 C52 -108 42 -125 32 -118 C25 -112 28 -92 40 -85`, 2);
+  } else if (pose === 9) {
+    o += P(`M-90 -20 C-112 -50 -105 -85 -80 -105 C-55 -120 -15 -128 0 -130 C15 -128 55 -120 80 -105 C105 -85 112 -50 90 -20 C78 10 60 50 45 80 L-45 80 C-60 50 -78 10 -90 -20Z`, 2.8);
+    o += dotFill(0, -30, 150, 100, 35, r, 0.5);
+    o += P(`M-50 75 C-55 88 -50 108 -42 118 L-40 108`, 2.5);
+    o += P(`M50 75 C55 88 50 108 42 118 L40 108`, 2.5);
+    for (const s of [-1, 1]) {
+      o += P(`M${s * 50} ${-125} C${s * 55} ${-145} ${s * 48} ${-160} ${s * 40} ${-155} C${s * 34} ${-150} ${s * 36} ${-132} ${s * 45} ${-125}`, 2);
+    }
+    o += P(`M-50 -85 C-60 -110 -50 -140 -40 -132 C-33 -125 -35 -100 -48 -90`, 2.5);
+    o += P(`M50 -85 C60 -110 50 -140 40 -132 C33 -125 35 -100 48 -90`, 2.5);
+  } else {
+    o += P(`M-80 15 C-100 -10 -95 -45 -72 -68 C-48 -85 -12 -95 0 -97 C12 -95 48 -85 72 -68 C95 -45 100 -10 80 15 C68 40 55 70 40 95 L-40 95 C-55 70 -68 40 -80 15Z`, 2.8);
+    o += dotFill(0, -5, 140, 90, 35, r, 0.5);
+    o += P(`M-45 90 C-50 102 -45 118 -38 128 L-36 118`, 2.5);
+    o += P(`M45 90 C50 102 45 118 38 128 L36 118`, 2.5);
+    o += P(`M-60 55 C-80 42 -95 25 -105 35 C-112 43 -103 57 -88 60 C-75 62 -65 58 -60 55`, 3);
+    o += P(`M60 55 C80 42 95 25 105 35 C112 43 103 57 88 60 C75 62 65 58 60 55`, 3);
+    o += P(`M-95 38 C-92 32 -88 35 -90 40`, 0.8);
+    o += P(`M95 38 C92 32 88 35 90 40`, 0.8);
+  }
+
+  o += `</g>`;
+  return o;
+}
+
+function pitbullCollar(cx: number, cy: number, sc: number, r: () => number): string {
+  let o = "";
+  const collarType = ri(r, 0, 5);
+  if (collarType === 0) {
+    o += P(`M${cx - 55 * sc} ${cy + 5 * sc} C${cx - 25 * sc} ${cy + 15 * sc} ${cx + 25 * sc} ${cy + 15 * sc} ${cx + 55 * sc} ${cy + 5 * sc}`, 3.5 * sc);
+    o += P(`M${cx - 50 * sc} ${cy + 8 * sc} C${cx - 22 * sc} ${cy + 17 * sc} ${cx + 22 * sc} ${cy + 17 * sc} ${cx + 50 * sc} ${cy + 8 * sc}`, 1.2 * sc);
+    o += C2(cx, cy + 18 * sc, 7 * sc, 2 * sc);
+    o += C2(cx, cy + 18 * sc, 3 * sc, 0, K);
+    o += P(`M${cx - 15 * sc} ${cy + 14 * sc} C${cx - 18 * sc} ${cy + 30 * sc} ${cx - 12 * sc} ${cy + 40 * sc} ${cx - 8 * sc} ${cy + 35 * sc}`, 1.5 * sc);
+  } else if (collarType === 1) {
+    o += P(`M${cx - 55 * sc} ${cy + 5 * sc} C${cx - 25 * sc} ${cy + 15 * sc} ${cx + 25 * sc} ${cy + 15 * sc} ${cx + 55 * sc} ${cy + 5 * sc}`, 5 * sc);
+    o += P(`M${cx - 52 * sc} ${cy + 5 * sc} L${cx + 52 * sc} ${cy + 5 * sc}`, 0.5 * sc);
+    o += P(`M${cx - 52 * sc} ${cy + 10 * sc} L${cx + 52 * sc} ${cy + 10 * sc}`, 0.5 * sc);
+    o += P(`M${cx - 52 * sc} ${cy + 15 * sc} L${cx + 52 * sc} ${cy + 15 * sc}`, 0.5 * sc);
+    o += C2(cx, cy + 18 * sc, 8 * sc, 2.5 * sc);
+    o += C2(cx, cy + 18 * sc, 5 * sc, 0.8 * sc);
+    o += P(`M${cx - 3 * sc} ${cy + 18 * sc} L${cx + 3 * sc} ${cy + 18 * sc} L${cx} ${cy + 13 * sc}Z`, 1 * sc);
+  } else if (collarType === 2) {
+    o += P(`M${cx - 55 * sc} ${cy + 3 * sc} C${cx - 25 * sc} ${cy + 13 * sc} ${cx + 25 * sc} ${cy + 13 * sc} ${cx + 55 * sc} ${cy + 3 * sc}`, 4 * sc);
+    o += P(`M${cx - 50 * sc} ${cy + 6 * sc} C${cx - 22 * sc} ${cy + 15 * sc} ${cx + 22 * sc} ${cy + 15 * sc} ${cx + 50 * sc} ${cy + 6 * sc}`, 1 * sc);
+    for (let s = 0; s < ri(r, 4, 8); s++) {
+      const sx = cx + rr(r, -45, 45) * sc;
+      const sy = cy + rr(r, 5, 14) * sc;
+      o += P(`M${sx - 3 * sc} ${sy} L${sx} ${sy - 4 * sc} L${sx + 3 * sc} ${sy}`, 0.8 * sc);
+    }
+    o += C2(cx, cy + 16 * sc, 6 * sc, 2 * sc);
+    o += dot(cx, cy + 16 * sc, 2.5 * sc);
+  } else if (collarType === 3) {
+    o += P(`M${cx - 55 * sc} ${cy + 5 * sc} C${cx - 25 * sc} ${cy + 15 * sc} ${cx + 25 * sc} ${cy + 15 * sc} ${cx + 55 * sc} ${cy + 5 * sc}`, 6 * sc);
+    o += P(`M${cx - 48 * sc} ${cy + 8 * sc} L${cx + 48 * sc} ${cy + 8 * sc}`, 0.6 * sc);
+    o += P(`M${cx - 48 * sc} ${cy + 12 * sc} L${cx + 48 * sc} ${cy + 12 * sc}`, 0.6 * sc);
+    o += C2(cx, cy + 18 * sc, 9 * sc, 3 * sc);
+    o += C2(cx, cy + 18 * sc, 7 * sc, 1 * sc);
+    o += P(`M${cx - 5 * sc} ${cy + 16 * sc} L${cx} ${cy + 24 * sc} L${cx + 5 * sc} ${cy + 16 * sc}`, 1.5 * sc);
+    o += P(`M${cx - 3 * sc} ${cy + 22 * sc} L${cx + 3 * sc} ${cy + 22 * sc}`, 0.8 * sc);
+  } else if (collarType === 4) {
+    o += P(`M${cx - 55 * sc} ${cy + 5 * sc} C${cx - 25 * sc} ${cy + 15 * sc} ${cx + 25 * sc} ${cy + 15 * sc} ${cx + 55 * sc} ${cy + 5 * sc}`, 3 * sc);
+    o += P(`M${cx - 52 * sc} ${cy + 8 * sc} C${cx - 23 * sc} ${cy + 17 * sc} ${cx + 23 * sc} ${cy + 17 * sc} ${cx + 52 * sc} ${cy + 8 * sc}`, 0.8 * sc);
+    o += P(`M${cx} ${cy + 12 * sc} C${cx - 12 * sc} ${cy + 8 * sc} ${cx - 15 * sc} ${cy + 22 * sc} ${cx - 5 * sc} ${cy + 28 * sc} C${cx} ${cy + 32 * sc} ${cx + 5 * sc} ${cy + 28 * sc} ${cx + 15 * sc} ${cy + 22 * sc} C${cx + 12 * sc} ${cy + 8 * sc} ${cx} ${cy + 12 * sc}`, 1.5 * sc);
+    o += P(`M${cx - 8 * sc} ${cy + 20 * sc} C${cx - 5 * sc} ${cy + 25 * sc} ${cx + 5 * sc} ${cy + 25 * sc} ${cx + 8 * sc} ${cy + 20 * sc}`, 0.6 * sc);
+  }
+  return o;
+}
+
+function pitbullMarkings(cx: number, cy: number, sc: number, markType: number, r: () => number): string {
+  let o = `<g transform="translate(${cx},${cy}) scale(${sc})">`;
+  if (markType === 0) {
+    for (let s = 0; s < ri(r, 8, 16); s++) {
+      const sx = rr(r, -50, 50);
+      const sy = rr(r, -50, 40);
+      const sw = rr(r, 6, 22);
+      const sh = rr(r, 5, 18);
+      o += P(`M${sx - sw} ${sy} C${sx - sw} ${sy - sh * 0.6} ${sx + sw} ${sy - sh * 0.6} ${sx + sw} ${sy} C${sx + sw} ${sy + sh * 0.6} ${sx - sw} ${sy + sh * 0.6} ${sx - sw} ${sy}`, 1.2);
+      o += dotFill(sx, sy, sw * 1.3, sh * 1.3, 18, r, 0.6);
+    }
+  } else if (markType === 1) {
+    o += P(`M-25 -40 C-15 -55 15 -55 25 -40 C35 -25 30 -5 20 5 C10 15 -10 15 -20 5 C-30 -5 -35 -25 -25 -40`, 1.5);
+    o += dotFill(0, -25, 35, 40, 15, r, 0.5);
+  } else if (markType === 2) {
+    for (let s = 0; s < ri(r, 5, 12); s++) {
+      const sx = rr(r, -55, 55);
+      const sy = rr(r, -55, 45);
+      const sr = rr(r, 5, 18);
+      o += C2(sx, sy, sr, 1.2);
+      o += dotFill(sx, sy, sr * 1.5, sr * 1.5, 15, r, 0.5);
+    }
+  } else if (markType === 3) {
+    for (let s = 0; s < ri(r, 15, 30); s++) {
+      const sx = rr(r, -60, 60);
+      const sy = rr(r, -60, 50);
+      const sw = rr(r, 2, 6);
+      const sh = rr(r, 8, 20);
+      const a = rr(r, -30, 30);
+      o += `<rect x="${sx - sw / 2}" y="${sy - sh / 2}" width="${sw}" height="${sh}" fill="none" stroke="${K}" stroke-width="0.8" transform="rotate(${a} ${sx} ${sy})"/>`;
+    }
+  } else if (markType === 4) {
+    o += P(`M-30 -30 C-25 -50 25 -50 30 -30 C35 -10 25 10 15 15 C5 20 -5 20 -15 15 C-25 10 -35 -10 -30 -30`, 1.5);
+    o += dotFill(0, -18, 40, 45, 12, r, 0.5);
+  }
+  o += `</g>`;
+  return o;
+}
+
+function pitbullAccessories(cx: number, cy: number, sc: number, accType: number, r: () => number): string {
+  let o = "";
+  if (accType === 0) {
+    o += P(`M${cx - 30 * sc} ${cy - 60 * sc} C${cx - 35 * sc} ${cy - 80 * sc} ${cx - 20 * sc} ${cy - 95 * sc} ${cx} ${cy - 85 * sc} C${cx + 20 * sc} ${cy - 95 * sc} ${cx + 35 * sc} ${cy - 80 * sc} ${cx + 30 * sc} ${cy - 60 * sc}`, 2.5 * sc);
+    o += P(`M${cx - 25 * sc} ${cy - 62 * sc} C${cx - 28 * sc} ${cy - 75 * sc} ${cx - 15 * sc} ${cy - 85 * sc} ${cx} ${cy - 78 * sc} C${cx + 15 * sc} ${cy - 85 * sc} ${cx + 28 * sc} ${cy - 75 * sc} ${cx + 25 * sc} ${cy - 62 * sc}`, 0.8 * sc);
+    o += P(`M${cx - 20 * sc} ${cy - 65 * sc} C${cx - 22 * sc} ${cy - 72 * sc} ${cx - 12 * sc} ${cy - 78 * sc} ${cx} ${cy - 73 * sc} C${cx + 12 * sc} ${cy - 78 * sc} ${cx + 22 * sc} ${cy - 72 * sc} ${cx + 20 * sc} ${cy - 65 * sc}`, 0.6 * sc);
+  } else if (accType === 1) {
+    o += P(`M${cx} ${cy - 50 * sc} L${cx - 20 * sc} ${cy - 65 * sc} L${cx} ${cy - 80 * sc} L${cx + 20 * sc} ${cy - 65 * sc} Z`, 2 * sc);
+    o += P(`M${cx} ${cy - 55 * sc} L${cx} ${cy - 75 * sc}`, 0.8 * sc);
+    o += P(`M${cx - 12 * sc} ${cy - 63 * sc} L${cx + 12 * sc} ${cy - 63 * sc}`, 0.8 * sc);
+  } else if (accType === 2) {
+    o += P(`M${cx - 25 * sc} ${cy - 55 * sc} C${cx - 28 * sc} ${cy - 70 * sc} ${cx - 15 * sc} ${cy - 82 * sc} ${cx} ${cy - 78 * sc} C${cx + 15 * sc} ${cy - 82 * sc} ${cx + 28 * sc} ${cy - 70 * sc} ${cx + 25 * sc} ${cy - 55 * sc}`, 2 * sc);
+    o += P(`M${cx - 20 * sc} ${cy - 58 * sc} C${cx - 22 * sc} ${cy - 66 * sc} ${cx - 12 * sc} ${cy - 74 * sc} ${cx} ${cy - 71 * sc} C${cx + 12 * sc} ${cy - 74 * sc} ${cx + 22 * sc} ${cy - 66 * sc} ${cx + 20 * sc} ${cy - 58 * sc}`, 0.8 * sc);
+    o += P(`M${cx - 15 * sc} ${cy - 60 * sc} L${cx + 15 * sc} ${cy - 60 * sc}`, 0.6 * sc);
+    o += P(`M${cx - 15 * sc} ${cy - 64 * sc} L${cx + 15 * sc} ${cy - 64 * sc}`, 0.6 * sc);
+    o += P(`M${cx - 15 * sc} ${cy - 68 * sc} L${cx + 15 * sc} ${cy - 68 * sc}`, 0.6 * sc);
+  } else if (accType === 3) {
+    o += P(`M${cx - 20 * sc} ${cy - 58 * sc} C${cx - 22 * sc} ${cy - 72 * sc} ${cx - 12 * sc} ${cy - 80 * sc} ${cx} ${cy - 76 * sc} C${cx + 12 * sc} ${cy - 80 * sc} ${cx + 22 * sc} ${cy - 72 * sc} ${cx + 20 * sc} ${cy - 58 * sc}`, 2.5 * sc);
+    o += C2(cx, cy - 68 * sc, 5 * sc, 1.5 * sc);
+    o += dot(cx, cy - 68 * sc, 2 * sc);
+  }
+  return o;
+}
+
+function pitbullBackground(r: () => number): string {
+  let o = "";
+  const groundY = rr(r, 850, 950);
+  const groundType = ri(r, 0, 3);
+
+  if (groundType === 0) {
+    o += P(`M0 ${groundY} C100 ${groundY - 8} 200 ${groundY + 10} 350 ${groundY - 5} C500 ${groundY + 12} 650 ${groundY - 10} 800 ${groundY + 5} C900 ${groundY - 8} 1000 ${groundY + 6} 1024 ${groundY}`, 2);
+    for (let g = 0; g < ri(r, 12, 25); g++) {
+      const gx = rr(r, 20, 1004);
+      const gy = groundY + rr(r, -8, 8);
+      for (let b = 0; b < ri(r, 3, 7); b++) {
+        const bh = rr(r, 15, 45);
+        const bend = rr(r, -20, 20);
+        o += P(`M${gx + b * 3} ${gy} C${gx + b * 3 + bend * 0.3} ${gy - bh * 0.4} ${gx + b * 3 + bend * 0.7} ${gy - bh * 0.8} ${gx + b * 3 + bend} ${gy - bh}`, 0.8);
+      }
+    }
+  } else if (groundType === 1) {
+    o += P(`M0 ${groundY} Q256 ${groundY + 15} 512 ${groundY} Q768 ${groundY - 15} 1024 ${groundY}`, 2);
+    for (let c = 0; c < ri(r, 3, 6); c++) {
+      const cx = rr(r, 100, 924);
+      const cr = rr(r, 20, 40);
+      o += P(`M${cx - cr} ${groundY} C${cx - cr} ${groundY - cr * 1.2} ${cx + cr} ${groundY - cr * 1.2} ${cx + cr} ${groundY}`, 1.5);
+      o += dotFill(cx, groundY - cr * 0.4, cr * 1.5, cr, 15, r, 0.8);
+    }
+  }
+
+  const bgElem = ri(r, 0, 4);
+  if (bgElem === 0) {
+    for (let i = 0; i < ri(r, 2, 5); i++) {
+      const bx = rr(r, 100, 924);
+      const by = rr(r, 80, 250);
+      const bs = rr(r, 10, 20);
+      o += P(`M${bx - bs} ${by} C${bx - bs * 0.3} ${by - bs * 0.8} ${bx + bs * 0.3} ${by - bs * 0.8} ${bx + bs} ${by}`, 1.5);
+    }
+  } else if (bgElem === 1) {
+    for (let i = 0; i < ri(r, 1, 3); i++) {
+      const tx = rr(r, 150, 874);
+      const ty = rr(r, 100, 300);
+      const ts = rr(r, 15, 30);
+      o += P(`M${tx} ${ty} C${tx - ts * 0.3} ${ty + ts * 0.5} ${tx - ts * 0.5} ${ty + ts} ${tx - ts * 0.3} ${ty + ts * 1.3} C${tx - ts * 0.1} ${ty + ts * 1.5} ${tx + ts * 0.1} ${ty + ts * 1.5} ${tx + ts * 0.3} ${ty + ts * 1.3} C${tx + ts * 0.5} ${ty + ts} ${tx + ts * 0.3} ${ty + ts * 0.5} ${tx} ${ty}`, 1.5);
+      o += P(`M${tx} ${ty} L${tx} ${ty + ts * 1.8}`, 0.8);
+    }
+  } else if (bgElem === 2) {
+    for (let i = 0; i < ri(r, 2, 5); i++) {
+      const px = rr(r, 100, 924);
+      const py = rr(r, groundY - 50, groundY + 20);
+      const ps = rr(r, 8, 15);
+      o += P(`M${px} ${py} C${px - ps * 0.5} ${py - ps} ${px} ${py - ps * 1.5} ${px} ${py - ps * 2} C${px} ${py - ps * 1.5} ${px + ps * 0.5} ${py - ps} ${px} ${py}`, 1.2);
+      o += P(`M${px - ps * 0.8} ${py - ps * 0.3} C${px - ps * 0.4} ${py - ps * 0.5} ${px + ps * 0.4} ${py - ps * 0.5} ${px + ps * 0.8} ${py - ps * 0.3}`, 0.8);
+    }
+  }
+
+  return o;
+}
+
+function pitbullDetails(cx: number, cy: number, sc: number, r: () => number): string {
+  let o = `<g transform="translate(${cx},${cy}) scale(${sc})">`;
+  for (let f = 0; f < ri(r, 3, 8); f++) {
+    const fy = rr(r, -60, -20);
+    const fw = rr(r, 20, 45);
+    o += P(`M${-fw} ${fy} C${-fw * 0.3} ${fy + rr(r, 2, 6)} ${fw * 0.3} ${fy + rr(r, 2, 6)} ${fw} ${fy}`, 0.8);
+  }
+  for (let w = 0; w < ri(r, 2, 6); w++) {
+    const wy = rr(r, -40, 20);
+    const wx = rr(r, -30, 30);
+    const wl = rr(r, 5, 12);
+    const wa = rr(r, -0.5, 0.5);
+    o += P(`M${wx} ${wy} C${wx + Math.cos(wa) * wl * 0.3} ${wy + Math.sin(wa) * wl * 0.3} ${wx + Math.cos(wa) * wl * 0.7} ${wy + Math.sin(wa) * wl * 0.7} ${wx + Math.cos(wa) * wl} ${wy + Math.sin(wa) * wl}`, 0.4);
+  }
+  o += `</g>`;
+  return o;
+}
+
+function pitbullPawprints(r: () => number): string {
+  let o = "";
+  const count = ri(r, 2, 6);
+  for (let i = 0; i < count; i++) {
+    const px = rr(r, 80, 944);
+    const py = rr(r, 800, 980);
+    const ps = rr(r, 8, 14);
+    const pa = rr(r, -20, 20);
+    o += `<g transform="translate(${px},${py}) rotate(${pa})">`;
+    o += E(0, 0, ps * 0.6, ps * 0.8, 1.5);
+    for (const s of [-1, 1]) {
+      o += E(s * ps * 0.4, -ps * 0.6, ps * 0.22, ps * 0.28, 1);
+      o += E(s * ps * 0.15, -ps * 0.85, ps * 0.2, ps * 0.25, 1);
+    }
+    o += E(0, -ps * 0.9, ps * 0.18, ps * 0.22, 1);
+    o += `</g>`;
+  }
+  return o;
+}
+
+function generatePitbulls(r: () => number): string {
+  let o = "";
+
+  const pose = ri(r, 0, 10);
+  const earType = ri(r, 0, 2);
+  const expression = ri(r, 0, 2);
+  const hasCollar = r() > 0.15;
+  const accType = ri(r, 0, 3);
+  const hasAccessory = r() > 0.5;
+  const markType = ri(r, 0, 4);
+  const hasMarkings = r() > 0.4;
+  const facing = r() > 0.5 ? 1 : -1;
+  const showBg = r() > 0.3;
+
+  const cx = C + rr(r, -60, 60);
+  const cy = C + rr(r, -30, 30);
+  const sc = rr(r, 0.85, 1.25);
+
+  if (showBg) {
+    o += pitbullBackground(r);
+  }
+
+  o += pitbullBody(cx, cy, sc, pose, facing, r);
+
+  const headOffsetY = -65 * sc;
+  const headOffsetX = pose === 5 ? 30 * sc * facing : pose === 3 ? 25 * sc * facing : pose === 8 ? 20 * sc * facing : 0;
+  o += pitbullHead(cx + headOffsetX, cy + headOffsetY, sc * 0.85, facing, expression, earType, r);
+
+  if (hasCollar) {
+    o += pitbullCollar(cx, cy - 10 * sc, sc, r);
+  }
+
+  if (hasAccessory) {
+    o += pitbullAccessories(cx + headOffsetX, cy + headOffsetY, sc * 0.85, accType, r);
+  }
+
+  if (hasMarkings) {
+    o += pitbullMarkings(cx, cy, sc, markType, r);
+  }
+
+  o += pitbullDetails(cx, cy, sc, r);
+  o += pitbullPawprints(r);
+
   return o;
 }
 

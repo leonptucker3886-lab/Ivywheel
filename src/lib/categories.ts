@@ -10,7 +10,7 @@ export const categories: Category[] = [
   {
     id: "pitbulls",
     name: "Pitbulls",
-    description: "Adorable pitbull line art with expressive poses",
+    description: "Museum-quality pitbull portraits with 100+ pose variations",
     emoji: "🐶",
     prompt: "coloring book page, black and white line art, a cute pitbull dog sitting peacefully, detailed fur texture, clean outlines, no shading, white background, adult coloring book style",
   },
