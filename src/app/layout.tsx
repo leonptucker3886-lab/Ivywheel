@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Template",
-  description: "A minimal Next.js starter template",
+  title: "Coloring Book Generator",
+  description: "Create beautiful printable coloring pages featuring pitbulls, gardens, butterflies, mandalas, and more",
 };
 
 export default function RootLayout({
