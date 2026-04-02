@@ -10,9 +10,9 @@ export const categories: Category[] = [
   {
     id: "pitbulls",
     name: "Pitbulls",
-    description: "Museum-quality pitbull portraits with 100+ pose variations",
+    description: "Leonardo da Vinci-style anatomical studies with cross-hatching",
     emoji: "🐶",
-    prompt: "coloring book page, black and white line art, a cute pitbull dog sitting peacefully, detailed fur texture, clean outlines, no shading, white background, adult coloring book style",
+    prompt: "coloring book page, Renaissance pen and ink drawing style, anatomical study of a pitbull dog, cross-hatching for depth, natural relaxed pose, detailed musculature visible through short coat, Leonardo da Vinci study page style, masterful line work with varying weight, clean outlines, white background, adult coloring book style",
   },
   {
     id: "gardens",
