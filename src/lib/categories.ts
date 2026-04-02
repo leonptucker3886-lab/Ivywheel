@@ -63,6 +63,13 @@ export const categories: Category[] = [
     emoji: "💐",
     prompt: "coloring book page, black and white line art, an elegant floral bouquet with roses, peonies, and lavender, detailed petals, clean outlines, no shading, white background, adult coloring book style",
   },
+  {
+    id: "tattoo-flash",
+    name: "Tattoo Flash",
+    description: "Bold flash sheet designs with skulls, roses, daggers & more",
+    emoji: "💀",
+    prompt: "tattoo flash sheet, black and grey realism, bold outlines, stippling shading, skull rose dagger snake anchor, professional tattoo artist quality, stencil ready, white background",
+  },
 ];
 
 export const ivyLeavesSuffix =

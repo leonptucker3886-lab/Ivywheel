@@ -16,6 +16,8 @@ export default function GeneratorPage() {
   const [lastGenerated, setLastGenerated] = useState<{ categoryId: string; customPrompt: string } | null>(null);
 
   const isCustom = selectedCategory === "custom";
+  const isTattooFlash = selectedCategory === "tattoo-flash";
+  const showIvyToggle = !isTattooFlash;
 
   const generate = useCallback(() => {
     if (!selectedCategory) {
@@ -37,16 +39,17 @@ export default function GeneratorPage() {
 
     requestAnimationFrame(() => {
       try {
-        const seed = Date.now() + Math.floor(Math.random() * 100000);
-        const imageUrl = generateColoringPage(categoryId, addIvyLeaves, seed, prompt || undefined);
-        setGeneratedImage(imageUrl);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Something went wrong");
-      } finally {
-        setIsGenerating(false);
-      }
-    });
-  }, [selectedCategory, customPrompt, addIvyLeaves, isCustom]);
+    const seed = Date.now() + Math.floor(Math.random() * 100000);
+      const useIvy = isTattooFlash ? false : addIvyLeaves;
+      const imageUrl = generateColoringPage(categoryId, useIvy, seed, prompt || undefined);
+      setGeneratedImage(imageUrl);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setIsGenerating(false);
+    }
+  });
+}, [selectedCategory, customPrompt, addIvyLeaves, isCustom, isTattooFlash]);
 
   function handleGenerate() {
     generate();
@@ -59,9 +62,10 @@ export default function GeneratorPage() {
       requestAnimationFrame(() => {
         try {
           const seed = Date.now() + Math.floor(Math.random() * 100000);
+          const useIvy = lastGenerated.categoryId === "tattoo-flash" ? false : addIvyLeaves;
           const imageUrl = generateColoringPage(
             lastGenerated.categoryId,
-            addIvyLeaves,
+            useIvy,
             seed,
             lastGenerated.customPrompt || undefined
           );
@@ -79,7 +83,7 @@ export default function GeneratorPage() {
     if (!generatedImage) return;
     const a = document.createElement("a");
     a.href = generatedImage;
-    a.download = "ivys-peace-coloring-page.svg";
+    a.download = isTattooFlash ? "tattoo-flash-sheet.svg" : "ivys-peace-coloring-page.svg";
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -137,23 +141,25 @@ export default function GeneratorPage() {
           </section>
         )}
 
-        <section className="mb-10 flex items-center gap-4">
-          <label className="flex items-center gap-3 cursor-pointer select-none group">
-            <div className="relative">
-              <input
-                type="checkbox"
-                checked={addIvyLeaves}
-                onChange={(e) => setAddIvyLeaves(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-stone-700 peer-checked:bg-emerald-600 rounded-full transition-colors" />
-              <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5" />
-            </div>
-            <span className="text-stone-300 group-hover:text-white transition-colors">
-              🍃 Add ivy leaves border
-            </span>
-          </label>
-        </section>
+        {showIvyToggle && (
+          <section className="mb-10 flex items-center gap-4">
+            <label className="flex items-center gap-3 cursor-pointer select-none group">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={addIvyLeaves}
+                  onChange={(e) => setAddIvyLeaves(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-stone-700 peer-checked:bg-emerald-600 rounded-full transition-colors" />
+                <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5" />
+              </div>
+              <span className="text-stone-300 group-hover:text-white transition-colors">
+                🍃 Add ivy leaves border
+              </span>
+            </label>
+          </section>
+        )}
 
         <div className="flex flex-col items-center gap-4">
           <button
