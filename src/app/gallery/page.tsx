@@ -248,10 +248,7 @@ export default function ColoringPages() {
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
             Ivy&apos;s Peace
           </h1>
-          <p className="text-stone-400 text-lg max-w-2xl mx-auto mb-8">
-            A curated collection of coloring pages inspired by Ivy&apos;s love for finding peace through creativity.
-            These designs bring tranquility and mindfulness to your coloring sessions.
-          </p>
+
 
           {/* Search and Filter */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
