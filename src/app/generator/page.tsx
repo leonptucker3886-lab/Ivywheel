@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import { categories } from "@/lib/categories";
+import { categories, pitbullVariationHints } from "@/lib/categories";
 import { CategoryCard } from "@/components/CategoryCard";
 import { FallingLeaves } from "@/components/FallingLeaves";
 
@@ -115,31 +115,62 @@ function IvyDecor() {
   );
 }
 
+function PitbullHintBar({
+  onSelect,
+}: {
+  onSelect: (hint: string) => void;
+}) {
+  const hints = Object.entries(pitbullVariationHints).map(
+    ([keyword]) => keyword
+  );
+  return (
+    <div className="flex flex-wrap gap-2 mt-3">
+      {hints.map((hint) => (
+        <button
+          key={hint}
+          onClick={() => onSelect(hint)}
+          className="px-3 py-1.5 text-xs font-medium bg-stone-700/60 hover:bg-emerald-700/40 text-stone-300 hover:text-emerald-200 rounded-full border border-stone-600/40 hover:border-emerald-600/50 transition-all duration-200 hover:scale-105"
+        >
+          {hint}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function GeneratorPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [customPrompt, setCustomPrompt] = useState("");
+  const [pitbullModifiers, setPitbullModifiers] = useState("");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sceneTitle, setSceneTitle] = useState<string>("");
   const [history, setHistory] = useState<HistoryItem[]>([]);
-  const [viewingHistory, setViewingHistory] = useState<HistoryItem | null>(null);
+  const [viewingHistory, setViewingHistory] = useState<HistoryItem | null>(
+    null
+  );
   const [variations, setVariations] = useState<Variation[]>([]);
   const [isGeneratingVariations, setIsGeneratingVariations] = useState(false);
   const [variationCount, setVariationCount] = useState(0);
   const imageRef = useRef<HTMLImageElement>(null);
 
   const isCustom = selectedCategory === "custom";
+  const isPitbull = selectedCategory === "pitbull";
   const selectedCategoryData = categories.find(
     (c) => c.id === selectedCategory
   );
 
   const generateImage = useCallback(
-    async (prompt: string, style: string): Promise<string> => {
+    async (
+      prompt: string,
+      style: string,
+      customModifiers?: string
+    ): Promise<string> => {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, style }),
+        body: JSON.stringify({ prompt, style, customModifiers }),
       });
 
       const data = await res.json();
@@ -174,15 +205,26 @@ export default function GeneratorPage() {
       : selectedCategoryData?.prompt || "";
 
     const style =
-      selectedCategory === "tattoo-flash" ? "tattoo-flash" : "default";
-    const title = isCustom
-      ? "Custom Scene"
-      : selectedCategoryData?.name || "Coloring Page";
+      selectedCategory === "tattoo-flash"
+        ? "tattoo-flash"
+        : isPitbull
+          ? "pitbull"
+          : "default";
+
+    const title = isPitbull
+      ? "Realistic Pitbull"
+      : isCustom
+        ? "Custom Scene"
+        : selectedCategoryData?.name || "Coloring Page";
 
     setSceneTitle(title);
 
     try {
-      const imageUrl = await generateImage(prompt, style);
+      const imageUrl = await generateImage(
+        prompt,
+        style,
+        isPitbull ? pitbullModifiers : undefined
+      );
       setGeneratedImage(imageUrl);
 
       const item: HistoryItem = {
@@ -202,8 +244,10 @@ export default function GeneratorPage() {
     selectedCategory,
     customPrompt,
     isCustom,
+    isPitbull,
     selectedCategoryData,
     generateImage,
+    pitbullModifiers,
   ]);
 
   const generateWithVariations = useCallback(async () => {
@@ -214,7 +258,11 @@ export default function GeneratorPage() {
       : selectedCategoryData?.prompt || "";
 
     const style =
-      selectedCategory === "tattoo-flash" ? "tattoo-flash" : "default";
+      selectedCategory === "tattoo-flash"
+        ? "tattoo-flash"
+        : isPitbull
+          ? "pitbull"
+          : "default";
 
     setIsGeneratingVariations(true);
     setVariations([]);
@@ -223,7 +271,11 @@ export default function GeneratorPage() {
     try {
       const newVariations: Variation[] = [];
       for (let i = 0; i < 3; i++) {
-        const imageUrl = await generateImage(prompt, style);
+        const imageUrl = await generateImage(
+          prompt,
+          style,
+          isPitbull ? pitbullModifiers : undefined
+        );
         const variation: Variation = {
           id: `var-${Date.now()}-${i}`,
           imageUrl,
@@ -252,9 +304,11 @@ export default function GeneratorPage() {
     selectedCategory,
     customPrompt,
     isCustom,
+    isPitbull,
     selectedCategoryData,
     generateImage,
     sceneTitle,
+    pitbullModifiers,
   ]);
 
   function handleViewHistory(item: HistoryItem) {
@@ -272,16 +326,48 @@ export default function GeneratorPage() {
     setError(null);
   }
 
+  function handlePitbullHintSelect(hint: string) {
+    setPitbullModifiers((prev) => {
+      if (prev.toLowerCase().includes(hint)) return prev;
+      return prev ? `${prev}, ${hint}` : hint;
+    });
+  }
+
   function handleDownloadPNG() {
     const img = viewingHistory ? viewingHistory.imageUrl : generatedImage;
     const title = viewingHistory ? viewingHistory.title : sceneTitle;
     if (!img) return;
-    const a = document.createElement("a");
-    a.href = img;
-    a.download = `${title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.png`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+
+    const image = new Image();
+    image.crossOrigin = "anonymous";
+    image.onload = () => {
+      const targetSize = 2048;
+      const canvas = document.createElement("canvas");
+      canvas.width = targetSize;
+      canvas.height = targetSize;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(image, 0, 0, targetSize, targetSize);
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) return;
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${title.toLowerCase().replace(/\s+/g, "-")}-coloring-page-2048px.png`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        },
+        "image/png",
+        1.0
+      );
+    };
+    image.src = img;
   }
 
   function handleDownloadPDF() {
@@ -343,6 +429,62 @@ export default function GeneratorPage() {
       URL.revokeObjectURL(url);
     };
     image.src = img;
+  }
+
+  function handlePrint() {
+    const img = viewingHistory ? viewingHistory.imageUrl : generatedImage;
+    if (!img) return;
+
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) return;
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${sceneTitle} - Ivy's Peace</title>
+          <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              min-height: 100vh;
+              background: white;
+              font-family: Georgia, serif;
+            }
+            img {
+              max-width: 90vw;
+              max-height: 85vh;
+              object-fit: contain;
+            }
+            .watermark {
+              margin-top: 8px;
+              font-size: 11px;
+              color: #ccc;
+              letter-spacing: 2px;
+              text-transform: uppercase;
+            }
+            @media print {
+              body { padding: 0; }
+              img { max-width: 100%; max-height: 100vh; }
+              .watermark { color: #e0e0e0; }
+            }
+          </style>
+        </head>
+        <body>
+          <img src="${img}" alt="${sceneTitle}" />
+          <div class="watermark">Ivy's Peace</div>
+          <script>
+            window.onload = function() {
+              setTimeout(function() { window.print(); }, 300);
+            };
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   }
 
   function handleSelectVariation(variation: Variation) {
@@ -450,6 +592,41 @@ export default function GeneratorPage() {
                 </div>
               </section>
 
+              {isPitbull && (
+                <section className="mb-8 animate-in slide-in-from-top-4 duration-300">
+                  <label className="block text-sm font-medium text-emerald-300 mb-2">
+                    Pitbull scene modifiers{" "}
+                    <span className="text-stone-500 font-normal">
+                      (optional — click to add)
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    value={pitbullModifiers}
+                    onChange={(e) => setPitbullModifiers(e.target.value)}
+                    placeholder='e.g., "puppy", "with bandana", "portrait close-up", "playing"'
+                    className="w-full px-5 py-3.5 rounded-xl bg-stone-800/80 border-2 border-emerald-600/40 text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/30 text-base transition-colors duration-200"
+                  />
+                  <PitbullHintBar onSelect={handlePitbullHintSelect} />
+                  <p className="text-stone-500 text-xs mt-2 flex items-center gap-1.5">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      className="text-emerald-600"
+                    >
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+                      <path d="M12 16v-4M12 8h.01" />
+                    </svg>
+                    Click hints or type your own. Realistic pitbull anatomy is
+                    always maintained.
+                  </p>
+                </section>
+              )}
+
               {isCustom && (
                 <section className="mb-8 animate-in slide-in-from-top-4 duration-300">
                   <label className="block text-sm font-medium text-emerald-300 mb-2">
@@ -537,8 +714,9 @@ export default function GeneratorPage() {
                 )}
               </div>
               <p className="text-stone-400 text-sm mb-6 max-w-lg text-center">
-                Your AI-generated coloring page is ready. Print it out and enjoy
-                coloring!
+                {isPitbull
+                  ? "Your professional realistic pitbull coloring page is ready. High-resolution 2048px for crisp printing."
+                  : "Your AI-generated coloring page is ready. Print it out and enjoy coloring!"}
               </p>
 
               <div className="rounded-2xl overflow-hidden border-2 border-emerald-800/40 shadow-2xl shadow-emerald-900/20 bg-white max-w-xl w-full">
@@ -574,6 +752,9 @@ export default function GeneratorPage() {
                     <line x1="12" y1="15" x2="12" y2="3" />
                   </svg>
                   Download PNG
+                  {isPitbull && (
+                    <span className="text-emerald-200/70 text-xs">(2048px)</span>
+                  )}
                 </button>
                 <button
                   onClick={handleDownloadPDF}
@@ -598,6 +779,27 @@ export default function GeneratorPage() {
                   Download PDF
                 </button>
                 <button
+                  onClick={handlePrint}
+                  className="px-5 py-2.5 bg-stone-700 hover:bg-stone-600 text-white font-semibold rounded-xl transition-all duration-200 text-sm flex items-center gap-2 hover:scale-[1.03] active:scale-[0.97]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="6 9 6 2 18 2 18 9" />
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                    <rect x="6" y="14" width="12" height="8" />
+                  </svg>
+                  Print
+                </button>
+                <button
                   onClick={generateWithVariations}
                   disabled={isGeneratingVariations}
                   className="px-5 py-2.5 bg-stone-700 hover:bg-stone-600 disabled:bg-stone-800 disabled:text-stone-500 text-white font-semibold rounded-xl transition-all duration-200 text-sm flex items-center gap-2 hover:scale-[1.03] active:scale-[0.97]"
@@ -620,7 +822,7 @@ export default function GeneratorPage() {
                   </svg>
                   {isGeneratingVariations
                     ? `Generating... (${variationCount}/3)`
-                    : "Regenerate with Variations"}
+                    : "Generate Variations"}
                 </button>
                 <button
                   onClick={handleBackToMain}
@@ -781,6 +983,12 @@ function buildMinimalPDF(
     bytes[i] = binaryStr.charCodeAt(i);
   }
 
+  const watermarkText = "Ivy's Peace";
+  const watermarkStream = `BT /F1 8 Tf 250 12 Td (${watermarkText}) Tj ET`;
+
+  const imageStream = `q ${drawW.toFixed(2)} 0 0 ${drawH.toFixed(2)} ${offsetX.toFixed(2)} ${offsetY.toFixed(2)} cm /Img Do Q`;
+  const fullStreamContent = `${watermarkStream}\n${imageStream}`;
+
   const objects: string[] = [];
   const offsets: number[] = [];
 
@@ -806,15 +1014,16 @@ function buildMinimalPDF(
   const obj2 = `2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n`;
   addObj(obj2);
 
-  const obj3 = `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Contents 4 0 R /Resources << /XObject << /Img 5 0 R >> >> >>\nendobj\n`;
+  const obj3 = `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Contents 4 0 R /Resources << /XObject << /Img 5 0 R >> /Font << /F1 6 0 R >> >> >>\nendobj\n`;
   addObj(obj3);
 
-  const streamContent = `q ${drawW.toFixed(2)} 0 0 ${drawH.toFixed(2)} ${offsetX.toFixed(2)} ${offsetY.toFixed(2)} cm /Img Do Q`;
-  const obj4 = `4 0 obj\n<< /Length ${streamContent.length} >>\nstream\n${streamContent}\nendstream\nendobj\n`;
+  const obj4 = `4 0 obj\n<< /Length ${fullStreamContent.length} >>\nstream\n${fullStreamContent}\nendstream\nendobj\n`;
   addObj(obj4);
 
   const obj5Header = `5 0 obj\n<< /Type /XObject /Subtype /Image /Width 1024 /Height 1024 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${bytes.length} >>\nstream\n`;
   const obj5Footer = "\nendstream\nendobj\n";
+
+  const obj6 = `6 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n`;
 
   const totalLen =
     header.length +
@@ -825,6 +1034,7 @@ function buildMinimalPDF(
     obj5Header.length +
     bytes.length +
     obj5Footer.length +
+    obj6.length +
     512;
 
   const result = new Uint8Array(totalLen);
@@ -873,9 +1083,13 @@ function buildMinimalPDF(
   writeStr(obj5Footer);
   runningOffset += obj5Footer.length;
 
+  writeStr(obj6);
+  xrefOffsets.push(runningOffset);
+  runningOffset += obj6.length;
+
   const xrefStart = runningOffset;
   writeStr("xref\n");
-  writeStr("0 6\n");
+  writeStr("0 7\n");
   writeStr("0000000000 65535 f \n");
   for (let i = 0; i < xrefOffsets.length; i++) {
     const off = xrefOffsets[i].toString().padStart(10, "0");
@@ -883,7 +1097,7 @@ function buildMinimalPDF(
   }
 
   writeStr("trailer\n");
-  writeStr("<< /Size 6 /Root 1 0 R >>\n");
+  writeStr("<< /Size 7 /Root 1 0 R >>\n");
   writeStr("startxref\n");
   writeStr(`${xrefStart}\n`);
   writeStr("%%EOF\n");
