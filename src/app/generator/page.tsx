@@ -5,10 +5,23 @@ import { categories } from "@/lib/categories";
 import { CategoryCard } from "@/components/CategoryCard";
 import { FallingLeaves } from "@/components/FallingLeaves";
 
-function LoadingSpinner() {
+interface HistoryItem {
+  id: string;
+  imageUrl: string;
+  title: string;
+  prompt: string;
+  timestamp: number;
+}
+
+interface Variation {
+  id: string;
+  imageUrl: string;
+}
+
+function LoadingSpinner({ message }: { message?: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-6">
-      <div className="relative w-24 h-24">
+      <div className="relative w-28 h-28">
         <svg
           viewBox="0 0 100 100"
           className="w-full h-full animate-spin"
@@ -19,7 +32,7 @@ function LoadingSpinner() {
             cy="50"
             r="42"
             fill="none"
-            stroke="rgba(16,185,129,0.15)"
+            stroke="rgba(16,185,129,0.12)"
             strokeWidth="4"
           />
           <circle
@@ -41,13 +54,11 @@ function LoadingSpinner() {
         </svg>
         <div
           className="absolute inset-0 flex items-center justify-center"
-          style={{
-            animation: "pulse 2s ease-in-out infinite",
-          }}
+          style={{ animation: "pulse 2s ease-in-out infinite" }}
         >
           <svg
-            width="32"
-            height="32"
+            width="36"
+            height="36"
             viewBox="0 0 40 40"
             fill="none"
             className="text-emerald-400"
@@ -67,7 +78,7 @@ function LoadingSpinner() {
       </div>
       <div className="text-center">
         <p className="text-emerald-300 text-lg font-medium">
-          Creating your peaceful coloring page...
+          {message || "Creating your peaceful coloring page..."}
         </p>
         <p className="text-stone-500 text-sm mt-2">
           This may take up to a minute
@@ -83,6 +94,27 @@ function LoadingSpinner() {
   );
 }
 
+function IvyDecor() {
+  return (
+    <svg
+      className="absolute -top-2 -right-2 w-16 h-16 text-emerald-800/30 pointer-events-none"
+      viewBox="0 0 60 60"
+      fill="none"
+    >
+      <path
+        d="M30 5C24 5 12 12 9 24C6 36 15 48 24 51C21 42 21 33 27 27C33 21 39 24 42 30C45 24 42 12 30 5Z"
+        fill="currentColor"
+      />
+      <path
+        d="M45 15C40 18 36 25 35 32"
+        stroke="currentColor"
+        strokeWidth="1"
+        opacity="0.5"
+      />
+    </svg>
+  );
+}
+
 export default function GeneratorPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [customPrompt, setCustomPrompt] = useState("");
@@ -90,12 +122,35 @@ export default function GeneratorPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sceneTitle, setSceneTitle] = useState<string>("");
-  const [usedPrompt, setUsedPrompt] = useState<string>("");
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [viewingHistory, setViewingHistory] = useState<HistoryItem | null>(null);
+  const [variations, setVariations] = useState<Variation[]>([]);
+  const [isGeneratingVariations, setIsGeneratingVariations] = useState(false);
+  const [variationCount, setVariationCount] = useState(0);
   const imageRef = useRef<HTMLImageElement>(null);
 
   const isCustom = selectedCategory === "custom";
   const selectedCategoryData = categories.find(
     (c) => c.id === selectedCategory
+  );
+
+  const generateImage = useCallback(
+    async (prompt: string, style: string): Promise<string> => {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt, style }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to generate image");
+      }
+
+      return data.imageUrl;
+    },
+    []
   );
 
   const generate = useCallback(async () => {
@@ -111,12 +166,15 @@ export default function GeneratorPage() {
     setIsGenerating(true);
     setError(null);
     setGeneratedImage(null);
+    setViewingHistory(null);
+    setVariations([]);
 
     const prompt = isCustom
       ? customPrompt.trim()
       : selectedCategoryData?.prompt || "";
 
-    const style = selectedCategory === "tattoo-flash" ? "tattoo-flash" : "default";
+    const style =
+      selectedCategory === "tattoo-flash" ? "tattoo-flash" : "default";
     const title = isCustom
       ? "Custom Scene"
       : selectedCategoryData?.name || "Coloring Page";
@@ -124,66 +182,122 @@ export default function GeneratorPage() {
     setSceneTitle(title);
 
     try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, style }),
-      });
+      const imageUrl = await generateImage(prompt, style);
+      setGeneratedImage(imageUrl);
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Failed to generate image");
-      }
-
-      setGeneratedImage(data.imageUrl);
-      setUsedPrompt(data.prompt || prompt);
+      const item: HistoryItem = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        imageUrl,
+        title,
+        prompt,
+        timestamp: Date.now(),
+      };
+      setHistory((prev) => [item, ...prev].slice(0, 4));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setIsGenerating(false);
     }
-  }, [selectedCategory, customPrompt, isCustom, selectedCategoryData]);
+  }, [
+    selectedCategory,
+    customPrompt,
+    isCustom,
+    selectedCategoryData,
+    generateImage,
+  ]);
 
-  function handleGenerate() {
-    generate();
+  const generateWithVariations = useCallback(async () => {
+    if (!selectedCategory) return;
+
+    const prompt = isCustom
+      ? customPrompt.trim()
+      : selectedCategoryData?.prompt || "";
+
+    const style =
+      selectedCategory === "tattoo-flash" ? "tattoo-flash" : "default";
+
+    setIsGeneratingVariations(true);
+    setVariations([]);
+    setVariationCount(0);
+
+    try {
+      const newVariations: Variation[] = [];
+      for (let i = 0; i < 3; i++) {
+        const imageUrl = await generateImage(prompt, style);
+        const variation: Variation = {
+          id: `var-${Date.now()}-${i}`,
+          imageUrl,
+        };
+        newVariations.push(variation);
+        setVariations([...newVariations]);
+        setVariationCount(i + 1);
+
+        const item: HistoryItem = {
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          imageUrl,
+          title: sceneTitle || "Variation",
+          prompt,
+          timestamp: Date.now(),
+        };
+        setHistory((prev) => [item, ...prev].slice(0, 4));
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to generate variations"
+      );
+    } finally {
+      setIsGeneratingVariations(false);
+    }
+  }, [
+    selectedCategory,
+    customPrompt,
+    isCustom,
+    selectedCategoryData,
+    generateImage,
+    sceneTitle,
+  ]);
+
+  function handleViewHistory(item: HistoryItem) {
+    setViewingHistory(item);
+    setGeneratedImage(item.imageUrl);
+    setSceneTitle(item.title);
+    setVariations([]);
   }
 
-  function handleRegenerate() {
-    generate();
-  }
-
-  function handleNewScene() {
+  function handleBackToMain() {
+    setViewingHistory(null);
     setGeneratedImage(null);
     setSceneTitle("");
-    setUsedPrompt("");
+    setVariations([]);
     setError(null);
-    setSelectedCategory(null);
-    setCustomPrompt("");
   }
 
   function handleDownloadPNG() {
-    if (!generatedImage) return;
+    const img = viewingHistory ? viewingHistory.imageUrl : generatedImage;
+    const title = viewingHistory ? viewingHistory.title : sceneTitle;
+    if (!img) return;
     const a = document.createElement("a");
-    a.href = generatedImage;
-    a.download = `${sceneTitle.toLowerCase().replace(/\s+/g, "-")}-coloring-page.png`;
+    a.href = img;
+    a.download = `${title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.png`;
     document.body.appendChild(a);
     a.click();
     a.remove();
   }
 
   function handleDownloadPDF() {
-    if (!generatedImage) return;
+    const img = viewingHistory ? viewingHistory.imageUrl : generatedImage;
+    const title = viewingHistory ? viewingHistory.title : sceneTitle;
+    if (!img) return;
 
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => {
+    const image = new Image();
+    image.crossOrigin = "anonymous";
+    image.onload = () => {
       const canvas = document.createElement("canvas");
-      canvas.width = img.naturalWidth || 1024;
-      canvas.height = img.naturalHeight || 1024;
+      canvas.width = image.naturalWidth || 1024;
+      canvas.height = image.naturalHeight || 1024;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(image, 0, 0);
 
       const imgData = canvas.toDataURL("image/png");
 
@@ -216,189 +330,439 @@ export default function GeneratorPage() {
         offsetY
       );
 
-      const blob = new Blob([new Uint8Array(stream)], { type: "application/pdf" });
+      const blob = new Blob([new Uint8Array(stream)], {
+        type: "application/pdf",
+      });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${sceneTitle.toLowerCase().replace(/\s+/g, "-")}-coloring-page.pdf`;
+      a.download = `${title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.pdf`;
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
     };
-    img.src = generatedImage;
+    image.src = img;
   }
 
-  return (
-    <main className="min-h-screen bg-stone-950 text-white relative overflow-hidden">
-      <FallingLeaves />
-      <div className="max-w-6xl mx-auto px-6 py-12 relative z-10">
-        <header className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-            Ivy&apos;s Peace
-          </h1>
-          <p className="text-stone-400 text-lg max-w-2xl mx-auto">
-            Create beautiful coloring pages to print and enjoy. Pick a scene or
-            describe your own, then let AI craft a unique design for you.
-          </p>
-        </header>
+  function handleSelectVariation(variation: Variation) {
+    setGeneratedImage(variation.imageUrl);
+    setViewingHistory(null);
 
-        {!generatedImage && !isGenerating && (
-          <>
-            <section className="mb-10">
-              <h2 className="text-2xl font-semibold mb-6">Choose a Scene</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {categories.map((category) => (
-                  <CategoryCard
-                    key={category.id}
-                    name={category.name}
-                    description={category.description}
-                    emoji={category.emoji}
-                    isSelected={selectedCategory === category.id}
-                    onClick={() => setSelectedCategory(category.id)}
+    const item: HistoryItem = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      imageUrl: variation.imageUrl,
+      title: sceneTitle,
+      prompt: "",
+      timestamp: Date.now(),
+    };
+    setHistory((prev) => [item, ...prev].slice(0, 4));
+  }
+
+  const activeImage = viewingHistory ? viewingHistory.imageUrl : generatedImage;
+  const activeTitle = viewingHistory ? viewingHistory.title : sceneTitle;
+
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-stone-950 via-stone-950 to-emerald-950/20 text-white relative overflow-hidden">
+      <FallingLeaves />
+
+      <div className="flex min-h-screen relative z-10">
+        <div className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+          <header className="text-center mb-10 sm:mb-14">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 40 40"
+                fill="none"
+                className="text-emerald-400"
+              >
+                <path
+                  d="M20 4C16 4 8 8 6 16C4 24 10 32 16 34C14 28 14 22 18 18C22 14 26 16 28 20C30 16 28 8 20 4Z"
+                  fill="currentColor"
+                />
+              </svg>
+              <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+                Ivy&apos;s Peace
+              </h1>
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 40 40"
+                fill="none"
+                className="text-emerald-400 scale-x-[-1]"
+              >
+                <path
+                  d="M20 4C16 4 8 8 6 16C4 24 10 32 16 34C14 28 14 22 18 18C22 14 26 16 28 20C30 16 28 8 20 4Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+            <p className="text-stone-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+              Create beautiful coloring pages to print and enjoy. Pick a scene or
+              describe your own, then let AI craft a unique design for you.
+            </p>
+          </header>
+
+          {!activeImage && !isGenerating && (
+            <>
+              <section className="mb-8">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-6 flex items-center gap-2">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="text-emerald-400"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                    <line x1="9" y1="9" x2="9.01" y2="9" />
+                    <line x1="15" y1="9" x2="15.01" y2="9" />
+                  </svg>
+                  Choose a Scene
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {categories.map((category) => (
+                    <div key={category.id} className="relative">
+                      <CategoryCard
+                        name={category.name}
+                        description={category.description}
+                        emoji={category.emoji}
+                        isSelected={selectedCategory === category.id}
+                        onClick={() => setSelectedCategory(category.id)}
+                      />
+                      <IvyDecor />
+                    </div>
+                  ))}
+                  <div className="relative">
+                    <CategoryCard
+                      name="Custom"
+                      description="Describe your own unique scene"
+                      emoji="✏️"
+                      isSelected={isCustom}
+                      onClick={() => setSelectedCategory("custom")}
+                    />
+                    <IvyDecor />
+                  </div>
+                </div>
+              </section>
+
+              {isCustom && (
+                <section className="mb-8 animate-in slide-in-from-top-4 duration-300">
+                  <label className="block text-sm font-medium text-emerald-300 mb-2">
+                    Describe your scene
+                  </label>
+                  <textarea
+                    value={customPrompt}
+                    onChange={(e) => setCustomPrompt(e.target.value)}
+                    placeholder="e.g., a majestic wolf howling at the moon on a mountain cliff with pine trees and stars"
+                    className="w-full h-28 px-5 py-4 rounded-xl bg-stone-800/80 border-2 border-emerald-600/40 text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/30 resize-none text-base transition-colors duration-200"
                   />
-                ))}
-                <CategoryCard
-                  name="Custom"
-                  description="Describe your own unique scene"
-                  emoji="✏️"
-                  isSelected={isCustom}
-                  onClick={() => setSelectedCategory("custom")}
+                  <p className="text-stone-500 text-xs mt-2 flex items-center gap-1.5">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      className="text-emerald-600"
+                    >
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+                      <path d="M12 16v-4M12 8h.01" />
+                    </svg>
+                    Ivy leaf borders will be added automatically
+                  </p>
+                </section>
+              )}
+
+              <div className="flex flex-col items-center gap-3">
+                <button
+                  onClick={generate}
+                  disabled={
+                    isGenerating ||
+                    !selectedCategory ||
+                    (isCustom && !customPrompt.trim())
+                  }
+                  className="group px-10 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 disabled:from-stone-700 disabled:to-stone-700 disabled:text-stone-500 text-white font-semibold rounded-xl transition-all duration-300 text-lg shadow-lg shadow-emerald-900/30 hover:shadow-emerald-800/40 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="flex items-center gap-2">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 3v18M5.5 7.5l13 9M5.5 16.5l13-9" />
+                    </svg>
+                    Generate Coloring Page
+                  </span>
+                </button>
+                {error && (
+                  <p className="text-red-400 text-sm bg-red-950/30 px-4 py-2 rounded-lg">
+                    {error}
+                  </p>
+                )}
+              </div>
+            </>
+          )}
+
+          {isGenerating && (
+            <LoadingSpinner
+              message={
+                isGeneratingVariations
+                  ? `Generating variation ${variationCount + 1} of 3...`
+                  : undefined
+              }
+            />
+          )}
+
+          {activeImage && !isGenerating && (
+            <section className="flex flex-col items-center">
+              <div className="flex items-center gap-3 mb-2">
+                <h2 className="text-2xl sm:text-3xl font-bold text-emerald-300">
+                  {activeTitle}
+                </h2>
+                {viewingHistory && (
+                  <span className="text-xs bg-stone-700 text-stone-300 px-2.5 py-1 rounded-full">
+                    From history
+                  </span>
+                )}
+              </div>
+              <p className="text-stone-400 text-sm mb-6 max-w-lg text-center">
+                Your AI-generated coloring page is ready. Print it out and enjoy
+                coloring!
+              </p>
+
+              <div className="rounded-2xl overflow-hidden border-2 border-emerald-800/40 shadow-2xl shadow-emerald-900/20 bg-white max-w-xl w-full">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  ref={imageRef}
+                  src={activeImage}
+                  alt={`Generated coloring page: ${activeTitle}`}
+                  width={1024}
+                  height={1024}
+                  className="w-full h-auto"
                 />
               </div>
-            </section>
 
-            {isCustom && (
-              <section className="mb-10">
-                <h2 className="text-2xl font-semibold mb-4">
-                  Your Description
-                </h2>
-                <textarea
-                  value={customPrompt}
-                  onChange={(e) => setCustomPrompt(e.target.value)}
-                  placeholder="Describe your coloring page scene... (e.g., 'a majestic wolf howling at the moon on a mountain cliff with pine trees')"
-                  className="w-full h-32 px-4 py-3 rounded-xl bg-stone-800 border-2 border-emerald-500/50 text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400 resize-none text-base"
-                />
-                <p className="text-stone-500 text-sm mt-2">
-                  Your description creates a unique design with elegant ivy
-                  leaf borders.
+              <div className="mt-8 flex flex-wrap gap-3 justify-center">
+                <button
+                  onClick={handleDownloadPNG}
+                  className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-all duration-200 text-sm flex items-center gap-2 hover:scale-[1.03] active:scale-[0.97]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  Download PNG
+                </button>
+                <button
+                  onClick={handleDownloadPDF}
+                  className="px-5 py-2.5 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-xl transition-all duration-200 text-sm flex items-center gap-2 hover:scale-[1.03] active:scale-[0.97]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                  </svg>
+                  Download PDF
+                </button>
+                <button
+                  onClick={generateWithVariations}
+                  disabled={isGeneratingVariations}
+                  className="px-5 py-2.5 bg-stone-700 hover:bg-stone-600 disabled:bg-stone-800 disabled:text-stone-500 text-white font-semibold rounded-xl transition-all duration-200 text-sm flex items-center gap-2 hover:scale-[1.03] active:scale-[0.97]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="2" y="2" width="8" height="8" rx="1" />
+                    <rect x="14" y="2" width="8" height="8" rx="1" />
+                    <rect x="2" y="14" width="8" height="8" rx="1" />
+                    <rect x="14" y="14" width="8" height="8" rx="1" />
+                  </svg>
+                  {isGeneratingVariations
+                    ? `Generating... (${variationCount}/3)`
+                    : "Regenerate with Variations"}
+                </button>
+                <button
+                  onClick={handleBackToMain}
+                  className="px-5 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white font-medium rounded-xl transition-all duration-200 text-sm flex items-center gap-2 hover:scale-[1.03] active:scale-[0.97]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="19" y1="12" x2="5" y2="12" />
+                    <polyline points="12 19 5 12 12 5" />
+                  </svg>
+                  New Scene
+                </button>
+              </div>
+
+              {isGeneratingVariations && (
+                <div className="mt-6 w-full max-w-xl">
+                  <div className="bg-stone-800/60 rounded-full h-2 overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500 ease-out"
+                      style={{ width: `${(variationCount / 3) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {variations.length > 0 && !isGeneratingVariations && (
+                <div className="mt-8 w-full max-w-xl">
+                  <h3 className="text-lg font-semibold text-emerald-300 mb-4 flex items-center gap-2">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <rect x="2" y="2" width="8" height="8" rx="1" />
+                      <rect x="14" y="2" width="8" height="8" rx="1" />
+                      <rect x="2" y="14" width="8" height="8" rx="1" />
+                      <rect x="14" y="14" width="8" height="8" rx="1" />
+                    </svg>
+                    Variations
+                  </h3>
+                  <div className="grid grid-cols-3 gap-3">
+                    {variations.map((v) => (
+                      <button
+                        key={v.id}
+                        onClick={() => handleSelectVariation(v)}
+                        className="rounded-xl overflow-hidden border-2 border-stone-700 hover:border-emerald-500 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg hover:shadow-emerald-900/30 bg-white"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={v.imageUrl}
+                          alt="Variation"
+                          width={300}
+                          height={300}
+                          className="w-full h-auto"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {error && (
+                <p className="text-red-400 text-sm mt-4 bg-red-950/30 px-4 py-2 rounded-lg">
+                  {error}
                 </p>
-              </section>
-            )}
+              )}
+            </section>
+          )}
+        </div>
 
-            <div className="flex flex-col items-center gap-4">
-              <button
-                onClick={handleGenerate}
-                disabled={
-                  isGenerating ||
-                  !selectedCategory ||
-                  (isCustom && !customPrompt.trim())
-                }
-                className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-stone-700 disabled:text-stone-500 text-white font-semibold rounded-xl transition-colors text-lg"
+        {history.length > 0 && (
+          <aside className="hidden lg:flex flex-col w-56 xl:w-64 border-l border-stone-800/60 bg-stone-900/40 backdrop-blur-sm p-4 flex-shrink-0">
+            <h3 className="text-sm font-semibold text-emerald-400/80 mb-4 flex items-center gap-2 uppercase tracking-wider">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
               >
-                Generate Coloring Page
-              </button>
-              {error && <p className="text-red-400 text-sm">{error}</p>}
-            </div>
-          </>
-        )}
-
-        {isGenerating && <LoadingSpinner />}
-
-        {generatedImage && !isGenerating && (
-          <section className="flex flex-col items-center">
-            <h2 className="text-3xl font-bold mb-2 text-emerald-300">
-              {sceneTitle}
-            </h2>
-            <p className="text-stone-400 text-sm mb-8 max-w-xl text-center">
-              Your AI-generated coloring page is ready. Print it out and enjoy
-              coloring!
-            </p>
-            <div className="rounded-2xl overflow-hidden border border-stone-700 shadow-2xl bg-white max-w-2xl w-full">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                ref={imageRef}
-                src={generatedImage}
-                alt={`Generated coloring page: ${sceneTitle}`}
-                width={1024}
-                height={1024}
-                className="w-full h-auto"
-              />
-            </div>
-            <div className="mt-8 flex flex-wrap gap-4 justify-center">
-              <button
-                onClick={handleDownloadPNG}
-                className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors text-base flex items-center gap-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              Recent
+            </h3>
+            <div className="flex flex-col gap-3">
+              {history.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => handleViewHistory(item)}
+                  className={`group rounded-xl overflow-hidden border-2 transition-all duration-200 bg-white hover:scale-[1.03] hover:shadow-lg hover:shadow-emerald-900/20 ${
+                    viewingHistory?.id === item.id
+                      ? "border-emerald-400 shadow-md shadow-emerald-900/30"
+                      : "border-stone-700/60 hover:border-emerald-600/50"
+                  }`}
                 >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-                Download PNG
-              </button>
-              <button
-                onClick={handleDownloadPDF}
-                className="px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-xl transition-colors text-base flex items-center gap-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                  <line x1="16" y1="13" x2="8" y2="13" />
-                  <line x1="16" y1="17" x2="8" y2="17" />
-                  <polyline points="10 9 9 9 8 9" />
-                </svg>
-                Download PDF (print-ready)
-              </button>
-              <button
-                onClick={handleNewScene}
-                className="px-6 py-3 bg-stone-700 hover:bg-stone-600 text-white font-semibold rounded-xl transition-colors text-base flex items-center gap-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21.5 2v6h-6" />
-                  <path d="M2.5 22v-6h6" />
-                  <path d="M2 11.5a10 10 0 0 1 18.8-4.3" />
-                  <path d="M22 12.5a10 10 0 0 1-18.8 4.2" />
-                </svg>
-                Generate Another
-              </button>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.imageUrl}
+                    alt={item.title}
+                    width={200}
+                    height={200}
+                    className="w-full h-auto"
+                  />
+                  <div className="px-2.5 py-2 bg-stone-800/90">
+                    <p className="text-xs font-medium text-stone-200 truncate">
+                      {item.title}
+                    </p>
+                    <p className="text-[10px] text-stone-500">
+                      {formatTimeAgo(item.timestamp)}
+                    </p>
+                  </div>
+                </button>
+              ))}
             </div>
-            {error && <p className="text-red-400 text-sm mt-4">{error}</p>}
-          </section>
+          </aside>
         )}
       </div>
     </main>
   );
+}
+
+function formatTimeAgo(timestamp: number): string {
+  const seconds = Math.floor((Date.now() - timestamp) / 1000);
+  if (seconds < 60) return "Just now";
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  return `${hours}h ago`;
 }
 
 function buildMinimalPDF(
@@ -428,11 +792,7 @@ function buildMinimalPDF(
   function getLength() {
     let len = 0;
     for (let i = 0; i < objects.length; i++) {
-      if (i === 0) {
-        len += objects[i].length;
-      } else {
-        len += objects[i].length;
-      }
+      len += objects[i].length;
     }
     return len;
   }
@@ -453,7 +813,8 @@ function buildMinimalPDF(
   const obj4 = `4 0 obj\n<< /Length ${streamContent.length} >>\nstream\n${streamContent}\nendstream\nendobj\n`;
   addObj(obj4);
 
-  const obj5 = `5 0 obj\n<< /Type /XObject /Subtype /Image /Width 1024 /Height 1024 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${bytes.length} >>\nstream\n`;
+  const obj5Header = `5 0 obj\n<< /Type /XObject /Subtype /Image /Width 1024 /Height 1024 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${bytes.length} >>\nstream\n`;
+  const obj5Footer = "\nendstream\nendobj\n";
 
   const totalLen =
     header.length +
@@ -461,10 +822,10 @@ function buildMinimalPDF(
     obj2.length +
     obj3.length +
     obj4.length +
-    obj5.length +
+    obj5Header.length +
     bytes.length +
-    "\nendstream\nendobj\n".length +
-    300;
+    obj5Footer.length +
+    512;
 
   const result = new Uint8Array(totalLen);
   let pos = 0;
@@ -503,20 +864,18 @@ function buildMinimalPDF(
   xrefOffsets.push(runningOffset);
   runningOffset += obj4.length;
 
-  const obj5Header = `5 0 obj\n<< /Type /XObject /Subtype /Image /Width 1024 /Height 1024 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${bytes.length} >>\nstream\n`;
   writeStr(obj5Header);
   xrefOffsets.push(runningOffset);
   runningOffset += obj5Header.length;
 
   writeBytes(bytes);
 
-  const obj5Footer = "\nendstream\nendobj\n";
   writeStr(obj5Footer);
   runningOffset += obj5Footer.length;
 
   const xrefStart = runningOffset;
   writeStr("xref\n");
-  writeStr(`0 6\n`);
+  writeStr("0 6\n");
   writeStr("0000000000 65535 f \n");
   for (let i = 0; i < xrefOffsets.length; i++) {
     const off = xrefOffsets[i].toString().padStart(10, "0");
