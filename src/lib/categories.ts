@@ -14,6 +14,13 @@ export const categories: Category[] = [
     emoji: "💀",
     prompt: "tattoo flash sheet, black and grey realism, bold outlines, stippling shading, skull rose dagger snake anchor, professional tattoo artist quality, stencil ready, white background",
   },
+  {
+    id: "biker-chick",
+    name: "Confident Biker Chick",
+    description: "Bold biker girl on a Harley with tattoos and windswept hair",
+    emoji: "🏍️",
+    prompt: "Highly detailed adult coloring book page, bold thick black outlines, clean line art, no shading, high contrast, confident biker girl in leather jacket and shorts sitting on a Harley, tattoos on arms and thigh, windswept hair, dynamic pose, tattoo flash style",
+  },
 ];
 
 export const ivyLeavesSuffix =

@@ -682,8 +682,185 @@ function generateTattooFlash(r: () => number): string {
   return o;
 }
 
+function generateBikerChick(r: () => number): string {
+  let o = "";
+
+  const cx = C;
+  const cy = C;
+  const facing = r() > 0.5 ? 1 : -1;
+
+  const groundY = 870;
+  o += P(`M0 ${groundY} Q256 ${groundY - 15} 512 ${groundY + 5} Q768 ${groundY - 10} 1024 ${groundY}`, 2);
+
+  const bikeX = cx + 20;
+  const bikeY = groundY - 80;
+
+  o += C2(bikeX - 140, bikeY + 60, 70, 4);
+  o += C2(bikeX - 140, bikeY + 60, 66, 1.5);
+  o += C2(bikeX - 140, bikeY + 60, 60, 0.6);
+  o += C2(bikeX - 140, bikeY + 60, 8, 2);
+  for (let s = 0; s < 12; s++) {
+    const a = (s / 12) * Math.PI * 2;
+    o += L(bikeX - 140 + Math.cos(a) * 8, bikeY + 60 + Math.sin(a) * 8, bikeX - 140 + Math.cos(a) * 62, bikeY + 60 + Math.sin(a) * 62, 1.2);
+  }
+  o += C2(bikeX + 160, bikeY + 55, 65, 4);
+  o += C2(bikeX + 160, bikeY + 55, 61, 1.5);
+  o += C2(bikeX + 160, bikeY + 55, 55, 0.6);
+  o += C2(bikeX + 160, bikeY + 55, 8, 2);
+  for (let s = 0; s < 12; s++) {
+    const a = (s / 12) * Math.PI * 2;
+    o += L(bikeX + 160 + Math.cos(a) * 8, bikeY + 55 + Math.sin(a) * 8, bikeX + 160 + Math.cos(a) * 57, bikeY + 55 + Math.sin(a) * 57, 1.2);
+  }
+
+  o += P(`M${bikeX - 135} ${bikeY + 55} Q${bikeX - 80} ${bikeY + 10} ${bikeX - 30} ${bikeY + 20} L${bikeX + 30} ${bikeY + 15} Q${bikeX + 80} ${bikeY + 5} ${bikeX + 120} ${bikeY + 10} L${bikeX + 155} ${bikeY + 50}`, 3.5);
+  o += P(`M${bikeX - 135} ${bikeY + 57} Q${bikeX - 80} ${bikeY + 13} ${bikeX - 30} ${bikeY + 23}`, 1.2);
+
+  o += P(`M${bikeX - 10} ${bikeY + 20} Q${bikeX - 5} ${bikeY - 10} ${bikeX + 10} ${bikeY - 15} Q${bikeX + 25} ${bikeY - 10} ${bikeX + 30} ${bikeY + 15}`, 3);
+  o += P(`M${bikeX + 30} ${bikeY + 15} Q${bikeX + 50} ${bikeY + 5} ${bikeX + 70} ${bikeY - 5} Q${bikeX + 85} ${bikeY - 15} ${bikeX + 100} ${bikeY - 25}`, 3);
+  o += P(`M${bikeX + 100} ${bikeY - 25} Q${bikeX + 110} ${bikeY - 35} ${bikeX + 120} ${bikeY - 20} Q${bikeX + 130} ${bikeY - 5} ${bikeX + 120} ${bikeY + 10}`, 2.5);
+
+  o += P(`M${bikeX + 70} ${bikeY - 5} Q${bikeX + 65} ${bikeY - 30} ${bikeX + 75} ${bikeY - 45}`, 2.5);
+  o += P(`M${bikeX + 72} ${bikeY - 45} Q${bikeX + 78} ${bikeY - 55} ${bikeX + 90} ${bikeY - 50} Q${bikeX + 100} ${bikeY - 45} ${bikeX + 95} ${bikeY - 35}`, 2);
+
+  o += P(`M${bikeX - 40} ${bikeY + 18} L${bikeX - 60} ${bikeY - 5} L${bikeX - 50} ${bikeY - 20} L${bikeX - 30} ${bikeY - 15}`, 2.5);
+
+  o += P(`M${bikeX + 85} ${bikeY - 25} Q${bikeX + 80} ${bikeY - 40} ${bikeX + 90} ${bikeY - 55}`, 2);
+  o += P(`M${bikeX + 88} ${bikeY - 55} Q${bikeX + 95} ${bikeY - 60} ${bikeX + 100} ${bikeY - 55}`, 1.5);
+
+  for (let i = 0; i < 3; i++) {
+    const py = bikeY + 30 + i * 12;
+    o += P(`M${bikeX - 25} ${py} Q${bikeX - 15} ${py - 3} ${bikeX - 5} ${py}`, 1.5);
+  }
+
+  const figX = bikeX + 10;
+  const figY = bikeY - 60;
+  const sc = 1.0;
+
+  o += `<g transform="translate(${figX},${figY}) scale(${sc})">`;
+
+  o += P(`M-35 -30 C-50 -35 -55 -60 -50 -80 C-45 -95 -30 -105 -15 -100 C-5 -95 -10 -75 -25 -60 C-35 -50 -40 -40 -35 -30`, 3);
+  o += P(`M35 -30 C50 -35 55 -60 50 -80 C45 -95 30 -105 15 -100 C5 -95 10 -75 25 -60 C35 -50 40 -40 35 -30`, 3);
+  o += P(`M-33 -32 C-48 -37 -53 -58 -48 -78`, 1.2);
+  o += P(`M33 -32 C48 -37 53 -58 48 -78`, 1.2);
+
+  o += P(`M-40 -25 C-55 -15 -65 0 -60 20 C-55 40 -40 55 -25 60`, 3);
+  o += P(`M40 -25 C55 -15 65 0 60 20 C55 40 40 55 25 60`, 3);
+
+  o += P(`M-30 5 C-45 0 -58 10 -62 25`, 1.5);
+  o += P(`M30 5 C45 0 58 10 62 25`, 1.5);
+
+  for (let t = 0; t < 4; t++) {
+    const ty = 5 + t * 14;
+    const tw = 35 + t * 3;
+    o += P(`M${-tw} ${ty} Q0 ${ty - 4} ${tw} ${ty}`, 1.2);
+  }
+
+  o += P(`M-35 -20 C-40 -35 -50 -45 -45 -55 C-42 -60 -35 -58 -30 -50 C-28 -45 -30 -35 -35 -20`, 2);
+  o += P(`M35 -20 C40 -35 50 -45 45 -55 C42 -60 35 -58 30 -50 C28 -45 30 -35 35 -20`, 2);
+  o += P(`M-33 -22 C-38 -33 -45 -40 -42 -50`, 0.8);
+  o += P(`M33 -22 C38 -33 45 -40 42 -50`, 0.8);
+
+  for (let w = 0; w < 3; w++) {
+    const wy = -30 - w * 12;
+    const ww = 12 + w * 8;
+    o += P(`M${-ww} ${wy} Q0 ${wy + rr(r, 3, 7)} ${ww} ${wy}`, 1.5);
+    o += P(`M${-ww + 2} ${wy + 2} Q0 ${wy + rr(r, 1, 4)} ${ww - 2} ${wy + 2}`, 0.8);
+  }
+
+  o += P(`M0 -100 C-5 -120 -15 -160 -25 -200 C-30 -220 -40 -260 -55 -300`, 3);
+  o += P(`M0 -100 C0 -120 -5 -160 -10 -200 C-15 -230 -25 -260 -40 -290`, 2.5);
+  o += P(`M0 -100 C5 -120 10 -150 15 -180 C20 -200 10 -240 -5 -280`, 2.5);
+  o += P(`M2 -100 C8 -118 15 -145 20 -170 C25 -190 18 -220 5 -260`, 2);
+  o += P(`M-2 -100 C-8 -115 -12 -140 -10 -165 C-8 -180 -15 -210 -25 -240`, 2);
+
+  o += P(`M-20 -95 C-35 -90 -50 -85 -55 -95 C-58 -100 -50 -110 -40 -108 C-30 -106 -25 -100 -20 -95`, 3);
+  o += P(`M-18 -93 C-30 -89 -45 -85 -50 -92 C-52 -96 -46 -104 -38 -103`, 1.2);
+
+  o += P(`M0 -110 Q-10 -125 0 -140 Q10 -155 0 -170 Q-10 -185 0 -200 Q10 -215 0 -230`, 2);
+  o += P(`M-3 -115 Q-8 -130 -3 -145 Q2 -160 -3 -175`, 0.8);
+  o += P(`M3 -120 Q8 -135 3 -150 Q-2 -165 3 -180`, 0.8);
+
+  for (let i = 0; i < 6; i++) {
+    const hy = -115 - i * 18;
+    const hx = -5 + Math.sin(i * 1.2) * 15;
+    o += P(`M${hx} ${hy} Q${hx + rr(r, -8, 8)} ${hy - 8} ${hx + rr(r, -15, 15)} ${hy - 12}`, 1.2);
+  }
+
+  for (let h = 0; h < 8; h++) {
+    const hy = -130 - h * 15;
+    const hx = -20 + h * 3 + Math.sin(h) * 10;
+    const hl = rr(r, 20, 40);
+    o += P(`M${hx} ${hy} Q${hx + rr(r, -10, 10)} ${hy - hl * 0.5} ${hx + rr(r, -5, 20)} ${hy - hl}`, 1.5);
+  }
+
+  o += P(`M-25 -10 C-35 -15 -45 -25 -50 -40`, 2.5);
+  o += P(`M25 -10 C35 -15 45 -25 50 -40`, 2.5);
+  o += P(`M-24 -12 C-33 -17 -42 -26 -47 -38`, 0.8);
+  o += P(`M24 -12 C33 -17 42 -26 47 -38`, 0.8);
+
+  o += P(`M0 60 Q-15 80 -20 110 Q-22 130 -15 150`, 3);
+  o += P(`M0 60 Q15 80 20 110 Q22 130 15 150`, 3);
+  o += P(`M-1 62 Q-14 82 -19 112`, 1.2);
+  o += P(`M1 62 Q14 82 19 112`, 1.2);
+
+  o += P(`M-18 148 Q-20 160 -25 175 Q-28 185 -35 190 L-45 190`, 3);
+  o += P(`M15 150 Q17 162 22 177 Q25 187 32 192 L42 192`, 3);
+  o += P(`M-20 148 Q-22 160 -27 175`, 1.2);
+  o += P(`M17 148 Q19 160 24 175`, 1.2);
+
+  o += P(`M-42 188 L-55 188 Q-60 188 -58 195 L-40 195 Q-35 195 -38 188`, 2.5);
+  o += P(`M39 188 L52 188 Q57 188 55 195 L37 195 Q32 195 35 188`, 2.5);
+
+  o += P(`M-55 190 Q-60 185 -58 180`, 1.5);
+  o += P(`M52 190 Q57 185 55 180`, 1.5);
+
+  o += P(`M-48 -35 Q-55 -40 -60 -50 Q-62 -58 -55 -60`, 2);
+  o += P(`M-52 -38 Q-58 -48 -55 -55`, 0.8);
+
+  for (let t = 0; t < 6; t++) {
+    const ta = -Math.PI * 0.6 + (t / 5) * Math.PI * 0.4;
+    const tl = rr(r, 12, 25);
+    const tx = -55 + Math.cos(ta) * 5;
+    const ty = -42 + Math.sin(ta) * 5;
+    o += P(`M${tx} ${ty} Q${tx + Math.cos(ta) * tl * 0.5 + rr(r, -3, 3)} ${ty + Math.sin(ta) * tl * 0.5 - 3} ${tx + Math.cos(ta) * tl} ${ty + Math.sin(ta) * tl}`, 0.6);
+    o += dot(tx + Math.cos(ta) * tl, ty + Math.sin(ta) * tl, 0.8);
+  }
+
+  o += P(`M-50 -30 L-55 -28`, 1.5);
+  o += P(`M-52 -28 L-58 -25`, 1.2);
+  o += P(`M-54 -26 L-60 -22`, 1);
+
+  for (let i = 0; i < 5; i++) {
+    const ax = -30 + i * 8;
+    const ay = -5 + i * 3;
+    o += P(`M${ax} ${ay} Q${ax + 3} ${ay - 8} ${ax + 6} ${ay}`, 1);
+  }
+
+  o += `</g>`;
+
+  for (let i = 0; i < ri(r, 2, 5); i++) {
+    const sx = rr(r, 60, 960);
+    const sy = rr(r, 50, 250);
+    const ss = rr(r, 0.15, 0.35);
+    const elem = ri(r, 0, 3);
+    if (elem === 0) o += flashSkull(sx, sy, ss, r);
+    else if (elem === 1) o += flashRose(sx, sy, ss, r);
+    else o += flashDagger(sx, sy, ss, r);
+  }
+
+  for (let i = 0; i < ri(r, 1, 3); i++) {
+    const sx = rr(r, 100, 900);
+    const sy = rr(r, 780, 860);
+    const ss = rr(r, 0.2, 0.45);
+    o += flashRose(sx, sy, ss, r);
+  }
+
+  return o;
+}
+
 const generators: Record<string, (r: () => number) => string> = {
   "tattoo-flash": generateTattooFlash,
+  "biker-chick": generateBikerChick,
 };
 
 function heartIvyLeaf(cx: number, cy: number, size: number, angle: number): string {
