@@ -49,7 +49,10 @@ function extractColoringPages(html) {
       const lowerTitle = cleanTitle.toLowerCase();
       const lowerSlug = slug.toLowerCase();
 
-      if (lowerTitle.includes('mandala') || lowerSlug.includes('mandala')) {
+      // Pit Bulls get highest priority
+      if (lowerTitle.includes('pitbull') || lowerTitle.includes('pit bull') || lowerSlug.includes('pitbull') || lowerSlug.includes('pit bull') || lowerSlug.includes('pit-bull')) {
+        category = 'Pit Bulls';
+      } else if (lowerTitle.includes('mandala') || lowerSlug.includes('mandala')) {
         category = 'Mandala';
       } else if (lowerTitle.includes('flower') || lowerTitle.includes('rose') || lowerSlug.includes('flower') || lowerSlug.includes('rose') || lowerTitle.includes('lilly')) {
         category = 'Flowers';
@@ -227,34 +230,46 @@ function generateFallbackSvg(category) {
 // Main scraping function
 async function scrapeColoringPages() {
   const allPages = [];
-  const baseUrl = 'https://openclipart.org/search/?query=coloring+page&p=';
+
+  // Scrape both coloring pages and pitbull-specific searches
+  const searches = [
+    { query: 'coloring+page', pages: 10 },
+    { query: 'pitbull', pages: 1 },
+    { query: 'pit+bull', pages: 1 },
+    { query: 'dog+line+art', pages: 2 },
+    { query: 'dog+silhouette', pages: 1 }
+  ];
 
   console.log('Starting to scrape Openclipart coloring pages...');
 
-  // Scrape first 10 pages (adjust as needed)
-  for (let page = 0; page < 10; page++) {
-    try {
-      console.log(`Scraping page ${page + 1}...`);
-      const url = `${baseUrl}${page}`;
-      const html = await fetchHtml(url);
+  for (const search of searches) {
+    console.log(`\nSearching for: ${search.query}`);
+    const baseUrl = `https://openclipart.org/search/?query=${search.query}&p=`;
 
-      // Debug: save first page HTML
-      if (page === 0) {
-        fs.writeFileSync('debug-page.html', html);
-        console.log('Saved debug HTML to debug-page.html');
+    for (let page = 0; page < search.pages; page++) {
+      try {
+        console.log(`Scraping page ${page + 1} for ${search.query}...`);
+        const url = `${baseUrl}${page}`;
+        const html = await fetchHtml(url);
+
+        // Debug: save first page HTML
+        if (page === 0 && search.query === 'coloring+page') {
+          fs.writeFileSync('debug-page.html', html);
+          console.log('Saved debug HTML to debug-page.html');
+        }
+
+        const pages = extractColoringPages(html);
+
+        console.log(`Found ${pages.length} pages on page ${page + 1} of ${search.query}`);
+        allPages.push(...pages);
+
+        // Add delay to be respectful to the server
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+      } catch (error) {
+        console.error(`Error scraping page ${page + 1} for ${search.query}:`, error.message);
+        break;
       }
-
-      const pages = extractColoringPages(html);
-
-      console.log(`Found ${pages.length} coloring pages on page ${page + 1}`);
-      allPages.push(...pages);
-
-      // Add delay to be respectful to the server
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-    } catch (error) {
-      console.error(`Error scraping page ${page + 1}:`, error.message);
-      break;
     }
   }
 

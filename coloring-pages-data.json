@@ -1238,5 +1238,695 @@
     "sourceUrl": "https://openclipart.org/detail/206178/simple-santa",
     "imageUrl": "https://openclipart.org/image/800px/206178",
     "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-345155",
+    "title": "Man Taking a Dog for a Walk",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/345155/man-taking-a-dog-for-a-walk",
+    "imageUrl": "https://openclipart.org/image/800px/345155",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-326011",
+    "title": "Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/326011/dog",
+    "imageUrl": "https://openclipart.org/image/800px/326011",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-238800",
+    "title": "Pitbull Frame",
+    "description": "Beautiful pit bulls design perfect for relaxation",
+    "category": "Pit Bulls",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/238800/pitbull-frame",
+    "imageUrl": "https://openclipart.org/image/800px/238800",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-221125",
+    "title": "Pit Bull Puppy",
+    "description": "Beautiful pit bulls design perfect for relaxation",
+    "category": "Pit Bulls",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/221125/pit-bull-puppy",
+    "imageUrl": "https://openclipart.org/image/800px/221125",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-217187",
+    "title": "Pit Bull Puppy",
+    "description": "Beautiful pit bulls design perfect for relaxation",
+    "category": "Pit Bulls",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/217187/pit-bull-puppy",
+    "imageUrl": "https://openclipart.org/image/800px/217187",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-233373",
+    "title": "Pit Bull Dog Silhouette",
+    "description": "Beautiful pit bulls design perfect for relaxation",
+    "category": "Pit Bulls",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/233373/pit-bull-dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/233373",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-76525",
+    "title": "Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/76525/dog",
+    "imageUrl": "https://openclipart.org/image/800px/76525",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-352348",
+    "title": "Cute Cartoon Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/352348/cute-cartoon-dog",
+    "imageUrl": "https://openclipart.org/image/800px/352348",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-338922",
+    "title": "English Setter Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/338922/english-setter-dog",
+    "imageUrl": "https://openclipart.org/image/800px/338922",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-334378",
+    "title": "Dachshund and German Shepard Line Art",
+    "description": "Beautiful miscellaneous design perfect for relaxation",
+    "category": "Miscellaneous",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/334378/dachshund-and-german-shepard-line-art",
+    "imageUrl": "https://openclipart.org/image/800px/334378",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-333890",
+    "title": "Dog Breeds Silhouettes By Karen Arnold Heart Strokes",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/333890/dog-breeds-silhouettes-by-karen-arnold-heart-strokes",
+    "imageUrl": "https://openclipart.org/image/800px/333890",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-331303",
+    "title": "Boy Dog And Bird",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/331303/boy-dog-and-bird",
+    "imageUrl": "https://openclipart.org/image/800px/331303",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-322179",
+    "title": "Minipix - Dog 5",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/322179/minipix-dog-5",
+    "imageUrl": "https://openclipart.org/image/800px/322179",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-322178",
+    "title": "Minipix - Dog 4",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/322178/minipix-dog-4",
+    "imageUrl": "https://openclipart.org/image/800px/322178",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-322176",
+    "title": "Minipix - Dog 2",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/322176/minipix-dog-2",
+    "imageUrl": "https://openclipart.org/image/800px/322176",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-322175",
+    "title": "Minipix - Dog 1",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/322175/minipix-dog-1",
+    "imageUrl": "https://openclipart.org/image/800px/322175",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-321716",
+    "title": "Line art German shepherd",
+    "description": "Beautiful miscellaneous design perfect for relaxation",
+    "category": "Miscellaneous",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/321716/line-art-german-shepherd",
+    "imageUrl": "https://openclipart.org/image/800px/321716",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-315734",
+    "title": "A Faun And His Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/315734/a-faun-and-his-dog",
+    "imageUrl": "https://openclipart.org/image/800px/315734",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-315651",
+    "title": "Umbrella Woman Feeding Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/315651/umbrella-woman-feeding-dog",
+    "imageUrl": "https://openclipart.org/image/800px/315651",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-314874",
+    "title": "Little Girl Hugging Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/314874/little-girl-hugging-dog",
+    "imageUrl": "https://openclipart.org/image/800px/314874",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-313232",
+    "title": "flame dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/313232/flame-dog",
+    "imageUrl": "https://openclipart.org/image/800px/313232",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-313036",
+    "title": "Golden Retriever Line Art",
+    "description": "Beautiful miscellaneous design perfect for relaxation",
+    "category": "Miscellaneous",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/313036/golden-retriever-line-art",
+    "imageUrl": "https://openclipart.org/image/800px/313036",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-313031",
+    "title": "Irish Terrier Line Art",
+    "description": "Beautiful miscellaneous design perfect for relaxation",
+    "category": "Miscellaneous",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/313031/irish-terrier-line-art",
+    "imageUrl": "https://openclipart.org/image/800px/313031",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-311092",
+    "title": "Dog Rudimentary-Style",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/311092/dog-rudimentarystyle",
+    "imageUrl": "https://openclipart.org/image/800px/311092",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-309291",
+    "title": "Gorkhs' Dog Low Poly Polyprismatic",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/309291/gorkhs-dog-low-poly-polyprismatic",
+    "imageUrl": "https://openclipart.org/image/800px/309291",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-285108",
+    "title": "Vintage Woman Walking Dog By Heblo",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/285108/vintage-woman-walking-dog-by-heblo",
+    "imageUrl": "https://openclipart.org/image/800px/285108",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-279763",
+    "title": "Dog EKG",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/279763/dog-ekg",
+    "imageUrl": "https://openclipart.org/image/800px/279763",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-271738",
+    "title": "Difference Between Cats and Dogs",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/271738/difference-between-cats-and-dogs",
+    "imageUrl": "https://openclipart.org/image/800px/271738",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-263863",
+    "title": "Japanese Chin Dog Line Art",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/263863/shih-tzu-dog-line-art",
+    "imageUrl": "https://openclipart.org/image/800px/263863",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-256776",
+    "title": "dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/256776/dog",
+    "imageUrl": "https://openclipart.org/image/800px/256776",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-253861",
+    "title": "Stylized Dog Line Art",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/253861/stylized-dog-line-art",
+    "imageUrl": "https://openclipart.org/image/800px/253861",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-231066",
+    "title": "Animal Heads Line Art",
+    "description": "Beautiful miscellaneous design perfect for relaxation",
+    "category": "Miscellaneous",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/231066/animal-heads-line-art",
+    "imageUrl": "https://openclipart.org/image/800px/231066",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-213982",
+    "title": "dog - coloured",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/213982/dog-coloured",
+    "imageUrl": "https://openclipart.org/image/800px/213982",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-213981",
+    "title": "dog - lineart",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/213981/dog-lineart",
+    "imageUrl": "https://openclipart.org/image/800px/213981",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-212978",
+    "title": "saint Bernard's dog outline",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/212978/saint-bernards-dog-outline",
+    "imageUrl": "https://openclipart.org/image/800px/212978",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-169872",
+    "title": "Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/169872/dog",
+    "imageUrl": "https://openclipart.org/image/800px/169872",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-5520",
+    "title": "Coloring Book Dog - Ilio",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/5520/coloring-book-dog-ilio",
+    "imageUrl": "https://openclipart.org/image/800px/5520",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-5395",
+    "title": "Waiting dog lineart",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/5395/waiting-dog-lineart",
+    "imageUrl": "https://openclipart.org/image/800px/5395",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-717",
+    "title": "Chum Salmon",
+    "description": "Beautiful miscellaneous design perfect for relaxation",
+    "category": "Miscellaneous",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/717/chum-salmon",
+    "imageUrl": "https://openclipart.org/image/800px/717",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"400\" cy=\"400\" r=\"300\" stroke-width=\"3\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"250\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"200\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"150\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"100\"/>\n        <circle cx=\"400\" cy=\"400\" r=\"50\"/>\n        <line x1=\"400\" y1=\"100\" x2=\"400\" y2=\"700\"/>\n        <line x1=\"100\" y1=\"400\" x2=\"700\" y2=\"400\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-340782",
+    "title": "Older Lady with Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/340782/older-lady-with-dog",
+    "imageUrl": "https://openclipart.org/image/800px/340782",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-323581",
+    "title": "Hot Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/323581/hot-dog",
+    "imageUrl": "https://openclipart.org/image/800px/323581",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-323474",
+    "title": "Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/323474/dog",
+    "imageUrl": "https://openclipart.org/image/800px/323474",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-323287",
+    "title": "Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/323287/dog",
+    "imageUrl": "https://openclipart.org/image/800px/323287",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-323286",
+    "title": "Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/323286/dog",
+    "imageUrl": "https://openclipart.org/image/800px/323286",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-323285",
+    "title": "Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/323285/dog",
+    "imageUrl": "https://openclipart.org/image/800px/323285",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-323284",
+    "title": "Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/323284/dog",
+    "imageUrl": "https://openclipart.org/image/800px/323284",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-321477",
+    "title": "Woman Dog Vintage Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/321477/woman-dog-vintage-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/321477",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-320711",
+    "title": "Dog Silhouette Logo",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/320711/dog-silhouette-logo",
+    "imageUrl": "https://openclipart.org/image/800px/320711",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-320507",
+    "title": "Dog Silhouette Clipart",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/320507/dog-silhouette-clipart",
+    "imageUrl": "https://openclipart.org/image/800px/320507",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-308488",
+    "title": "Woman With Dog On Beach Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/308488/woman-with-dog-on-beach-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/308488",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-286632",
+    "title": "Sitting Dog Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/286632/sitting-dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/286632",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-276050",
+    "title": "Dog Leashed Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/276050/dog-leashed-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/276050",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-276049",
+    "title": "Dog Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/276049/dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/276049",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-270207",
+    "title": "Dog silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/270207/dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/270207",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-270058",
+    "title": "Dog 12",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/270058/dog-12",
+    "imageUrl": "https://openclipart.org/image/800px/270058",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-267786",
+    "title": "Shaggy Wet Dog Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/267786/shaggy-wet-dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/267786",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-265705",
+    "title": "Shiba Inu Dog Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/265705/shiba-inu-dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/265705",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-252173",
+    "title": "Woman Walking Dog Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/252173/woman-walking-dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/252173",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-251424",
+    "title": "Dog silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/251424/dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/251424",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-249513",
+    "title": "Dog silhouettes set",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/249513/dog-silhouettes-set",
+    "imageUrl": "https://openclipart.org/image/800px/249513",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-249368",
+    "title": "Low Poly Prismatic Dog Head Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/249368/low-poly-prismatic-dog-head-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/249368",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-249367",
+    "title": "Ruby Dog Head Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/249367/ruby-dog-head-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/249367",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-246950",
+    "title": "Dog Head Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/246950/dog-head-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/246950",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-218060",
+    "title": "Dog-embossed",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/218060/dogembossed",
+    "imageUrl": "https://openclipart.org/image/800px/218060",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-217974",
+    "title": "Dog-silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/217974/dogsilhouette",
+    "imageUrl": "https://openclipart.org/image/800px/217974",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-189936",
+    "title": "Jumping Dog Silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/189936/jumping-dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/189936",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-169096",
+    "title": "Standing dog silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/169096/standing-dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/169096",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-122197",
+    "title": "Dog",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/122197/dog",
+    "imageUrl": "https://openclipart.org/image/800px/122197",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
+  },
+  {
+    "id": "openclipart-63865",
+    "title": "Dog silhouette",
+    "description": "Beautiful animals design perfect for relaxation",
+    "category": "Animals",
+    "source": "Openclipart",
+    "sourceUrl": "https://openclipart.org/detail/63865/dog-silhouette",
+    "imageUrl": "https://openclipart.org/image/800px/63865",
+    "fallbackSvg": "<svg viewBox=\"0 0 800 800\" xmlns=\"http://www.w3.org/2000/svg\">\n      <rect width=\"800\" height=\"800\" fill=\"#f8f8f8\"/>\n      <g stroke=\"black\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <ellipse cx=\"400\" cy=\"500\" rx=\"80\" ry=\"100\"/>\n        <circle cx=\"400\" cy=\"350\" r=\"70\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"15\"/>\n        <circle cx=\"375\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <circle cx=\"425\" cy=\"330\" r=\"8\" fill=\"black\"/>\n        <polygon points=\"400,360 395,375 405,375\"/>\n        <ellipse cx=\"400\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"480\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n        <ellipse cx=\"320\" cy=\"450\" rx=\"40\" ry=\"70\"/>\n      </g>\n      <text x=\"400\" y=\"780\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"black\">Ivy's Peace</text>\n    </svg>"
   }
 ]
