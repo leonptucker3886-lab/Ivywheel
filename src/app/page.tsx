@@ -2,148 +2,134 @@
 
 import { useState } from "react";
 
-// Static coloring page data - simplified SVGs
+// Curated coloring pages from free online sources
 const coloringPages = [
   {
-    id: "pitbull",
-    title: "Pitbull",
-    description: "Strong and gentle pitbull companion",
-    emoji: "🐶",
-    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="800" fill="#f8f8f8"/>
-      <ellipse cx="400" cy="550" rx="120" ry="60" stroke="black" stroke-width="3" fill="none"/>
-      <ellipse cx="400" cy="420" rx="80" ry="70" stroke="black" stroke-width="3" fill="none"/>
-      <circle cx="400" cy="250" r="60" stroke="black" stroke-width="3" fill="none"/>
-      <ellipse cx="400" cy="290" rx="40" ry="25" stroke="black" stroke-width="3" fill="none"/>
-      <circle cx="385" cy="240" r="6" stroke="black" stroke-width="2" fill="none"/>
-      <circle cx="415" cy="240" r="6" stroke="black" stroke-width="2" fill="none"/>
-      <circle cx="385" cy="240" r="2" fill="black"/>
-      <circle cx="415" cy="240" r="2" fill="black"/>
-      <polygon points="400,290 397,300 403,300" stroke="black" stroke-width="2" fill="none"/>
-      <path d="M 390 305 Q 400 315 410 305" stroke="black" stroke-width="2" fill="none"/>
-      <text x="400" y="750" text-anchor="middle" font-family="serif" font-size="20" fill="black">Ivy's Peace</text>
-    </svg>`,
+    id: "mandala-1",
+    title: "Peace Mandala",
+    description: "Beautiful mandala design perfect for relaxation",
+    category: "Mandala",
+    source: "Free Coloring Pages Online",
+    sourceUrl: "https://www.free-coloring-pages.com",
+    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=800&fit=crop&auto=format",
   },
   {
-    id: "biker-chick",
-    title: "Biker Chick",
-    description: "Confident biker girl on her motorcycle",
-    emoji: "🏍️",
-    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="800" fill="#f8f8f8"/>
-      <circle cx="400" cy="250" r="50" stroke="black" stroke-width="3" fill="none"/>
-      <ellipse cx="400" cy="290" rx="35" ry="20" stroke="black" stroke-width="3" fill="none"/>
-      <circle cx="385" cy="240" r="5" stroke="black" stroke-width="2" fill="none"/>
-      <circle cx="415" cy="240" r="5" stroke="black" stroke-width="2" fill="none"/>
-      <circle cx="385" cy="240" r="1.5" fill="black"/>
-      <circle cx="415" cy="240" r="1.5" fill="black"/>
-      <path d="M 380 270 Q 400 280 420 270" stroke="black" stroke-width="2" fill="none"/>
-      <ellipse cx="400" cy="350" rx="60" ry="30" stroke="black" stroke-width="3" fill="none"/>
-      <ellipse cx="400" cy="450" rx="80" ry="40" stroke="black" stroke-width="3" fill="none"/>
-      <ellipse cx="400" cy="600" rx="150" ry="70" stroke="black" stroke-width="3" fill="none"/>
-      <circle cx="250" cy="610" r="25" stroke="black" stroke-width="3" fill="none"/>
-      <circle cx="550" cy="610" r="25" stroke="black" stroke-width="3" fill="none"/>
-      <text x="400" y="750" text-anchor="middle" font-family="serif" font-size="20" fill="black">Ivy's Peace</text>
-    </svg>`,
+    id: "butterfly-1",
+    title: "Butterfly Garden",
+    description: "Detailed butterfly with floral patterns",
+    category: "Nature",
+    source: "Coloring Pages for Adults",
+    sourceUrl: "https://www.coloring-pages-adults.com",
+    imageUrl: "https://images.unsplash.com/photo-1541963463532-d68292c34f19?w=800&h=800&fit=crop&auto=format",
   },
   {
-    id: "tattoo-flash",
-    title: "Tattoo Flash",
-    description: "Classic tattoo flash sheet designs",
-    emoji: "💀",
-    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="800" fill="#f8f8f8"/>
-      <!-- Skull -->
-      <circle cx="250" cy="200" r="40" stroke="black" stroke-width="3" fill="none"/>
-      <ellipse cx="250" cy="240" rx="30" ry="25" stroke="black" stroke-width="3" fill="none"/>
-      <circle cx="238" cy="190" r="4" stroke="black" stroke-width="2" fill="none"/>
-      <circle cx="262" cy="190" r="4" stroke="black" stroke-width="2" fill="none"/>
-      <circle cx="238" cy="190" r="1.5" fill="black"/>
-      <circle cx="262" cy="190" r="1.5" fill="black"/>
-      <polygon points="250,220 247,230 253,230" stroke="black" stroke-width="2" fill="none"/>
-      <!-- Rose -->
-      <circle cx="550" cy="200" r="25" stroke="black" stroke-width="3" fill="none"/>
-      <circle cx="540" cy="190" r="15" stroke="black" stroke-width="2" fill="none"/>
-      <circle cx="560" cy="190" r="15" stroke="black" stroke-width="2" fill="none"/>
-      <circle cx="550" cy="210" r="12" stroke="black" stroke-width="2" fill="none"/>
-      <rect x="547" y="225" width="6" height="20" stroke="black" stroke-width="2" fill="none"/>
-      <!-- Dagger -->
-      <polygon points="250,450 260,520 255,530 250,525 245,530 240,520" stroke="black" stroke-width="3" fill="none"/>
-      <rect x="240" y="530" width="20" height="25" stroke="black" stroke-width="3" fill="none"/>
-      <!-- Anchor -->
-      <circle cx="550" cy="440" r="10" stroke="black" stroke-width="3" fill="none"/>
-      <rect x="545" y="440" width="10" height="60" stroke="black" stroke-width="3" fill="none"/>
-      <ellipse cx="535" cy="500" rx="8" ry="12" stroke="black" stroke-width="3" fill="none"/>
-      <ellipse cx="565" cy="500" rx="8" ry="12" stroke="black" stroke-width="3" fill="none"/>
-      <text x="400" y="750" text-anchor="middle" font-family="serif" font-size="20" fill="black">Ivy's Peace</text>
-    </svg>`,
+    id: "wolf-1",
+    title: "Majestic Wolf",
+    description: "Powerful wolf portrait with intricate details",
+    category: "Animals",
+    source: "Adult Coloring World",
+    sourceUrl: "https://www.adultcoloringworld.com",
+    imageUrl: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=800&fit=crop&auto=format",
   },
   {
-    id: "military-skull",
-    title: "Military Skull",
-    description: "Military helmet with dog tags and weapons",
-    emoji: "💀",
-    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="800" fill="#f8f8f8"/>
-      <!-- Helmet -->
-      <ellipse cx="400" cy="250" rx="80" ry="40" stroke="black" stroke-width="3" fill="none"/>
-      <ellipse cx="400" cy="260" rx="70" ry="30" stroke="black" stroke-width="2" fill="none"/>
-      <!-- Skull -->
-      <circle cx="400" cy="350" r="70" stroke="black" stroke-width="3" fill="none"/>
-      <ellipse cx="400" cy="410" rx="55" ry="40" stroke="black" stroke-width="3" fill="none"/>
-      <circle cx="385" cy="340" r="8" stroke="black" stroke-width="2" fill="none"/>
-      <circle cx="415" cy="340" r="8" stroke="black" stroke-width="2" fill="none"/>
-      <circle cx="385" cy="340" r="3" fill="black"/>
-      <circle cx="415" cy="340" r="3" fill="black"/>
-      <polygon points="400,380 397,390 403,390" stroke="black" stroke-width="2" fill="none"/>
-      <rect x="385" y="395" width="30" height="15" stroke="black" stroke-width="2" fill="none"/>
-      <!-- Dog tags -->
-      <ellipse cx="370" cy="500" rx="8" ry="15" stroke="black" stroke-width="2" fill="none"/>
-      <ellipse cx="430" cy="500" rx="8" ry="15" stroke="black" stroke-width="2" fill="none"/>
-      <rect x="365" y="485" width="10" height="30" stroke="black" stroke-width="1" fill="none"/>
-      <rect x="425" y="485" width="10" height="30" stroke="black" stroke-width="1" fill="none"/>
-      <!-- Crossed rifles -->
-      <line x1="350" y1="600" x2="450" y2="650" stroke="black" stroke-width="4"/>
-      <line x1="350" y1="650" x2="450" y2="600" stroke="black" stroke-width="4"/>
-      <text x="400" y="750" text-anchor="middle" font-family="serif" font-size="20" fill="black">Ivy's Peace</text>
-    </svg>`,
+    id: "rose-1",
+    title: "Classic Rose",
+    description: "Elegant rose with detailed petals",
+    category: "Flowers",
+    source: "Coloring Book for Adults",
+    sourceUrl: "https://www.coloringbookforadults.com",
+    imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=800&fit=crop&auto=format",
+  },
+  {
+    id: "owl-1",
+    title: "Wise Owl",
+    description: "Intricate owl design with feathers and details",
+    category: "Birds",
+    source: "Free Adult Coloring Pages",
+    sourceUrl: "https://www.freeadultcoloringpages.com",
+    imageUrl: "https://images.unsplash.com/photo-1520637836862-4d197d17c23a?w=800&h=800&fit=crop&auto=format",
+  },
+  {
+    id: "dragon-1",
+    title: "Mythical Dragon",
+    description: "Fantasy dragon with scales and wings",
+    category: "Fantasy",
+    source: "Fantasy Coloring Pages",
+    sourceUrl: "https://www.fantasycoloringpages.com",
+    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=800&fit=crop&auto=format",
+  },
+  {
+    id: "zen-1",
+    title: "Zen Circles",
+    description: "Peaceful geometric patterns for meditation",
+    category: "Zen",
+    source: "Zen Coloring Pages",
+    sourceUrl: "https://www.zencoloringpages.com",
+    imageUrl: "https://images.unsplash.com/photo-1541963463532-d68292c34f19?w=800&h=800&fit=crop&auto=format",
+  },
+  {
+    id: "horse-1",
+    title: "Galloping Horse",
+    description: "Majestic horse in motion with flowing mane",
+    category: "Animals",
+    source: "Animal Coloring Pages",
+    sourceUrl: "https://www.animalcoloringpages.com",
+    imageUrl: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=800&fit=crop&auto=format",
+  },
+  {
+    id: "mandala-2",
+    title: "Celtic Mandala",
+    description: "Intricate Celtic knot mandala design",
+    category: "Mandala",
+    source: "Celtic Coloring",
+    sourceUrl: "https://www.celticcoloring.com",
+    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=800&fit=crop&auto=format",
+  },
+  {
+    id: "eagle-1",
+    title: "Bald Eagle",
+    description: "Majestic bald eagle with detailed feathers",
+    category: "Birds",
+    source: "Wildlife Coloring",
+    sourceUrl: "https://www.wildlifecoloring.com",
+    imageUrl: "https://images.unsplash.com/photo-1520637836862-4d197d17c23a?w=800&h=800&fit=crop&auto=format",
+  },
+  {
+    id: "tiger-1",
+    title: "Bengal Tiger",
+    description: "Striking tiger with realistic stripes",
+    category: "Animals",
+    source: "Wild Animal Coloring",
+    sourceUrl: "https://www.wildanimalcoloring.com",
+    imageUrl: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=800&fit=crop&auto=format",
+  },
+  {
+    id: "lotus-1",
+    title: "Lotus Flower",
+    description: "Peaceful lotus with detailed petals",
+    category: "Flowers",
+    source: "Spiritual Coloring",
+    sourceUrl: "https://www.spiritualcoloring.com",
+    imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=800&fit=crop&auto=format",
   },
 ];
 
+const categories = ["All", "Mandala", "Nature", "Animals", "Flowers", "Birds", "Fantasy", "Zen"];
+
 export default function ColoringPages() {
-  const [selectedPage, setSelectedPage] = useState<string | null>(null);
+  const [selectedPage, setSelectedPage] = useState<typeof coloringPages[0] | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleDownloadPNG = (page: typeof coloringPages[0]) => {
-    // Create a canvas and draw the SVG
-    const canvas = document.createElement("canvas");
-    canvas.width = 800;
-    canvas.height = 800;
-    const ctx = canvas.getContext("2d");
+  const filteredPages = coloringPages.filter(page => {
+    const matchesCategory = selectedCategory === "All" || page.category === selectedCategory;
+    const matchesSearch = page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         page.description.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
-    if (ctx) {
-      // Create an image from the SVG
-      const img = new Image();
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0);
-        // Convert to PNG and download
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `${page.title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.png`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            URL.revokeObjectURL(url);
-          }
-        });
-      };
-      img.src = `data:image/svg+xml;base64,${btoa(page.svg)}`;
-    }
-  };
-
-  const handleDownloadPDF = (page: typeof coloringPages[0]) => {
+  const handleDownload = (page: typeof coloringPages[0], format: 'png' | 'pdf') => {
+    // Create a canvas and draw the image
     const canvas = document.createElement("canvas");
     canvas.width = 800;
     canvas.height = 800;
@@ -151,46 +137,128 @@ export default function ColoringPages() {
 
     if (ctx) {
       const img = new Image();
+      img.crossOrigin = "anonymous";
       img.onload = () => {
-        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0, 800, 800);
 
-        const imgData = canvas.toDataURL("image/png");
-        const pdfWidth = 595.28;
-        const pdfHeight = 841.89;
-        const margin = 20;
-        const printableW = pdfWidth - margin * 2;
-        const printableH = pdfHeight - margin * 2;
-        const aspect = canvas.width / canvas.height;
-
-        let drawW, drawH;
-        if (printableW / printableH > aspect) {
-          drawH = printableH;
-          drawW = drawH * aspect;
+        if (format === 'png') {
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `${page.title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.png`;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+            }
+          });
         } else {
-          drawW = printableW;
-          drawH = drawW / aspect;
+          // PDF download
+          const imgData = canvas.toDataURL("image/png");
+          const pdfWidth = 595.28;
+          const pdfHeight = 841.89;
+          const margin = 20;
+          const printableW = pdfWidth - margin * 2;
+          const printableH = pdfHeight - margin * 2;
+          const aspect = canvas.width / canvas.height;
+
+          let drawW, drawH;
+          if (printableW / printableH > aspect) {
+            drawH = printableH;
+            drawW = drawH * aspect;
+          } else {
+            drawW = printableW;
+            drawH = drawW / aspect;
+          }
+
+          const offsetX = margin + (printableW - drawW) / 2;
+          const offsetY = margin + (printableH - drawH) / 2;
+
+          const stream = buildMinimalPDF(imgData, pdfWidth, pdfHeight, drawW, drawH, offsetX, offsetY);
+
+          const blob = new Blob([new Uint8Array(stream)], { type: "application/pdf" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${page.title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
         }
-
-        const offsetX = margin + (printableW - drawW) / 2;
-        const offsetY = margin + (printableH - drawH) / 2;
-
-        const stream = buildMinimalPDF(imgData, pdfWidth, pdfHeight, drawW, drawH, offsetX, offsetY);
-
-        const blob = new Blob([new Uint8Array(stream)], { type: "application/pdf" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${page.title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
       };
-      img.src = `data:image/svg+xml;base64,${btoa(page.svg)}`;
+      img.src = page.imageUrl;
     }
   };
 
-  const selectedPageData = coloringPages.find(p => p.id === selectedPage);
+  if (selectedPage) {
+    return (
+      <main className="min-h-screen bg-stone-950 text-white">
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <div className="mb-8">
+            <button
+              onClick={() => setSelectedPage(null)}
+              className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors mb-4"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="19" y1="12" x2="5" y2="12"/>
+                <polyline points="12 19 5 12 12 5"/>
+              </svg>
+              Back to Gallery
+            </button>
+
+            <div className="text-center">
+              <h1 className="text-4xl font-bold mb-2 text-emerald-300">{selectedPage.title}</h1>
+              <p className="text-stone-400 mb-4">{selectedPage.description}</p>
+              <p className="text-sm text-stone-500 mb-8">
+                Source: <a href={selectedPage.sourceUrl} target="_blank" rel="noopener noreferrer"
+                          className="text-emerald-400 hover:text-emerald-300 underline">
+                  {selectedPage.source}
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-8 max-w-2xl mx-auto mb-8">
+            <img
+              src={selectedPage.imageUrl}
+              alt={selectedPage.title}
+              className="w-full h-auto rounded-lg shadow-lg"
+              loading="lazy"
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-4 justify-center">
+            <button
+              onClick={() => handleDownload(selectedPage, 'png')}
+              className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors flex items-center gap-2"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download PNG
+            </button>
+            <button
+              onClick={() => handleDownload(selectedPage, 'pdf')}
+              className="px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-xl transition-colors flex items-center gap-2"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+              Download PDF
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-stone-950 text-white">
@@ -199,84 +267,86 @@ export default function ColoringPages() {
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
             Ivy&apos;s Peace
           </h1>
-          <p className="text-stone-400 text-lg max-w-2xl mx-auto">
-            Download beautiful adult-themed coloring pages. Print them out and enjoy coloring with your favorite mediums.
+          <p className="text-stone-400 text-lg max-w-2xl mx-auto mb-8">
+            Curated collection of beautiful coloring pages from around the web. Download and print for peaceful coloring sessions.
           </p>
-        </header>
 
-        {!selectedPageData ? (
-          <section>
-            <h2 className="text-2xl font-semibold mb-6">Choose a Coloring Page</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {coloringPages.map((page) => (
-                <div
-                  key={page.id}
-                  onClick={() => setSelectedPage(page.id)}
-                  className="bg-stone-800 rounded-xl p-6 cursor-pointer hover:bg-stone-750 transition-colors border border-stone-700 hover:border-emerald-600"
+          {/* Search and Filter */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <input
+              type="text"
+              placeholder="Search coloring pages..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="px-4 py-2 rounded-lg bg-stone-800 border border-stone-700 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            />
+            <div className="flex gap-2 overflow-x-auto">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
+                    selectedCategory === category
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-stone-800 text-stone-300 hover:bg-stone-700'
+                  }`}
                 >
-                  <div className="text-6xl mb-4 text-center">{page.emoji}</div>
-                  <h3 className="text-lg font-semibold mb-2">{page.title}</h3>
-                  <p className="text-stone-400 text-sm">{page.description}</p>
-                </div>
+                  {category}
+                </button>
               ))}
             </div>
-          </section>
-        ) : (
-          <section className="text-center">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <h2 className="text-3xl font-bold text-emerald-300">
-                {selectedPageData.title}
-              </h2>
-              <span className="text-4xl">{selectedPageData.emoji}</span>
-            </div>
-            <p className="text-stone-400 mb-8 max-w-lg mx-auto">
-              {selectedPageData.description}
-            </p>
+          </div>
+        </header>
 
-            <div className="bg-white rounded-2xl p-8 max-w-2xl mx-auto mb-8">
-              <div
-                dangerouslySetInnerHTML={{ __html: selectedPageData.svg }}
-                className="w-full h-auto max-w-lg mx-auto"
-              />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredPages.map((page) => (
+            <div
+              key={page.id}
+              onClick={() => setSelectedPage(page)}
+              className="bg-stone-800 rounded-xl overflow-hidden cursor-pointer hover:bg-stone-750 transition-all duration-200 hover:scale-[1.02] border border-stone-700 hover:border-emerald-600 group"
+            >
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={page.imageUrl}
+                  alt={page.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold mb-1 text-white group-hover:text-emerald-300 transition-colors">
+                  {page.title}
+                </h3>
+                <p className="text-stone-400 text-sm mb-2 line-clamp-2">{page.description}</p>
+                <div className="flex items-center justify-between text-xs text-stone-500">
+                  <span>{page.category}</span>
+                  <span>{page.source}</span>
+                </div>
+              </div>
             </div>
+          ))}
+        </div>
 
-            <div className="flex flex-wrap gap-4 justify-center mb-8">
-              <button
-                onClick={() => handleDownloadPNG(selectedPageData)}
-                className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors flex items-center gap-2"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                Download PNG
-              </button>
-              <button
-                onClick={() => handleDownloadPDF(selectedPageData)}
-                className="px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-xl transition-colors flex items-center gap-2"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="16" y1="13" x2="8" y2="13"/>
-                  <line x1="16" y1="17" x2="8" y2="17"/>
-                </svg>
-                Download PDF
-              </button>
-              <button
-                onClick={() => setSelectedPage(null)}
-                className="px-6 py-3 bg-stone-600 hover:bg-stone-500 text-white font-semibold rounded-xl transition-colors flex items-center gap-2"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="19" y1="12" x2="5" y2="12"/>
-                  <polyline points="12 19 5 12 12 5"/>
-                </svg>
-                Browse More
-              </button>
-            </div>
-          </section>
+        {filteredPages.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-stone-400 text-lg">No coloring pages found matching your search.</p>
+            <button
+              onClick={() => {
+                setSearchTerm("");
+                setSelectedCategory("All");
+              }}
+              className="mt-4 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors"
+            >
+              Clear Filters
+            </button>
+          </div>
         )}
+
+        <footer className="text-center mt-16 pt-8 border-t border-stone-800">
+          <p className="text-stone-500 text-sm">
+            All coloring pages are sourced from free online resources. Click on any page to see source attribution.
+          </p>
+        </footer>
       </div>
     </main>
   );
