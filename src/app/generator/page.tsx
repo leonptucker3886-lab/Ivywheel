@@ -8,24 +8,14 @@ import { FallingLeaves } from "@/components/FallingLeaves";
 
 export default function GeneratorPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [customPrompt, setCustomPrompt] = useState("");
-  const [addIvyLeaves, setAddIvyLeaves] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [lastGenerated, setLastGenerated] = useState<{ categoryId: string; customPrompt: string } | null>(null);
-
-  const isCustom = selectedCategory === "custom";
-  const isTattooFlash = selectedCategory === "tattoo-flash";
-  const showIvyToggle = !isTattooFlash;
+  const [lastGenerated, setLastGenerated] = useState<string | null>(null);
 
   const generate = useCallback(() => {
     if (!selectedCategory) {
       setError("Select a category");
-      return;
-    }
-    if (isCustom && !customPrompt.trim()) {
-      setError("Enter a description for your custom scene");
       return;
     }
 
@@ -33,23 +23,20 @@ export default function GeneratorPage() {
     setError(null);
 
     const categoryId = selectedCategory;
-    const prompt = isCustom ? customPrompt.trim() : "";
-
-    setLastGenerated({ categoryId, customPrompt: prompt });
+    setLastGenerated(categoryId);
 
     requestAnimationFrame(() => {
       try {
-    const seed = Date.now() + Math.floor(Math.random() * 100000);
-      const useIvy = isTattooFlash ? false : addIvyLeaves;
-      const imageUrl = generateColoringPage(categoryId, useIvy, seed, prompt || undefined);
-      setGeneratedImage(imageUrl);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
-      setIsGenerating(false);
-    }
-  });
-}, [selectedCategory, customPrompt, addIvyLeaves, isCustom, isTattooFlash]);
+        const seed = Date.now() + Math.floor(Math.random() * 100000);
+        const imageUrl = generateColoringPage(categoryId, false, seed);
+        setGeneratedImage(imageUrl);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Something went wrong");
+      } finally {
+        setIsGenerating(false);
+      }
+    });
+  }, [selectedCategory]);
 
   function handleGenerate() {
     generate();
@@ -62,13 +49,7 @@ export default function GeneratorPage() {
       requestAnimationFrame(() => {
         try {
           const seed = Date.now() + Math.floor(Math.random() * 100000);
-          const useIvy = lastGenerated.categoryId === "tattoo-flash" ? false : addIvyLeaves;
-          const imageUrl = generateColoringPage(
-            lastGenerated.categoryId,
-            useIvy,
-            seed,
-            lastGenerated.customPrompt || undefined
-          );
+          const imageUrl = generateColoringPage(lastGenerated, false, seed);
           setGeneratedImage(imageUrl);
         } catch (err) {
           setError(err instanceof Error ? err.message : "Something went wrong");
@@ -83,7 +64,7 @@ export default function GeneratorPage() {
     if (!generatedImage) return;
     const a = document.createElement("a");
     a.href = generatedImage;
-    a.download = isTattooFlash ? "tattoo-flash-sheet.svg" : "ivys-peace-coloring-page.svg";
+    a.download = "coloring-page.svg";
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -98,8 +79,8 @@ export default function GeneratorPage() {
             Ivy&apos;s Peace
           </h1>
           <p className="text-stone-400 text-lg max-w-2xl mx-auto">
-            Create beautiful coloring pages to print and enjoy. Pick a scene, add
-            ivy leaves for an elegant touch, and let your creativity flow.
+            Create beautiful coloring pages to print and enjoy. Pick a scene
+            and let your creativity flow.
           </p>
         </header>
 
@@ -116,55 +97,13 @@ export default function GeneratorPage() {
                 onClick={() => setSelectedCategory(category.id)}
               />
             ))}
-            <CategoryCard
-              name="Custom"
-              description="Describe your own unique scene"
-              emoji="✏️"
-              isSelected={isCustom}
-              onClick={() => setSelectedCategory("custom")}
-            />
           </div>
         </section>
-
-        {isCustom && (
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mb-4">Your Description</h2>
-            <textarea
-              value={customPrompt}
-              onChange={(e) => setCustomPrompt(e.target.value)}
-              placeholder="Describe your coloring page scene... (e.g., 'a wolf howling at the moon on a mountain cliff with pine trees')"
-              className="w-full h-32 px-4 py-3 rounded-xl bg-stone-800 border-2 border-emerald-500/50 text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400 resize-none text-base"
-            />
-            <p className="text-stone-500 text-sm mt-2">
-              Your description creates a unique design. Different descriptions produce different results.
-            </p>
-          </section>
-        )}
-
-        {showIvyToggle && (
-          <section className="mb-10 flex items-center gap-4">
-            <label className="flex items-center gap-3 cursor-pointer select-none group">
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={addIvyLeaves}
-                  onChange={(e) => setAddIvyLeaves(e.target.checked)}
-                  className="sr-only peer"
-                />
-                <div className="w-11 h-6 bg-stone-700 peer-checked:bg-emerald-600 rounded-full transition-colors" />
-                <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5" />
-              </div>
-              <span className="text-stone-300 group-hover:text-white transition-colors">
-                🍃 Add ivy leaves border
-              </span>
-            </label>
-          </section>
-        )}
 
         <div className="flex flex-col items-center gap-4">
           <button
             onClick={handleGenerate}
-            disabled={isGenerating || !selectedCategory || (isCustom && !customPrompt.trim())}
+            disabled={isGenerating || !selectedCategory}
             className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-stone-700 disabled:text-stone-500 text-white font-semibold rounded-xl transition-colors text-lg"
           >
             {isGenerating ? "Generating..." : "Generate Coloring Page"}
