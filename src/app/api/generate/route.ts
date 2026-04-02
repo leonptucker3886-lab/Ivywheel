@@ -1,5 +1,5 @@
 // Fallback SVG generators for when image API fails
-function generateFallbackPitbull(): string {
+function generateDetailedPitbull(r: () => number, modifiers?: string): string {
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048" width="2048" height="2048">
       <defs>
