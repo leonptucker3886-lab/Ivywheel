@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ivy's Peace - Coloring Book Generator",
-  description: "Create beautiful printable coloring pages featuring pitbulls, gardens, butterflies, mandalas, and more",
+  title: "Ivy's Peace - Therapeutic Coloring Pages",
+  description: "A curated collection of peaceful coloring pages inspired by Ivy's love for mindfulness and creativity. Download printable designs for stress relief and relaxation.",
 };
 
 export default function RootLayout({
