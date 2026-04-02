@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { categories } from "@/lib/categories";
+import { generateColoringPage } from "@/lib/generator";
 import { CategoryCard } from "@/components/CategoryCard";
 
 export default function GeneratorPage() {
@@ -12,7 +13,7 @@ export default function GeneratorPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleGenerate() {
+  const generate = useCallback(() => {
     if (!selectedCategory && !customPrompt.trim()) {
       setError("Select a category or enter a custom prompt");
       return;
@@ -20,49 +21,37 @@ export default function GeneratorPage() {
 
     setIsGenerating(true);
     setError(null);
-    setGeneratedImage(null);
 
-    try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          categoryId: selectedCategory,
-          customPrompt: customPrompt.trim() || undefined,
-          addIvyLeaves,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Generation failed");
+    requestAnimationFrame(() => {
+      try {
+        const categoryId = selectedCategory || "mandalas";
+        const seed = Date.now() + Math.floor(Math.random() * 100000);
+        const imageUrl = generateColoringPage(categoryId, addIvyLeaves, seed);
+        setGeneratedImage(imageUrl);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Something went wrong");
+      } finally {
+        setIsGenerating(false);
       }
+    });
+  }, [selectedCategory, customPrompt, addIvyLeaves]);
 
-      setGeneratedImage(data.imageUrl);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
-      setIsGenerating(false);
-    }
+  function handleGenerate() {
+    generate();
   }
 
-  async function handleDownload() {
+  function handleRegenerate() {
+    generate();
+  }
+
+  function handleDownload() {
     if (!generatedImage) return;
-    try {
-      const response = await fetch(generatedImage);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "ivys-peace-coloring-page.svg";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch {
-      setError("Failed to download image");
-    }
+    const a = document.createElement("a");
+    a.href = generatedImage;
+    a.download = "ivys-peace-coloring-page.svg";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }
 
   return (
@@ -148,22 +137,34 @@ export default function GeneratorPage() {
               <img
                 src={generatedImage}
                 alt="Generated coloring page"
-                width={512}
-                height={512}
+                width={1024}
+                height={1024}
                 className="max-w-full h-auto"
               />
             </div>
-            <button
-              onClick={handleDownload}
-              className="mt-6 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors text-base flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-              Download Coloring Page
-            </button>
+            <div className="mt-6 flex gap-4">
+              <button
+                onClick={handleRegenerate}
+                disabled={isGenerating}
+                className="px-6 py-3 bg-teal-600 hover:bg-teal-500 disabled:bg-stone-700 text-white font-semibold rounded-xl transition-colors text-base flex items-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
+                </svg>
+                Regenerate
+              </button>
+              <button
+                onClick={handleDownload}
+                className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors text-base flex items-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Download
+              </button>
+            </div>
           </section>
         )}
       </div>
