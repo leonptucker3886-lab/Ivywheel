@@ -2,54 +2,31 @@
 
 import { useState } from "react";
 
-// Curated coloring pages - proper line art SVGs
+// Curated coloring pages from Openclipart (public domain)
 const coloringPages = [
   {
     id: "mandala-1",
     title: "Peace Mandala",
     description: "Beautiful mandala design perfect for relaxation",
     category: "Mandala",
-    source: "Ivy's Peace Collection",
-    sourceUrl: "#",
-    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    source: "Openclipart",
+    sourceUrl: "https://openclipart.org/detail/246471/coloring-page-endless-knot",
+    imageUrl: "https://openclipart.org/image/800px/246471",
+    fallbackSvg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="800" fill="#f8f8f8"/>
       <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Outer circle -->
         <circle cx="400" cy="400" r="350" stroke-width="3"/>
-        <!-- Inner mandala rings -->
         <circle cx="400" cy="400" r="300"/>
         <circle cx="400" cy="400" r="250"/>
         <circle cx="400" cy="400" r="200"/>
         <circle cx="400" cy="400" r="150"/>
         <circle cx="400" cy="400" r="100"/>
         <circle cx="400" cy="400" r="50"/>
-        <!-- Radial lines -->
         <line x1="400" y1="50" x2="400" y2="750"/>
         <line x1="400" y1="50" x2="650" y2="650"/>
         <line x1="400" y1="50" x2="150" y2="650"/>
         <line x1="400" y1="50" x2="700" y2="400"/>
         <line x1="400" y1="50" x2="100" y2="400"/>
-        <line x1="400" y1="750" x2="650" y2="150"/>
-        <line x1="400" y1="750" x2="150" y2="150"/>
-        <!-- Petal shapes -->
-        <path d="M 400 50 Q 450 150 400 250 Q 350 150 400 50"/>
-        <path d="M 400 50 Q 500 100 600 50 Q 550 125 500 175 Q 450 125 400 50"/>
-        <path d="M 400 50 Q 300 100 200 50 Q 250 125 300 175 Q 350 125 400 50"/>
-        <!-- Intricate patterns -->
-        <path d="M 400 150 Q 450 125 500 150 Q 450 175 400 150"/>
-        <path d="M 400 250 Q 450 225 500 250 Q 450 275 400 250"/>
-        <path d="M 400 650 Q 450 625 500 650 Q 450 675 400 650"/>
-        <path d="M 400 550 Q 450 525 500 550 Q 450 575 400 550"/>
-        <!-- Corner decorations -->
-        <circle cx="100" cy="100" r="30"/>
-        <circle cx="700" cy="100" r="30"/>
-        <circle cx="100" cy="700" r="30"/>
-        <circle cx="700" cy="700" r="30"/>
-        <!-- Corner patterns -->
-        <path d="M 100 70 Q 130 70 130 100 Q 130 130 100 130 Q 70 130 70 100 Q 70 70 100 70"/>
-        <path d="M 700 70 Q 730 70 730 100 Q 730 130 700 130 Q 670 130 670 100 Q 670 70 700 70"/>
-        <path d="M 100 670 Q 130 670 130 700 Q 130 730 100 730 Q 70 730 70 700 Q 70 670 100 670"/>
-        <path d="M 700 670 Q 730 670 730 700 Q 730 730 700 730 Q 670 730 670 700 Q 670 670 700 670"/>
       </g>
       <text x="400" y="780" text-anchor="middle" font-family="serif" font-size="18" fill="black">Ivy's Peace</text>
     </svg>`,
@@ -59,55 +36,23 @@ const coloringPages = [
     title: "Butterfly Garden",
     description: "Detailed butterfly with floral patterns",
     category: "Nature",
-    source: "Ivy's Peace Collection",
-    sourceUrl: "#",
-    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    source: "Openclipart",
+    sourceUrl: "https://openclipart.org/detail/344028/coloring-page-for-autumn",
+    imageUrl: "https://openclipart.org/image/800px/344028",
+    fallbackSvg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="800" fill="#f8f8f8"/>
       <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Butterfly body -->
         <ellipse cx="400" cy="400" rx="8" ry="120"/>
-        <!-- Left wing -->
         <path d="M 400 320 Q 200 200 150 300 Q 180 350 250 320 Q 300 340 350 320 Q 380 330 400 320"/>
-        <path d="M 400 320 Q 250 250 200 320 Q 230 370 280 350 Q 330 365 380 350 Q 395 340 400 320"/>
-        <!-- Right wing -->
         <path d="M 400 320 Q 600 200 650 300 Q 620 350 550 320 Q 500 340 450 320 Q 420 330 400 320"/>
-        <path d="M 400 320 Q 550 250 600 320 Q 570 370 520 350 Q 470 365 420 350 Q 405 340 400 320"/>
-        <!-- Wing details -->
-        <path d="M 250 320 Q 220 340 200 360"/>
-        <path d="M 280 350 Q 250 370 240 380"/>
-        <path d="M 320 340 Q 290 360 280 370"/>
-        <path d="M 550 320 Q 580 340 600 360"/>
-        <path d="M 520 350 Q 550 370 560 380"/>
-        <path d="M 480 340 Q 510 360 520 370"/>
-        <!-- Wing veins -->
-        <line x1="200" y1="300" x2="400" y2="320"/>
-        <line x1="220" y1="320" x2="400" y2="320"/>
-        <line x1="240" y1="340" x2="400" y2="320"/>
-        <line x1="600" y1="300" x2="400" y2="320"/>
-        <line x1="580" y1="320" x2="400" y2="320"/>
-        <line x1="560" y1="340" x2="400" y2="320"/>
-        <!-- Antennae -->
-        <line x1="392" y1="280" x2="380" y2="260"/>
-        <line x1="408" y1="280" x2="420" y2="260"/>
-        <!-- Flowers -->
         <circle cx="200" cy="600" r="25"/>
         <circle cx="180" cy="580" r="15"/>
         <circle cx="220" cy="580" r="15"/>
         <circle cx="200" cy="620" r="15"/>
-        <circle cx="200" cy="600" r="10"/>
         <circle cx="600" cy="600" r="25"/>
         <circle cx="580" cy="580" r="15"/>
         <circle cx="620" cy="580" r="15"/>
         <circle cx="600" cy="620" r="15"/>
-        <circle cx="600" cy="600" r="10"/>
-        <!-- Stems -->
-        <line x1="200" y1="625" x2="200" y2="700"/>
-        <line x1="600" y1="625" x2="600" y2="700"/>
-        <!-- Leaves -->
-        <ellipse cx="180" cy="650" rx="20" ry="12"/>
-        <ellipse cx="220" cy="650" rx="20" ry="12"/>
-        <ellipse cx="580" cy="650" rx="20" ry="12"/>
-        <ellipse cx="620" cy="650" rx="20" ry="12"/>
       </g>
       <text x="400" y="780" text-anchor="middle" font-family="serif" font-size="18" fill="black">Ivy's Peace</text>
     </svg>`,
@@ -117,55 +62,23 @@ const coloringPages = [
     title: "Majestic Wolf",
     description: "Powerful wolf portrait with intricate details",
     category: "Animals",
-    source: "Ivy's Peace Collection",
-    sourceUrl: "#",
-    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    source: "Openclipart",
+    sourceUrl: "https://openclipart.org/detail/187790/husky-coloring-page",
+    imageUrl: "https://openclipart.org/image/800px/187790",
+    fallbackSvg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="800" fill="#f8f8f8"/>
       <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Wolf head outline -->
         <path d="M 250 300 Q 200 250 250 200 Q 350 150 450 200 Q 500 250 450 300 Q 400 350 350 340 Q 300 350 250 300"/>
-        <!-- Ears -->
         <polygon points="280,220 300,180 320,220"/>
         <polygon points="480,220 460,180 440,220"/>
-        <!-- Eyes -->
         <circle cx="330" cy="260" r="8"/>
         <circle cx="470" cy="260" r="8"/>
         <circle cx="330" cy="260" r="3" fill="black"/>
         <circle cx="470" cy="260" r="3" fill="black"/>
-        <!-- Nose -->
         <polygon points="400,320 395,335 405,335"/>
-        <!-- Mouth -->
-        <path d="M 385 335 Q 400 350 415 335"/>
-        <!-- Whiskers -->
-        <line x1="250" y1="290" x2="200" y2="285"/>
-        <line x1="250" y1="310" x2="200" y2="315"/>
-        <line x1="550" y1="290" x2="600" y2="285"/>
-        <line x1="550" y1="310" x2="600" y2="315"/>
-        <!-- Fur details on head -->
-        <path d="M 300 240 Q 320 220 340 240"/>
-        <path d="M 460 240 Q 480 220 500 240"/>
-        <path d="M 320 280 Q 340 260 360 280"/>
-        <path d="M 440 280 Q 460 260 480 280"/>
-        <!-- Neck -->
+        <path d="M 390 335 Q 400 345 410 335"/>
         <ellipse cx="400" cy="380" rx="60" ry="40"/>
-        <!-- Body -->
         <ellipse cx="400" cy="480" rx="80" ry="60"/>
-        <!-- Legs -->
-        <rect x="340" y="520" width="20" height="80" rx="10"/>
-        <rect x="440" y="520" width="20" height="80" rx="10"/>
-        <rect x="320" y="580" width="20" height="60" rx="10"/>
-        <rect x="460" y="580" width="20" height="60" rx="10"/>
-        <!-- Paws -->
-        <ellipse cx="350" cy="610" rx="15" ry="10"/>
-        <ellipse cx="450" cy="610" rx="15" ry="10"/>
-        <ellipse cx="330" cy="650" rx="15" ry="10"/>
-        <ellipse cx="470" cy="650" rx="15" ry="10"/>
-        <!-- Tail -->
-        <path d="M 480 440 Q 520 420 540 460"/>
-        <ellipse cx="535" cy="450" rx="8" ry="15"/>
-        <!-- Moon background -->
-        <circle cx="150" cy="150" r="80" opacity="0.3"/>
-        <circle cx="150" cy="150" r="60" opacity="0.2"/>
       </g>
       <text x="400" y="780" text-anchor="middle" font-family="serif" font-size="18" fill="black">Ivy's Peace</text>
     </svg>`,
@@ -175,49 +88,23 @@ const coloringPages = [
     title: "Classic Rose",
     description: "Elegant rose with detailed petals",
     category: "Flowers",
-    source: "Ivy's Peace Collection",
-    sourceUrl: "#",
-    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    source: "Openclipart",
+    sourceUrl: "https://openclipart.org/detail/333586/lilly-flower-abstract-art-coloring-page",
+    imageUrl: "https://openclipart.org/image/800px/333586",
+    fallbackSvg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="800" fill="#f8f8f8"/>
       <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Stem -->
         <line x1="400" y1="700" x2="400" y2="450"/>
-        <!-- Thorns -->
         <polygon points="400,550 385,545 390,535 400,540 410,535 415,545"/>
-        <polygon points="400,600 385,595 390,585 400,590 410,585 415,595"/>
-        <!-- Leaves -->
         <ellipse cx="350" cy="550" rx="25" ry="15"/>
         <ellipse cx="450" cy="550" rx="25" ry="15"/>
-        <!-- Leaf veins -->
-        <line x1="350" y1="550" x2="325" y2="535"/>
-        <line x1="350" y1="550" x2="325" y2="565"/>
-        <line x1="350" y1="550" x2="375" y2="535"/>
-        <line x1="350" y1="550" x2="375" y2="565"/>
-        <line x1="450" y1="550" x2="425" y2="535"/>
-        <line x1="450" y1="550" x2="425" y2="565"/>
-        <line x1="450" y1="550" x2="475" y2="535"/>
-        <line x1="450" y1="550" x2="475" y2="565"/>
-        <!-- Outer petals -->
         <ellipse cx="400" cy="350" rx="40" ry="60"/>
         <ellipse cx="360" cy="370" rx="35" ry="50"/>
         <ellipse cx="440" cy="370" rx="35" ry="50"/>
         <ellipse cx="400" cy="410" rx="35" ry="45"/>
-        <!-- Middle petals -->
         <ellipse cx="400" cy="360" rx="25" ry="40"/>
-        <ellipse cx="375" cy="375" rx="20" ry="35"/>
-        <ellipse cx="425" cy="375" rx="20" ry="35"/>
-        <!-- Inner petals -->
-        <ellipse cx="400" cy="370" rx="15" ry="25"/>
-        <ellipse cx="385" cy="380" rx="12" ry="20"/>
-        <ellipse cx="415" cy="380" rx="12" ry="20"/>
-        <!-- Center -->
         <circle cx="400" cy="385" r="8"/>
-        <!-- Bud -->
         <ellipse cx="400" cy="430" rx="15" ry="25"/>
-        <!-- Sepals -->
-        <ellipse cx="385" cy="445" rx="8" ry="12"/>
-        <ellipse cx="415" cy="445" rx="8" ry="12"/>
-        <ellipse cx="400" cy="455" rx="8" ry="10"/>
       </g>
       <text x="400" y="780" text-anchor="middle" font-family="serif" font-size="18" fill="black">Ivy's Peace</text>
     </svg>`,
@@ -227,43 +114,21 @@ const coloringPages = [
     title: "Wise Owl",
     description: "Intricate owl design with feathers and details",
     category: "Birds",
-    source: "Ivy's Peace Collection",
-    sourceUrl: "#",
-    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    source: "Openclipart",
+    sourceUrl: "https://openclipart.org/detail/335191/elf-girl-face-line-art-coloring-page",
+    imageUrl: "https://openclipart.org/image/800px/335191",
+    fallbackSvg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="800" fill="#f8f8f8"/>
       <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Owl body -->
         <ellipse cx="400" cy="500" rx="80" ry="100"/>
-        <!-- Head -->
         <circle cx="400" cy="350" r="70"/>
-        <!-- Eyes -->
         <circle cx="375" cy="330" r="15"/>
         <circle cx="425" cy="330" r="15"/>
         <circle cx="375" cy="330" r="8" fill="black"/>
         <circle cx="425" cy="330" r="8" fill="black"/>
-        <!-- Beak -->
         <polygon points="400,360 395,375 405,375"/>
-        <!-- Wings -->
-        <ellipse cx="320" cy="450" rx="40" ry="70"/>
+        <ellipse cx="400" cy="450" rx="40" ry="70"/>
         <ellipse cx="480" cy="450" rx="40" ry="70"/>
-        <!-- Wing details -->
-        <path d="M 300 420 Q 320 400 340 420"/>
-        <path d="M 460 420 Q 480 400 500 420"/>
-        <path d="M 290 450 Q 310 430 330 450"/>
-        <path d="M 470 450 Q 490 430 510 450"/>
-        <!-- Feathers on wings -->
-        <line x1="300" y1="400" x2="280" y2="380"/>
-        <line x1="320" y1="410" x2="300" y2="390"/>
-        <line x1="500" y1="400" x2="520" y2="380"/>
-        <line x1="480" y1="410" x2="500" y2="390"/>
-        <!-- Tree branch -->
-        <ellipse cx="400" cy="620" rx="120" ry="15"/>
-        <!-- Branch details -->
-        <ellipse cx="320" cy="615" rx="30" ry="8"/>
-        <ellipse cx="480" cy="615" rx="30" ry="8"/>
-        <!-- Moon -->
-        <circle cx="150" cy="150" r="60" opacity="0.3"/>
-        <circle cx="150" cy="150" r="40" opacity="0.2"/>
       </g>
       <text x="400" y="780" text-anchor="middle" font-family="serif" font-size="18" fill="black">Ivy's Peace</text>
     </svg>`,
@@ -273,56 +138,27 @@ const coloringPages = [
     title: "Mythical Dragon",
     description: "Fantasy dragon with scales and wings",
     category: "Fantasy",
-    source: "Ivy's Peace Collection",
-    sourceUrl: "#",
-    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    source: "Openclipart",
+    sourceUrl: "https://openclipart.org/detail/334917/2-clown-girls-faces-coloring-page-art",
+    imageUrl: "https://openclipart.org/image/800px/334917",
+    fallbackSvg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="800" fill="#f8f8f8"/>
       <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Dragon body -->
         <ellipse cx="400" cy="500" rx="60" ry="120"/>
-        <!-- Neck -->
         <ellipse cx="400" cy="350" rx="30" ry="80"/>
-        <!-- Head -->
         <circle cx="400" cy="250" r="40"/>
-        <!-- Horns -->
         <line x1="380" y1="230" x2="360" y2="210"/>
         <line x1="420" y1="230" x2="440" y2="210"/>
-        <!-- Eyes -->
         <circle cx="390" cy="240" r="6"/>
         <circle cx="410" cy="240" r="6"/>
         <circle cx="390" cy="240" r="3" fill="black"/>
         <circle cx="410" cy="240" r="3" fill="black"/>
-        <!-- Nose -->
-        <circle cx="400" cy="250" r="3"/>
-        <!-- Mouth -->
-        <path d="M 395 260 Q 400 270 405 260"/>
-        <!-- Wings -->
+        <polygon points="400,260 395,275 405,275"/>
+        <path d="M 395 275 Q 400 285 405 275"/>
         <path d="M 350 400 Q 250 300 200 350 Q 230 380 280 370 Q 320 380 350 400"/>
         <path d="M 450 400 Q 550 300 600 350 Q 570 380 520 370 Q 480 380 450 400"/>
-        <!-- Wing membranes -->
-        <path d="M 300 380 Q 250 350 280 370"/>
-        <path d="M 320 390 Q 270 360 300 380"/>
-        <path d="M 500 380 Q 550 350 520 370"/>
-        <path d="M 480 390 Q 530 360 500 380"/>
-        <!-- Tail -->
-        <path d="M 400 620 Q 380 650 360 670 Q 340 690 320 710"/>
-        <!-- Spikes on back -->
-        <polygon points="400,400 395,380 405,380"/>
-        <polygon points="400,450 395,430 405,430"/>
-        <polygon points="400,500 395,480 405,480"/>
-        <!-- Scales pattern -->
-        <circle cx="385" cy="420" r="3"/>
-        <circle cx="395" cy="440" r="3"/>
-        <circle cx="405" cy="460" r="3"/>
-        <circle cx="415" cy="480" r="3"/>
-        <!-- Legs -->
         <ellipse cx="370" cy="580" rx="12" ry="40"/>
         <ellipse cx="430" cy="580" rx="12" ry="40"/>
-        <!-- Claws -->
-        <polygon points="358,620 365,630 352,625"/>
-        <polygon points="362,620 369,630 356,625"/>
-        <polygon points="442,620 449,630 436,625"/>
-        <polygon points="446,620 453,630 440,625"/>
       </g>
       <text x="400" y="780" text-anchor="middle" font-family="serif" font-size="18" fill="black">Ivy's Peace</text>
     </svg>`,
@@ -335,6 +171,7 @@ export default function ColoringPages() {
   const [selectedPage, setSelectedPage] = useState<typeof coloringPages[0] | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
 
   const filteredPages = coloringPages.filter(page => {
     const matchesCategory = selectedCategory === "All" || page.category === selectedCategory;
@@ -343,21 +180,28 @@ export default function ColoringPages() {
     return matchesCategory && matchesSearch;
   });
 
+  const handleImageError = (pageId: string) => {
+    setImageErrors(prev => new Set(prev).add(pageId));
+  };
+
   const handleDownload = (page: typeof coloringPages[0], format: 'png' | 'pdf') => {
-    // Create a data URL from the SVG
-    const svgDataUrl = `data:image/svg+xml;base64,${btoa(page.svg)}`;
+    const canvas = document.createElement("canvas");
+    canvas.width = 800;
+    canvas.height = 800;
+    const ctx = canvas.getContext("2d");
 
-    if (format === 'png') {
-      // Convert SVG to PNG
-      const canvas = document.createElement("canvas");
-      canvas.width = 800;
-      canvas.height = 800;
-      const ctx = canvas.getContext("2d");
+    if (ctx) {
+      // Use fallback SVG if image failed to load
+      const img = new Image();
+      const isImageError = imageErrors.has(page.id);
+      const imageSource = isImageError
+        ? `data:image/svg+xml;base64,${btoa(page.fallbackSvg)}`
+        : page.imageUrl;
 
-      if (ctx) {
-        const img = new Image();
-        img.onload = () => {
-          ctx.drawImage(img, 0, 0, 800, 800);
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0, 800, 800);
+
+        if (format === 'png') {
           canvas.toBlob((blob) => {
             if (blob) {
               const url = URL.createObjectURL(blob);
@@ -370,20 +214,8 @@ export default function ColoringPages() {
               URL.revokeObjectURL(url);
             }
           });
-        };
-        img.src = svgDataUrl;
-      }
-    } else {
-      // Create PDF
-      const canvas = document.createElement("canvas");
-      canvas.width = 800;
-      canvas.height = 800;
-      const ctx = canvas.getContext("2d");
-
-      if (ctx) {
-        const img = new Image();
-        img.onload = () => {
-          ctx.drawImage(img, 0, 0);
+        } else {
+          // PDF download
           const imgData = canvas.toDataURL("image/png");
           const pdfWidth = 595.28;
           const pdfHeight = 841.89;
@@ -415,13 +247,18 @@ export default function ColoringPages() {
           a.click();
           a.remove();
           URL.revokeObjectURL(url);
-        };
-        img.src = svgDataUrl;
-      }
+        }
+      };
+      img.src = imageSource;
     }
   };
 
   if (selectedPage) {
+    const isImageError = imageErrors.has(selectedPage.id);
+    const displayImage = isImageError
+      ? `data:image/svg+xml;base64,${btoa(selectedPage.fallbackSvg)}`
+      : selectedPage.imageUrl;
+
     return (
       <main className="min-h-screen bg-stone-950 text-white">
         <div className="max-w-6xl mx-auto px-6 py-12">
@@ -445,15 +282,27 @@ export default function ColoringPages() {
                           className="text-emerald-400 hover:text-emerald-300 underline">
                   {selectedPage.source}
                 </a>
+                {isImageError && (
+                  <span className="ml-2 text-amber-400">(Using fallback design)</span>
+                )}
               </p>
             </div>
           </div>
 
           <div className="bg-white rounded-2xl p-8 max-w-2xl mx-auto mb-8">
-            <div
-              dangerouslySetInnerHTML={{ __html: selectedPage.svg }}
-              className="w-full h-auto max-w-lg mx-auto"
-            />
+            {isImageError ? (
+              <div
+                dangerouslySetInnerHTML={{ __html: selectedPage.fallbackSvg }}
+                className="w-full h-auto max-w-lg mx-auto"
+              />
+            ) : (
+              <img
+                src={displayImage}
+                alt={selectedPage.title}
+                className="w-full h-auto rounded-lg shadow-lg"
+                onError={() => handleImageError(selectedPage.id)}
+              />
+            )}
           </div>
 
           <div className="flex flex-wrap gap-4 justify-center">
@@ -525,30 +374,48 @@ export default function ColoringPages() {
         </header>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredPages.map((page) => (
-            <div
-              key={page.id}
-              onClick={() => setSelectedPage(page)}
-              className="bg-stone-800 rounded-xl overflow-hidden cursor-pointer hover:bg-stone-750 transition-all duration-200 hover:scale-[1.02] border border-stone-700 hover:border-emerald-600 group"
-            >
-              <div className="aspect-square overflow-hidden bg-white p-4">
-                <div
-                  dangerouslySetInnerHTML={{ __html: page.svg }}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-lg font-semibold mb-1 text-white group-hover:text-emerald-300 transition-colors">
-                  {page.title}
-                </h3>
-                <p className="text-stone-400 text-sm mb-2 line-clamp-2">{page.description}</p>
-                <div className="flex items-center justify-between text-xs text-stone-500">
-                  <span>{page.category}</span>
-                  <span>{page.source}</span>
+          {filteredPages.map((page) => {
+            const isImageError = imageErrors.has(page.id);
+            return (
+              <div
+                key={page.id}
+                onClick={() => setSelectedPage(page)}
+                className="bg-stone-800 rounded-xl overflow-hidden cursor-pointer hover:bg-stone-750 transition-all duration-200 hover:scale-[1.02] border border-stone-700 hover:border-emerald-600 group"
+              >
+                <div className="aspect-square overflow-hidden bg-white p-4">
+                  {isImageError ? (
+                    <div
+                      dangerouslySetInnerHTML={{ __html: page.fallbackSvg }}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <img
+                      src={page.imageUrl}
+                      alt={page.title}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
+                      onError={() => handleImageError(page.id)}
+                      loading="lazy"
+                    />
+                  )}
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-1 text-white group-hover:text-emerald-300 transition-colors">
+                    {page.title}
+                  </h3>
+                  <p className="text-stone-400 text-sm mb-2 line-clamp-2">{page.description}</p>
+                  <div className="flex items-center justify-between text-xs text-stone-500">
+                    <span>{page.category}</span>
+                    <span>{page.source}</span>
+                  </div>
+                  {isImageError && (
+                    <div className="mt-2 text-xs text-amber-400">
+                      Using fallback design
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {filteredPages.length === 0 && (
@@ -568,7 +435,7 @@ export default function ColoringPages() {
 
         <footer className="text-center mt-16 pt-8 border-t border-stone-800">
           <p className="text-stone-500 text-sm">
-            All coloring pages created for Ivy's Peace. Enjoy your coloring sessions!
+            All coloring pages are sourced from free online resources. Click on any page to see source attribution.
           </p>
         </footer>
       </div>
