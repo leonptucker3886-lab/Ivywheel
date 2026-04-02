@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { categories } from "@/lib/categories";
 import { CategoryCard } from "@/components/CategoryCard";
 
@@ -56,7 +55,7 @@ export default function GeneratorPage() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "coloring-page.png";
+      a.download = "ivys-peace-coloring-page.svg";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -67,13 +66,13 @@ export default function GeneratorPage() {
   }
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-white">
+    <main className="min-h-screen bg-stone-950 text-white">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <header className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-            Ivy&apos;s peace
+            Ivy&apos;s Peace
           </h1>
-          <p className="text-neutral-400 text-lg max-w-2xl mx-auto">
+          <p className="text-stone-400 text-lg max-w-2xl mx-auto">
             Create beautiful coloring pages to print and enjoy. Pick a scene, add
             ivy leaves for an elegant touch, and let your creativity flow.
           </p>
@@ -107,7 +106,7 @@ export default function GeneratorPage() {
               if (e.target.value.trim()) setSelectedCategory(null);
             }}
             placeholder="Describe your own coloring page scene..."
-            className="w-full h-28 px-4 py-3 rounded-xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-emerald-400 resize-none"
+            className="w-full h-28 px-4 py-3 rounded-xl bg-stone-800 border border-stone-700 text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400 resize-none"
           />
         </section>
 
@@ -120,10 +119,10 @@ export default function GeneratorPage() {
                 onChange={(e) => setAddIvyLeaves(e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="w-11 h-6 bg-neutral-700 peer-checked:bg-emerald-600 rounded-full transition-colors" />
+              <div className="w-11 h-6 bg-stone-700 peer-checked:bg-emerald-600 rounded-full transition-colors" />
               <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5" />
             </div>
-            <span className="text-neutral-300 group-hover:text-white transition-colors">
+            <span className="text-stone-300 group-hover:text-white transition-colors">
               🍃 Add ivy leaves border
             </span>
           </label>
@@ -133,7 +132,7 @@ export default function GeneratorPage() {
           <button
             onClick={handleGenerate}
             disabled={isGenerating || (!selectedCategory && !customPrompt.trim())}
-            className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-neutral-700 disabled:text-neutral-500 text-white font-semibold rounded-xl transition-colors text-lg"
+            className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-stone-700 disabled:text-stone-500 text-white font-semibold rounded-xl transition-colors text-lg"
           >
             {isGenerating ? "Generating..." : "Generate Coloring Page"}
           </button>
@@ -144,8 +143,9 @@ export default function GeneratorPage() {
         {generatedImage && (
           <section className="mt-12 flex flex-col items-center">
             <h2 className="text-2xl font-semibold mb-6">Your Coloring Page</h2>
-            <div className="rounded-2xl overflow-hidden border border-neutral-700 shadow-2xl bg-white">
-              <Image
+            <div className="rounded-2xl overflow-hidden border border-stone-700 shadow-2xl bg-white">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={generatedImage}
                 alt="Generated coloring page"
                 width={512}
