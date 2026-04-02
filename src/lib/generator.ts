@@ -38,14 +38,17 @@ function L(x1: number, y1: number, x2: number, y2: number, sw = 2, s = K) {
 }
 
 function dot(x: number, y: number, rad = 1.5) {
-  return `<circle cx="${x}" cy="${y}" r="${rad}" fill="${K}"/>`;
+  return `<circle cx="${x}" cy="${y}" r="${Math.max(rad, 0.6)}" fill="none" stroke="${K}" stroke-width="0.6"/>`;
 }
 
 function dotLine(x1: number, y1: number, x2: number, y2: number, n: number, dr = 1) {
   let o = "";
   for (let i = 0; i < n; i++) {
     const t = n === 1 ? 0.5 : i / (n - 1);
-    o += dot(x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, dr);
+    const px = x1 + (x2 - x1) * t;
+    const py = y1 + (y2 - y1) * t;
+    const len = dr * 1.5;
+    o += L(px - len, py - len, px + len, py + len, 0.5);
   }
   return o;
 }
@@ -55,7 +58,11 @@ function dotArc(cx: number, cy: number, rad: number, a1: number, a2: number, n: 
   for (let i = 0; i < n; i++) {
     const t = n === 1 ? 0.5 : i / (n - 1);
     const a = a1 + (a2 - a1) * t;
-    o += dot(cx + Math.cos(a) * rad, cy + Math.sin(a) * rad, dr);
+    const px = cx + Math.cos(a) * rad;
+    const py = cy + Math.sin(a) * rad;
+    const perp = a + Math.PI / 2;
+    const len = dr * 1.5;
+    o += L(px + Math.cos(perp) * len, py + Math.sin(perp) * len, px - Math.cos(perp) * len, py - Math.sin(perp) * len, 0.5);
   }
   return o;
 }
@@ -64,18 +71,28 @@ function dotFill(cx: number, cy: number, w: number, h: number, density: number, 
   let o = "";
   const count = Math.floor(w * h / density);
   for (let i = 0; i < count; i++) {
-    o += dot(cx + rr(r, -w / 2, w / 2), cy + rr(r, -h / 2, h / 2), rr(r, 0.4, maxR));
+    const px = cx + rr(r, -w / 2, w / 2);
+    const py = cy + rr(r, -h / 2, h / 2);
+    const a = rr(r, 0, Math.PI);
+    const len = rr(r, maxR * 0.8, maxR * 2.5);
+    o += L(px + Math.cos(a) * len, py + Math.sin(a) * len, px - Math.cos(a) * len, py - Math.sin(a) * len, 0.4);
   }
   return o;
 }
 
 function dotFillCircle(cx: number, cy: number, rad: number, density: number, r: () => number, maxR = 1.5) {
   let o = "";
-  const count = Math.floor(rad * rad * Math.PI / density);
-  for (let i = 0; i < count; i++) {
-    const a = rr(r, 0, Math.PI * 2);
-    const d = rad * Math.sqrt(r());
-    o += dot(cx + Math.cos(a) * d, cy + Math.sin(a) * d, rr(r, 0.3, maxR));
+  const rings = Math.max(2, Math.floor(rad / (density * 1.5)));
+  for (let ring = 1; ring <= rings; ring++) {
+    const rr2 = (ring / rings) * rad;
+    o += C2(cx, cy, rr2, 0.4);
+  }
+  const spokes = Math.max(4, Math.floor(rad * 0.5));
+  for (let s = 0; s < spokes; s++) {
+    const a = (s / spokes) * Math.PI * 2;
+    const inner = rad * 0.15;
+    const outer = rad * rr(r, 0.7, 1.0);
+    o += L(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner, cx + Math.cos(a) * outer, cy + Math.sin(a) * outer, 0.3);
   }
   return o;
 }
@@ -234,7 +251,7 @@ function lily(cx: number, cy: number, size: number, r: () => number) {
       o += P(`M${vx} ${vy} Q${vx - Math.cos(perp) * vl} ${vy - Math.sin(perp) * vl} ${vx + Math.cos(((a - 40) * Math.PI) / 180) * vl} ${vy + Math.sin(((a - 40) * Math.PI) / 180) * vl}`, 0.6);
     }
   }
-  o += C2(cx, cy, size * 0.08, 2, K);
+  o += C2(cx, cy, size * 0.08, 2);
   const stamens = ri(r, 4, 7);
   for (let s = 0; s < stamens; s++) {
     const a = (s / stamens) * Math.PI * 2;
@@ -282,7 +299,16 @@ function detailedLeaf(cx: number, cy: number, len: number, angle: number, r: () 
     o += P(`M${vx} ${vy} Q${vx + Math.cos(perp) * vl * 0.5 + Math.cos(a) * vl * 0.3} ${vy + Math.sin(perp) * vl * 0.5 + Math.sin(a) * vl * 0.3} ${vx + Math.cos(perp) * vl} ${vy + Math.sin(perp) * vl}`, 0.6);
     o += P(`M${vx} ${vy} Q${vx - Math.cos(perp) * vl * 0.5 + Math.cos(a) * vl * 0.3} ${vy - Math.sin(perp) * vl * 0.5 + Math.sin(a) * vl * 0.3} ${vx - Math.cos(perp) * vl} ${vy - Math.sin(perp) * vl}`, 0.6);
   }
-  o += dotFill(cx + Math.cos(a) * len * 0.5, cy + Math.sin(a) * len * 0.5, len * 0.6, w * 1.2, 30, r, 0.8);
+  const hatchCount = ri(r, 4, 8);
+  for (let h = 0; h < hatchCount; h++) {
+    const ht = 0.2 + (h / hatchCount) * 0.6;
+    const hx = cx + Math.cos(a) * len * ht;
+    const hy = cy + Math.sin(a) * len * ht;
+    const hl = w * 0.3 * (1 - ht * 0.3);
+    const perpA = a + Math.PI / 2;
+    o += L(hx + Math.cos(perpA) * hl * 0.2, hy + Math.sin(perpA) * hl * 0.2, hx + Math.cos(perpA) * hl * 0.8, hy + Math.sin(perpA) * hl * 0.8, 0.3);
+    o += L(hx - Math.cos(perpA) * hl * 0.2, hy - Math.sin(perpA) * hl * 0.2, hx - Math.cos(perpA) * hl * 0.8, hy - Math.sin(perpA) * hl * 0.8, 0.3);
+  }
   return o;
 }
 
@@ -332,8 +358,8 @@ function pitbullHead(cx: number, cy: number, sc: number, facing: number, express
     const ex = s * 20, ey = -12;
     o += E(ex, ey, 10, 11, 2);
     o += E(ex, ey, 7, 8, 0.8);
-    o += C2(ex, ey + 1, 5.5, 2, K);
-    o += C2(ex, ey + 1, 2.5, 0, K);
+    o += C2(ex, ey + 1, 5.5, 2);
+    o += C2(ex, ey + 1, 2.5, 1.2);
     o += dot(ex - 2, ey - 3, 2.2);
     o += dot(ex + 1, ey - 1, 0.8);
     for (let l = 0; l < ri(r, 4, 7); l++) {
@@ -533,7 +559,7 @@ function pitbullCollar(cx: number, cy: number, sc: number, r: () => number): str
     o += P(`M${cx - 55 * sc} ${cy + 5 * sc} C${cx - 25 * sc} ${cy + 15 * sc} ${cx + 25 * sc} ${cy + 15 * sc} ${cx + 55 * sc} ${cy + 5 * sc}`, 3.5 * sc);
     o += P(`M${cx - 50 * sc} ${cy + 8 * sc} C${cx - 22 * sc} ${cy + 17 * sc} ${cx + 22 * sc} ${cy + 17 * sc} ${cx + 50 * sc} ${cy + 8 * sc}`, 1.2 * sc);
     o += C2(cx, cy + 18 * sc, 7 * sc, 2 * sc);
-    o += C2(cx, cy + 18 * sc, 3 * sc, 0, K);
+    o += C2(cx, cy + 18 * sc, 3 * sc, 1.5);
     o += P(`M${cx - 15 * sc} ${cy + 14 * sc} C${cx - 18 * sc} ${cy + 30 * sc} ${cx - 12 * sc} ${cy + 40 * sc} ${cx - 8 * sc} ${cy + 35 * sc}`, 1.5 * sc);
   } else if (collarType === 1) {
     o += P(`M${cx - 55 * sc} ${cy + 5 * sc} C${cx - 25 * sc} ${cy + 15 * sc} ${cx + 25 * sc} ${cy + 15 * sc} ${cx + 55 * sc} ${cy + 5 * sc}`, 5 * sc);
@@ -895,7 +921,7 @@ function generateBirds(r: () => number): string {
 
     for (const s of [-1, 1]) {
       o += E(s * 16, -68, 7, 8, 1.5);
-      o += C2(s * 16, -67, 4, 1.5, K);
+      o += C2(s * 16, -67, 4, 1.5);
       o += dot(s * 14, -70, 1.5);
       const lashes = ri(r, 3, 5);
       for (let l = 0; l < lashes; l++) {
@@ -1129,7 +1155,7 @@ function generateMandalas(r: () => number): string {
     }
   }
 
-  o += C2(cx, cy, maxR * 0.06, 3, K);
+  o += C2(cx, cy, maxR * 0.06, 3);
   o += C2(cx, cy, maxR * 0.035, 1.5);
   o += dotArc(cx, cy, maxR * 0.048, 0, Math.PI * 2, 8, 1.2);
   o += dotFillCircle(cx, cy, maxR * 0.03, 5, r, 1);
@@ -1167,7 +1193,7 @@ function generateCats(r: () => number): string {
     const esp = rr(r, 22, 32);
     for (const s of [-1, 1]) {
       o += P(`M${s * esp - 12} -40 C${s * esp - 12} -48 ${s * esp + 12} -48 ${s * esp + 12} -40 C${s * esp + 12} -32 ${s * esp - 12} -32 ${s * esp - 12} -40`, 1.5);
-      o += E(s * esp, -40, 3, 7, 1.5, K);
+      o += E(s * esp, -40, 3, 7, 1.5);
       o += dot(s * esp - 1, -42, 1.2);
     }
 
@@ -1209,7 +1235,7 @@ function generateCats(r: () => number): string {
 
     o += P(`M-70 20 C-100 -10 -110 -50 -95 -70 C-85 -80 -75 -75 -80 -60`, 3);
     o += P(`M-80 -60 C-78 -68 -72 -65 -75 -58`, 1.5);
-    o += C2(-80, -62, 2.5, 1, K);
+    o += C2(-80, -62, 2.5, 1);
 
     o += P(`M70 20 C90 -5 95 -30 85 -45`, 2.5);
     o += P(`M65 -40 C70 -55 80 -60 85 -50 C88 -42 82 -35 75 -40`, 2);
@@ -1236,7 +1262,7 @@ function generateCats(r: () => number): string {
 
     for (const s of [-1, 1]) {
       o += P(`M${s * 14} -185 C${s * 14} -190 ${s * 22} -190 ${s * 22} -185 C${s * 22} -180 ${s * 14} -180 ${s * 14} -185`, 1.5);
-      o += E(s * 18, -185, 2.5, 5, 1.2, K);
+      o += E(s * 18, -185, 2.5, 5, 1.2);
       o += dot(s * 17, -187, 1);
     }
 
@@ -1499,7 +1525,7 @@ function generateCustom(r: () => number): string {
   o += ornamentalBorder(cx, cy, 180, 195, sym * 3, r);
   o += ornamentalBorder(cx, cy, 280, 292, sym * 4, r);
 
-  o += C2(cx, cy, 15, 2.5, K);
+  o += C2(cx, cy, 15, 2.5);
   o += dotFillCircle(cx, cy, 12, 6, r, 1);
 
   return o;
@@ -1517,17 +1543,61 @@ const generators: Record<string, (r: () => number) => string> = {
   custom: generateCustom,
 };
 
+function heartIvyLeaf(cx: number, cy: number, size: number, angle: number): string {
+  const a = (angle * Math.PI) / 180;
+  const s = size;
+  const dx = Math.cos(a), dy = Math.sin(a);
+  const nx = -dy, ny = dx;
+
+  const tipX = cx + dx * s * 1.2;
+  const tipY = cy + dy * s * 1.2;
+  const lobe1X = cx + nx * s * 0.7 - dx * s * 0.1;
+  const lobe1Y = cy + ny * s * 0.7 - dy * s * 0.1;
+  const lobe2X = cx - nx * s * 0.7 - dx * s * 0.1;
+  const lobe2Y = cy - ny * s * 0.7 - dy * s * 0.1;
+  const cpLX = cx + nx * s * 0.9 + dx * s * 0.3;
+  const cpLY = cy + ny * s * 0.9 + dy * s * 0.3;
+  const cpRX = cx - nx * s * 0.9 + dx * s * 0.3;
+  const cpRY = cy - ny * s * 0.9 + dy * s * 0.3;
+
+  let o = P(`M${cx} ${cy} C${cpLX} ${cpLY} ${lobe1X} ${lobe1Y} ${tipX} ${tipY} C${lobe2X} ${lobe2Y} ${cpRX} ${cpRY} ${cx} ${cy}`, 1.8);
+  o += L(cx, cy, tipX, tipY, 0.7);
+  for (let v = 1; v <= 3; v++) {
+    const t = v * 0.22;
+    const vx = cx + dx * s * t;
+    const vy = cy + dy * s * t;
+    const vl = s * 0.4 * (1 - t * 0.4);
+    o += P(`M${vx} ${vy} Q${vx + nx * vl * 0.5 + dx * vl * 0.2} ${vy + ny * vl * 0.5 + dy * vl * 0.2} ${vx + nx * vl} ${vy + ny * vl}`, 0.5);
+    o += P(`M${vx} ${vy} Q${vx - nx * vl * 0.5 + dx * vl * 0.2} ${vy - ny * vl * 0.5 + dy * vl * 0.2} ${vx - nx * vl} ${vy - ny * vl}`, 0.5);
+  }
+  return o;
+}
+
+function curlingTendril(x: number, y: number, length: number, angle: number, curlDir: number, r: () => number): string {
+  const a = (angle * Math.PI) / 180;
+  const cp1x = x + Math.cos(a) * length * 0.4 + Math.cos(a + Math.PI / 2) * length * 0.2 * curlDir;
+  const cp1y = y + Math.sin(a) * length * 0.4 + Math.sin(a + Math.PI / 2) * length * 0.2 * curlDir;
+  const endX = x + Math.cos(a) * length * 0.7;
+  const endY = y + Math.sin(a) * length * 0.7;
+  let o = P(`M${x} ${y} Q${cp1x} ${cp1y} ${endX} ${endY}`, 0.8);
+  const curlR = length * 0.15;
+  const cStart = endX + Math.cos(a) * curlR * 0.3;
+  const cStartY = endY + Math.sin(a) * curlR * 0.3;
+  o += P(`M${cStart} ${cStartY} C${endX + Math.cos(a + 0.5 * curlDir) * curlR * 2} ${endY + Math.sin(a + 0.5 * curlDir) * curlR * 2} ${endX + Math.cos(a + 2 * curlDir) * curlR} ${endY + Math.sin(a + 2 * curlDir) * curlR} ${endX + Math.cos(a + 2.5 * curlDir) * curlR * 0.5} ${endY + Math.sin(a + 2.5 * curlDir) * curlR * 0.5}`, 0.6);
+  return o;
+}
+
 function generateIvyBorder(r: () => number): string {
   let o = "";
 
   for (const side of [-1, 1]) {
-    const x = side === -1 ? 15 : SIZE - 15;
-    const segs = ri(r, 10, 18);
+    const x = side === -1 ? 20 : SIZE - 20;
+    const segs = ri(r, 10, 16);
     let d = `M${x} ${SIZE}`;
     for (let i = 0; i < segs; i++) {
       const y = SIZE - (i / segs) * SIZE;
-      const cx2 = x + side * rr(r, 15, 35);
-      d += ` C${cx2} ${y + rr(r, 10, 25)} ${cx2} ${y - rr(r, 10, 25)} ${x} ${y}`;
+      const cx2 = x + side * rr(r, 20, 45);
+      d += ` C${cx2} ${y + rr(r, 12, 28)} ${cx2} ${y - rr(r, 12, 28)} ${x} ${y}`;
     }
     o += P(d, 3);
     o += P(d, 0.8);
@@ -1535,28 +1605,36 @@ function generateIvyBorder(r: () => number): string {
     for (let i = 0; i < segs * 2; i++) {
       const y = SIZE - (i / (segs * 2)) * SIZE;
       const dir = side * (i % 2 === 0 ? 1 : -1);
-      o += detailedLeaf(x, y, rr(r, 18, 35), dir * rr(r, 30, 70) + (dir > 0 ? 0 : 180), r);
+      const leafAngle = dir * rr(r, 30, 70) + (dir > 0 ? 0 : 180);
+      o += heartIvyLeaf(x, y, rr(r, 10, 20), leafAngle);
+      if (r() > 0.4) {
+        o += curlingTendril(x, y, rr(r, 15, 30), leafAngle + rr(r, -30, 30), r() > 0.5 ? 1 : -1, r);
+      }
     }
   }
 
-  const segs = ri(r, 6, 12);
-  let d = `M0 ${SIZE - 15}`;
+  const segs = ri(r, 6, 10);
+  let d = `M0 ${SIZE - 18}`;
   for (let i = 0; i <= segs; i++) {
     const x = (i / segs) * SIZE;
-    const y = SIZE - 15 + rr(r, -20, 20);
-    d += ` C${x - SIZE / segs * 0.3} ${y + rr(r, -8, 8)} ${x + SIZE / segs * 0.3} ${y + rr(r, -8, 8)} ${x} ${y}`;
+    const y = SIZE - 18 + rr(r, -15, 15);
+    d += ` C${x - SIZE / segs * 0.3} ${y + rr(r, -6, 6)} ${x + SIZE / segs * 0.3} ${y + rr(r, -6, 6)} ${x} ${y}`;
   }
   o += P(d, 2.5);
   o += P(d, 0.6);
 
   for (let i = 0; i < segs * 2; i++) {
     const x = rr(r, 25, SIZE - 25);
-    const y = SIZE - 15 + rr(r, -15, 15);
+    const y = SIZE - 18 + rr(r, -12, 12);
     const dir = r() > 0.5 ? 1 : -1;
-    o += detailedLeaf(x, y, rr(r, 10, 22), dir * rr(r, 30, 70) + (dir > 0 ? 270 : 90), r);
+    const leafAngle = dir * rr(r, 30, 70) + (dir > 0 ? 270 : 90);
+    o += heartIvyLeaf(x, y, rr(r, 7, 15), leafAngle);
+    if (r() > 0.5) {
+      o += curlingTendril(x, y, rr(r, 10, 22), leafAngle + rr(r, -25, 25), r() > 0.5 ? 1 : -1, r);
+    }
   }
 
-  for (let i = 0; i < ri(r, 3, 8); i++) {
+  for (let i = 0; i < ri(r, 3, 7); i++) {
     o += smallButterfly(rr(r, 60, 964), rr(r, 40, SIZE - 40), rr(r, 0.15, 0.35), rr(r, -40, 40), r);
   }
 
