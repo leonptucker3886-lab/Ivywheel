@@ -2,183 +2,111 @@
 
 import { useState } from "react";
 
-// Static coloring page data
+// Static coloring page data - simplified SVGs
 const coloringPages = [
   {
-    id: "pitbull-realistic",
-    title: "Realistic Pitbull",
-    description: "Highly detailed American Pit Bull Terrier with accurate anatomy",
+    id: "pitbull",
+    title: "Pitbull",
+    description: "Strong and gentle pitbull companion",
     emoji: "🐶",
-    imageData: `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
-      <rect width="1024" height="1024" fill="#f8f8f8"/>
-      <g stroke="black" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Dog body -->
-        <ellipse cx="512" cy="650" rx="140" ry="70"/>
-        <ellipse cx="512" cy="480" rx="90" ry="80"/>
-        <!-- Head -->
-        <circle cx="512" cy="280" r="70"/>
-        <ellipse cx="512" cy="320" rx="50" ry="30"/>
-        <!-- Ears -->
-        <polygon points="460,240 480,200 500,240"/>
-        <polygon points="564,240 544,200 524,240"/>
-        <!-- Eyes -->
-        <circle cx="490" cy="270" r="8"/>
-        <circle cx="534" cy="270" r="8"/>
-        <circle cx="490" cy="270" r="3" fill="black"/>
-        <circle cx="534" cy="270" r="3" fill="black"/>
-        <!-- Nose -->
-        <polygon points="512,320 507,330 517,330"/>
-        <!-- Mouth -->
-        <path d="M 500 340 Q 512 350 524 340"/>
-        <!-- Legs -->
-        <rect x="430" y="580" width="20" height="100"/>
-        <rect x="474" y="580" width="20" height="100"/>
-        <rect x="550" y="580" width="20" height="100"/>
-        <rect x="594" y="580" width="20" height="100"/>
-        <!-- Paws -->
-        <circle cx="440" cy="690" r="15"/>
-        <circle cx="484" cy="690" r="15"/>
-        <circle cx="560" cy="690" r="15"/>
-        <circle cx="604" cy="690" r="15"/>
-        <!-- Tail -->
-        <path d="M 692 520 Q 720 480 740 520"/>
-      </g>
-      <g stroke="#2d6a4f" stroke-width="4" fill="none" stroke-linecap="round">
-        <path d="M 50 50 Q 150 20 250 50 Q 350 80 450 50 Q 550 20 650 50 Q 750 80 850 50 Q 950 20 974 50"/>
-        <path d="M 50 974 Q 150 1004 250 974 Q 350 944 450 974 Q 550 1004 650 974 Q 750 944 850 974 Q 950 1004 974 974"/>
-      </g>
-      <text x="512" y="950" text-anchor="middle" font-family="serif" font-size="16" fill="black">Ivy's Peace</text>
-    </svg>`)}`,
+    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="800" fill="#f8f8f8"/>
+      <ellipse cx="400" cy="550" rx="120" ry="60" stroke="black" stroke-width="3" fill="none"/>
+      <ellipse cx="400" cy="420" rx="80" ry="70" stroke="black" stroke-width="3" fill="none"/>
+      <circle cx="400" cy="250" r="60" stroke="black" stroke-width="3" fill="none"/>
+      <ellipse cx="400" cy="290" rx="40" ry="25" stroke="black" stroke-width="3" fill="none"/>
+      <circle cx="385" cy="240" r="6" stroke="black" stroke-width="2" fill="none"/>
+      <circle cx="415" cy="240" r="6" stroke="black" stroke-width="2" fill="none"/>
+      <circle cx="385" cy="240" r="2" fill="black"/>
+      <circle cx="415" cy="240" r="2" fill="black"/>
+      <polygon points="400,290 397,300 403,300" stroke="black" stroke-width="2" fill="none"/>
+      <path d="M 390 305 Q 400 315 410 305" stroke="black" stroke-width="2" fill="none"/>
+      <text x="400" y="750" text-anchor="middle" font-family="serif" font-size="20" fill="black">Ivy's Peace</text>
+    </svg>`,
   },
   {
     id: "biker-chick",
-    title: "Confident Biker Chick",
-    description: "Bold biker girl on a Harley motorcycle",
+    title: "Biker Chick",
+    description: "Confident biker girl on her motorcycle",
     emoji: "🏍️",
-    imageData: `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
-      <rect width="1024" height="1024" fill="#f8f8f8"/>
-      <g stroke="black" stroke-width="3" fill="none">
-        <!-- Head -->
-        <circle cx="512" cy="250" r="60"/>
-        <ellipse cx="512" cy="290" rx="40" ry="30"/>
-        <!-- Hair -->
-        <path d="M 452 230 Q 480 200 512 230 Q 544 200 572 230 Q 590 250 580 280 Q 560 300 540 290 Q 520 280 512 290 Q 504 280 484 290 Q 464 300 444 280 Q 434 250 452 230"/>
-        <!-- Eyes -->
-        <circle cx="495" cy="240" r="6"/>
-        <circle cx="529" cy="240" r="6"/>
-        <circle cx="495" cy="240" r="2" fill="black"/>
-        <circle cx="529" cy="240" r="2" fill="black"/>
-        <!-- Nose -->
-        <polygon points="512,260 509,270 515,270"/>
-        <!-- Mouth -->
-        <path d="M 500 280 Q 512 290 524 280"/>
-        <!-- Jacket -->
-        <path d="M 470 320 Q 450 400 460 500 Q 470 600 480 650"/>
-        <path d="M 554 320 Q 574 400 564 500 Q 554 600 544 650"/>
-        <!-- Shorts -->
-        <ellipse cx="512" cy="650" rx="80" ry="40"/>
-        <!-- Motorcycle -->
-        <ellipse cx="512" cy="750" rx="200" ry="80"/>
-        <circle cx="312" cy="760" r="35"/>
-        <circle cx="712" cy="760" r="35"/>
-      </g>
-      <g stroke="#2d6a4f" stroke-width="4" fill="none" stroke-linecap="round">
-        <path d="M 50 50 Q 150 20 250 50 Q 350 80 450 50 Q 550 20 650 50 Q 750 80 850 50 Q 950 20 974 50"/>
-        <path d="M 50 974 Q 150 1004 250 974 Q 350 944 450 974 Q 550 1004 650 974 Q 750 944 850 974 Q 950 1004 974 974"/>
-      </g>
-      <text x="512" y="950" text-anchor="middle" font-family="serif" font-size="16" fill="black">Ivy's Peace</text>
-    </svg>`)}`,
+    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="800" fill="#f8f8f8"/>
+      <circle cx="400" cy="250" r="50" stroke="black" stroke-width="3" fill="none"/>
+      <ellipse cx="400" cy="290" rx="35" ry="20" stroke="black" stroke-width="3" fill="none"/>
+      <circle cx="385" cy="240" r="5" stroke="black" stroke-width="2" fill="none"/>
+      <circle cx="415" cy="240" r="5" stroke="black" stroke-width="2" fill="none"/>
+      <circle cx="385" cy="240" r="1.5" fill="black"/>
+      <circle cx="415" cy="240" r="1.5" fill="black"/>
+      <path d="M 380 270 Q 400 280 420 270" stroke="black" stroke-width="2" fill="none"/>
+      <ellipse cx="400" cy="350" rx="60" ry="30" stroke="black" stroke-width="3" fill="none"/>
+      <ellipse cx="400" cy="450" rx="80" ry="40" stroke="black" stroke-width="3" fill="none"/>
+      <ellipse cx="400" cy="600" rx="150" ry="70" stroke="black" stroke-width="3" fill="none"/>
+      <circle cx="250" cy="610" r="25" stroke="black" stroke-width="3" fill="none"/>
+      <circle cx="550" cy="610" r="25" stroke="black" stroke-width="3" fill="none"/>
+      <text x="400" y="750" text-anchor="middle" font-family="serif" font-size="20" fill="black">Ivy's Peace</text>
+    </svg>`,
   },
   {
     id: "tattoo-flash",
-    title: "Tattoo Flash Sheet",
-    description: "Classic tattoo designs - skulls, roses, daggers",
+    title: "Tattoo Flash",
+    description: "Classic tattoo flash sheet designs",
     emoji: "💀",
-    imageData: `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
-      <rect width="1024" height="1024" fill="#f8f8f8"/>
+    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="800" fill="#f8f8f8"/>
       <!-- Skull -->
-      <g transform="translate(256,200)">
-        <circle cx="0" cy="-20" r="40"/>
-        <ellipse cx="0" cy="20" rx="30" ry="25"/>
-        <circle cx="-12" cy="-30" r="5"/>
-        <circle cx="12" cy="-30" r="5"/>
-        <circle cx="-12" cy="-30" r="2" fill="black"/>
-        <circle cx="12" cy="-30" r="2" fill="black"/>
-        <polygon points="0,0 -5,10 5,10"/>
-        <rect x="-20" y="10" width="8" height="20"/>
-        <rect x="12" y="10" width="8" height="20"/>
-      </g>
+      <circle cx="250" cy="200" r="40" stroke="black" stroke-width="3" fill="none"/>
+      <ellipse cx="250" cy="240" rx="30" ry="25" stroke="black" stroke-width="3" fill="none"/>
+      <circle cx="238" cy="190" r="4" stroke="black" stroke-width="2" fill="none"/>
+      <circle cx="262" cy="190" r="4" stroke="black" stroke-width="2" fill="none"/>
+      <circle cx="238" cy="190" r="1.5" fill="black"/>
+      <circle cx="262" cy="190" r="1.5" fill="black"/>
+      <polygon points="250,220 247,230 253,230" stroke="black" stroke-width="2" fill="none"/>
       <!-- Rose -->
-      <g transform="translate(768,200)">
-        <circle cx="0" cy="0" r="25"/>
-        <circle cx="-8" cy="-8" r="15"/>
-        <circle cx="8" cy="-8" r="15"/>
-        <circle cx="0" cy="-15" r="12"/>
-        <circle cx="0" cy="15" r="8"/>
-        <rect x="-2" y="25" width="4" height="20"/>
-      </g>
+      <circle cx="550" cy="200" r="25" stroke="black" stroke-width="3" fill="none"/>
+      <circle cx="540" cy="190" r="15" stroke="black" stroke-width="2" fill="none"/>
+      <circle cx="560" cy="190" r="15" stroke="black" stroke-width="2" fill="none"/>
+      <circle cx="550" cy="210" r="12" stroke="black" stroke-width="2" fill="none"/>
+      <rect x="547" y="225" width="6" height="20" stroke="black" stroke-width="2" fill="none"/>
       <!-- Dagger -->
-      <g transform="translate(256,500)">
-        <polygon points="0,-50 15,20 10,50 0,45 -10,50 -15,20"/>
-        <rect x="-5" y="50" width="10" height="30"/>
-        <rect x="-8" y="80" width="16" height="15"/>
-      </g>
+      <polygon points="250,450 260,520 255,530 250,525 245,530 240,520" stroke="black" stroke-width="3" fill="none"/>
+      <rect x="240" y="530" width="20" height="25" stroke="black" stroke-width="3" fill="none"/>
       <!-- Anchor -->
-      <g transform="translate(768,500)">
-        <circle cx="0" cy="-30" r="10"/>
-        <rect x="-5" y="-20" width="10" height="80"/>
-        <ellipse cx="-15" cy="40" rx="8" ry="15"/>
-        <ellipse cx="15" cy="40" rx="8" ry="15"/>
-        <rect x="-20" y="55" width="40" height="8"/>
-      </g>
-      <g stroke="#8B4513" stroke-width="4" fill="none" stroke-linecap="round">
-        <rect x="80" y="80" width="864" height="864" rx="20" fill="none"/>
-      </g>
-      <text x="512" y="950" text-anchor="middle" font-family="serif" font-size="16" fill="black">Ivy's Peace</text>
-    </svg>`)}`,
+      <circle cx="550" cy="440" r="10" stroke="black" stroke-width="3" fill="none"/>
+      <rect x="545" y="440" width="10" height="60" stroke="black" stroke-width="3" fill="none"/>
+      <ellipse cx="535" cy="500" rx="8" ry="12" stroke="black" stroke-width="3" fill="none"/>
+      <ellipse cx="565" cy="500" rx="8" ry="12" stroke="black" stroke-width="3" fill="none"/>
+      <text x="400" y="750" text-anchor="middle" font-family="serif" font-size="20" fill="black">Ivy's Peace</text>
+    </svg>`,
   },
   {
     id: "military-skull",
-    title: "Military Skull Warrior",
-    description: "Skull wearing military helmet and dog tags",
+    title: "Military Skull",
+    description: "Military helmet with dog tags and weapons",
     emoji: "💀",
-    imageData: `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
-      <rect width="1024" height="1024" fill="#f8f8f8"/>
-      <g stroke="black" stroke-width="3" fill="none">
-        <!-- Helmet -->
-        <ellipse cx="512" cy="280" rx="100" ry="50"/>
-        <ellipse cx="512" cy="290" rx="85" ry="35"/>
-        <!-- Skull -->
-        <circle cx="512" cy="350" r="90"/>
-        <ellipse cx="512" cy="420" rx="70" ry="50"/>
-        <!-- Eyes -->
-        <circle cx="485" cy="330" r="12"/>
-        <circle cx="539" cy="330" r="12"/>
-        <circle cx="485" cy="330" r="6" fill="black"/>
-        <circle cx="539" cy="330" r="6" fill="black"/>
-        <!-- Nose -->
-        <ellipse cx="512" cy="370" rx="8" ry="12"/>
-        <!-- Mouth -->
-        <rect x="495" y="400" width="34" height="20"/>
-        <rect x="500" y="405" width="6" height="10"/>
-        <rect x="508" y="405" width="6" height="10"/>
-        <rect x="516" y="405" width="6" height="10"/>
-        <rect x="524" y="405" width="6" height="10"/>
-      </g>
+    svg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="800" fill="#f8f8f8"/>
+      <!-- Helmet -->
+      <ellipse cx="400" cy="250" rx="80" ry="40" stroke="black" stroke-width="3" fill="none"/>
+      <ellipse cx="400" cy="260" rx="70" ry="30" stroke="black" stroke-width="2" fill="none"/>
+      <!-- Skull -->
+      <circle cx="400" cy="350" r="70" stroke="black" stroke-width="3" fill="none"/>
+      <ellipse cx="400" cy="410" rx="55" ry="40" stroke="black" stroke-width="3" fill="none"/>
+      <circle cx="385" cy="340" r="8" stroke="black" stroke-width="2" fill="none"/>
+      <circle cx="415" cy="340" r="8" stroke="black" stroke-width="2" fill="none"/>
+      <circle cx="385" cy="340" r="3" fill="black"/>
+      <circle cx="415" cy="340" r="3" fill="black"/>
+      <polygon points="400,380 397,390 403,390" stroke="black" stroke-width="2" fill="none"/>
+      <rect x="385" y="395" width="30" height="15" stroke="black" stroke-width="2" fill="none"/>
       <!-- Dog tags -->
-      <g transform="translate(520,500)">
-        <ellipse cx="0" cy="0" rx="10" ry="18"/>
-        <rect x="-5" y="-15" width="10" height="35"/>
-      </g>
-      <g transform="translate(580,500)">
-        <ellipse cx="0" cy="0" rx="10" ry="18"/>
-        <rect x="-5" y="-15" width="10" height="35"/>
-      </g>
-      <g stroke="#2d4a1e" stroke-width="4" fill="none" stroke-linecap="round">
-        <rect x="50" y="50" width="924" height="924" rx="20" fill="none"/>
-      </g>
-      <text x="512" y="950" text-anchor="middle" font-family="serif" font-size="16" fill="black">Ivy's Peace</text>
-    </svg>`)}`,
+      <ellipse cx="370" cy="500" rx="8" ry="15" stroke="black" stroke-width="2" fill="none"/>
+      <ellipse cx="430" cy="500" rx="8" ry="15" stroke="black" stroke-width="2" fill="none"/>
+      <rect x="365" y="485" width="10" height="30" stroke="black" stroke-width="1" fill="none"/>
+      <rect x="425" y="485" width="10" height="30" stroke="black" stroke-width="1" fill="none"/>
+      <!-- Crossed rifles -->
+      <line x1="350" y1="600" x2="450" y2="650" stroke="black" stroke-width="4"/>
+      <line x1="350" y1="650" x2="450" y2="600" stroke="black" stroke-width="4"/>
+      <text x="400" y="750" text-anchor="middle" font-family="serif" font-size="20" fill="black">Ivy's Peace</text>
+    </svg>`,
   },
 ];
 
@@ -186,71 +114,80 @@ export default function ColoringPages() {
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
 
   const handleDownloadPNG = (page: typeof coloringPages[0]) => {
-    const img = page.imageData;
-    const a = document.createElement("a");
-    a.href = img;
-    a.download = `${page.title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.png`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    // Create a canvas and draw the SVG
+    const canvas = document.createElement("canvas");
+    canvas.width = 800;
+    canvas.height = 800;
+    const ctx = canvas.getContext("2d");
+
+    if (ctx) {
+      // Create an image from the SVG
+      const img = new Image();
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0);
+        // Convert to PNG and download
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${page.title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.png`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+          }
+        });
+      };
+      img.src = `data:image/svg+xml;base64,${btoa(page.svg)}`;
+    }
   };
 
   const handleDownloadPDF = (page: typeof coloringPages[0]) => {
-    const img = page.imageData;
-    const image = new Image();
-    image.crossOrigin = "anonymous";
-    image.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = image.naturalWidth || 1024;
-      canvas.height = image.naturalHeight || 1024;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-      ctx.drawImage(image, 0, 0);
+    const canvas = document.createElement("canvas");
+    canvas.width = 800;
+    canvas.height = 800;
+    const ctx = canvas.getContext("2d");
 
-      const imgData = canvas.toDataURL("image/png");
+    if (ctx) {
+      const img = new Image();
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0);
 
-      const pdfWidth = 595.28;
-      const pdfHeight = 841.89;
-      const margin = 20;
-      const printableW = pdfWidth - margin * 2;
-      const printableH = pdfHeight - margin * 2;
-      const aspect = canvas.width / canvas.height;
+        const imgData = canvas.toDataURL("image/png");
+        const pdfWidth = 595.28;
+        const pdfHeight = 841.89;
+        const margin = 20;
+        const printableW = pdfWidth - margin * 2;
+        const printableH = pdfHeight - margin * 2;
+        const aspect = canvas.width / canvas.height;
 
-      let drawW, drawH;
-      if (printableW / printableH > aspect) {
-        drawH = printableH;
-        drawW = drawH * aspect;
-      } else {
-        drawW = printableW;
-        drawH = drawW / aspect;
-      }
+        let drawW, drawH;
+        if (printableW / printableH > aspect) {
+          drawH = printableH;
+          drawW = drawH * aspect;
+        } else {
+          drawW = printableW;
+          drawH = drawW / aspect;
+        }
 
-      const offsetX = margin + (printableW - drawW) / 2;
-      const offsetY = margin + (printableH - drawH) / 2;
+        const offsetX = margin + (printableW - drawW) / 2;
+        const offsetY = margin + (printableH - drawH) / 2;
 
-      const stream = buildMinimalPDF(
-        imgData,
-        pdfWidth,
-        pdfHeight,
-        drawW,
-        drawH,
-        offsetX,
-        offsetY
-      );
+        const stream = buildMinimalPDF(imgData, pdfWidth, pdfHeight, drawW, drawH, offsetX, offsetY);
 
-      const blob = new Blob([new Uint8Array(stream)], {
-        type: "application/pdf",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${page.title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    };
-    image.src = img;
+        const blob = new Blob([new Uint8Array(stream)], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${page.title.toLowerCase().replace(/\s+/g, "-")}-coloring-page.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      };
+      img.src = `data:image/svg+xml;base64,${btoa(page.svg)}`;
+    }
   };
 
   const selectedPageData = coloringPages.find(p => p.id === selectedPage);
@@ -297,10 +234,9 @@ export default function ColoringPages() {
             </p>
 
             <div className="bg-white rounded-2xl p-8 max-w-2xl mx-auto mb-8">
-              <img
-                src={selectedPageData.imageData}
-                alt={selectedPageData.title}
-                className="w-full h-auto rounded-lg shadow-lg"
+              <div
+                dangerouslySetInnerHTML={{ __html: selectedPageData.svg }}
+                className="w-full h-auto max-w-lg mx-auto"
               />
             </div>
 
