@@ -153,6 +153,7 @@ export default function GeneratorPage() {
   const [variations, setVariations] = useState<Variation[]>([]);
   const [isGeneratingVariations, setIsGeneratingVariations] = useState(false);
   const [variationCount, setVariationCount] = useState(0);
+  const [isFallback, setIsFallback] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
 
   const isCustom = selectedCategory === "custom";
@@ -194,11 +195,12 @@ export default function GeneratorPage() {
       return;
     }
 
-    setIsGenerating(true);
+      setIsGenerating(true);
     setError(null);
     setGeneratedImage(null);
     setViewingHistory(null);
     setVariations([]);
+    setIsFallback(false);
 
     const prompt = isCustom
       ? customPrompt.trim()
@@ -220,16 +222,28 @@ export default function GeneratorPage() {
     setSceneTitle(title);
 
     try {
-      const imageUrl = await generateImage(
-        prompt,
-        style,
-        isPitbull ? pitbullModifiers : undefined
-      );
-      setGeneratedImage(imageUrl);
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt,
+          style,
+          customModifiers: isPitbull ? pitbullModifiers : undefined,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to generate image");
+      }
+
+      setGeneratedImage(data.imageUrl);
+      setIsFallback(!!data.fallback);
 
       const item: HistoryItem = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        imageUrl,
+        imageUrl: data.imageUrl,
         title,
         prompt,
         timestamp: Date.now(),
@@ -324,6 +338,7 @@ export default function GeneratorPage() {
     setSceneTitle("");
     setVariations([]);
     setError(null);
+    setIsFallback(false);
   }
 
   function handlePitbullHintSelect(hint: string) {
@@ -730,6 +745,25 @@ export default function GeneratorPage() {
                   className="w-full h-auto"
                 />
               </div>
+              {isFallback && !viewingHistory && (
+                <div className="mt-4 p-3 bg-amber-900/20 border border-amber-600/40 rounded-lg">
+                  <p className="text-amber-300 text-sm flex items-center gap-2">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    Using fallback SVG design while AI image service is unavailable. The design maintains the coloring page style and can still be printed and colored.
+                  </p>
+                </div>
+              )}
 
               <div className="mt-8 flex flex-wrap gap-3 justify-center">
                 <button
