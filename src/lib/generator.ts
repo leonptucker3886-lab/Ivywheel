@@ -1,1133 +1,1120 @@
 const SIZE = 1024;
 const C = SIZE / 2;
+const K = "#1a1a1a";
 
 function rng(seed: number) {
-  let s = seed;
+  let s = seed | 0 || 1;
   return () => {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    return (s >>> 0) / 0xffffffff;
+    s = (Math.imul(s, 1664525) + 1013904223) | 0;
+    return (s >>> 0) / 4294967296;
   };
 }
 
-function hashText(text: string): number {
-  let h = 0;
-  for (let i = 0; i < text.length; i++) {
-    h = ((h << 5) - h + text.charCodeAt(i)) | 0;
+function hashText(t: string) {
+  let h = 7;
+  for (let i = 0; i < t.length; i++) h = Math.imul(h ^ t.charCodeAt(i), 2654435761);
+  return ((h ^ h >>> 16) >>> 0);
+}
+
+function rr(r: () => number, a: number, b: number) { return a + r() * (b - a); }
+function ri(r: () => number, a: number, b: number) { return (a + Math.floor(r() * (b - a + 1))); }
+function pick<T>(r: () => number, arr: T[]): T { return arr[Math.floor(r() * arr.length)]; }
+
+function P(d: string, sw = 2, fill = "none", s = K) {
+  return `<path d="${d}" fill="${fill}" stroke="${s}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
+
+function E(cx: number, cy: number, rx: number, ry: number, sw = 2, fill = "none", rot = 0, s = K) {
+  const t = rot ? ` transform="rotate(${rot} ${cx} ${cy})"` : "";
+  return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${fill}" stroke="${s}" stroke-width="${sw}"${t}/>`;
+}
+
+function C2(cx: number, cy: number, rad: number, sw = 2, fill = "none", s = K) {
+  return `<circle cx="${cx}" cy="${cy}" r="${rad}" fill="${fill}" stroke="${s}" stroke-width="${sw}"/>`;
+}
+
+function L(x1: number, y1: number, x2: number, y2: number, sw = 2, s = K) {
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${s}" stroke-width="${sw}" stroke-linecap="round"/>`;
+}
+
+function dot(x: number, y: number, rad = 1.5) {
+  return `<circle cx="${x}" cy="${y}" r="${rad}" fill="${K}"/>`;
+}
+
+function dotLine(x1: number, y1: number, x2: number, y2: number, n: number, dr = 1) {
+  let o = "";
+  for (let i = 0; i < n; i++) {
+    const t = n === 1 ? 0.5 : i / (n - 1);
+    o += dot(x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, dr);
   }
-  return Math.abs(h);
+  return o;
 }
 
-function rr(r: () => number, min: number, max: number) {
-  return min + r() * (max - min);
+function dotArc(cx: number, cy: number, rad: number, a1: number, a2: number, n: number, dr = 1) {
+  let o = "";
+  for (let i = 0; i < n; i++) {
+    const t = n === 1 ? 0.5 : i / (n - 1);
+    const a = a1 + (a2 - a1) * t;
+    o += dot(cx + Math.cos(a) * rad, cy + Math.sin(a) * rad, dr);
+  }
+  return o;
 }
 
-function ri(r: () => number, min: number, max: number) {
-  return Math.floor(rr(r, min, max));
-}
-
-function path(d: string, stroke = "#1a1a1a", sw = 2.5, fill = "none") {
-  return `<path d="${d}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`;
-}
-
-function ellipse(cx: number, cy: number, rx: number, ry: number, stroke = "#1a1a1a", sw = 2.5, fill = "none", transform = "") {
-  const t = transform ? ` transform="${transform}"` : "";
-  return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"${t}/>`;
-}
-
-function circle(cx: number, cy: number, r: number, stroke = "#1a1a1a", sw = 2, fill = "none") {
-  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
-}
-
-function line(x1: number, y1: number, x2: number, y2: number, stroke = "#1a1a1a", sw = 2) {
-  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round"/>`;
-}
-
-function dot(cx: number, cy: number, r = 1.5) {
-  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#1a1a1a"/>`;
-}
-
-function dotRow(x1: number, y1: number, x2: number, y2: number, count: number, dotR = 1.2) {
-  const parts: string[] = [];
+function dotFill(cx: number, cy: number, w: number, h: number, density: number, r: () => number, maxR = 1.5) {
+  let o = "";
+  const count = Math.floor(w * h / density);
   for (let i = 0; i < count; i++) {
-    const t = i / (count - 1);
-    parts.push(dot(x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, dotR));
+    o += dot(cx + rr(r, -w / 2, w / 2), cy + rr(r, -h / 2, h / 2), rr(r, 0.4, maxR));
   }
-  return parts.join("");
+  return o;
 }
 
-function dotArc(cx: number, cy: number, r: number, startAngle: number, endAngle: number, count: number, dotR = 1.2) {
-  const parts: string[] = [];
+function dotFillCircle(cx: number, cy: number, rad: number, density: number, r: () => number, maxR = 1.5) {
+  let o = "";
+  const count = Math.floor(rad * rad * Math.PI / density);
   for (let i = 0; i < count; i++) {
-    const t = i / (count - 1);
-    const a = startAngle + (endAngle - startAngle) * t;
-    parts.push(dot(cx + Math.cos(a) * r, cy + Math.sin(a) * r, dotR));
+    const a = rr(r, 0, Math.PI * 2);
+    const d = rad * Math.sqrt(r());
+    o += dot(cx + Math.cos(a) * d, cy + Math.sin(a) * d, rr(r, 0.3, maxR));
   }
-  return parts.join("");
+  return o;
 }
 
-function crossHatch(cx: number, cy: number, w: number, h: number, spacing: number, angle = 0, sw = 0.8) {
-  const parts: string[] = [];
+function hatch(cx: number, cy: number, w: number, h: number, spacing: number, angle: number, sw = 0.6) {
+  let o = "";
+  const diag = Math.sqrt(w * w + h * h);
   const cos = Math.cos(angle);
   const sin = Math.sin(angle);
-  for (let i = -w; i <= w; i += spacing) {
-    const x1 = cx + i * cos - h * sin;
-    const y1 = cy + i * sin + h * cos;
-    const x2 = cx + i * cos + h * sin;
-    const y2 = cy + i * sin - h * cos;
-    parts.push(line(x1, y1, x2, y2, "#1a1a1a", sw));
+  for (let i = -diag; i <= diag; i += spacing) {
+    o += L(cx + i * cos - diag * sin, cy + i * sin + diag * cos, cx + i * cos + diag * sin, cy + i * sin - diag * cos, sw);
   }
-  return parts.join("");
+  return o;
 }
 
-function filigreeScroll(cx: number, cy: number, size: number, angle: number, r: () => number) {
-  const parts: string[] = [];
-  const dir = r() > 0.5 ? 1 : -1;
-  const s = size;
-  parts.push(`<g transform="translate(${cx},${cy}) rotate(${angle})">`);
-  parts.push(path(`M0 0 Q${s * 0.3} ${-s * 0.4 * dir} ${s * 0.6} ${-s * 0.2 * dir} Q${s * 0.9} ${s * 0.1 * dir} ${s * 0.7} ${s * 0.4 * dir} Q${s * 0.5} ${s * 0.6 * dir} ${s * 0.2} ${s * 0.5 * dir}`, "#1a1a1a", 1.5));
-  parts.push(path(`M${s * 0.2} ${s * 0.5 * dir} Q${s * 0.05} ${s * 0.35 * dir} ${s * 0.15} ${s * 0.15 * dir}`, "#1a1a1a", 1));
-  const dotCount = ri(r, 3, 6);
-  for (let i = 0; i < dotCount; i++) {
-    const t = i / dotCount;
-    parts.push(dot(s * 0.3 * t, -s * 0.2 * dir * t, 1 + r()));
-  }
-  parts.push("</g>");
-  return parts.join("");
+function crossHatch(cx: number, cy: number, w: number, h: number, spacing: number, sw = 0.5) {
+  return hatch(cx, cy, w, h, spacing, 0, sw) + hatch(cx, cy, w, h, spacing, Math.PI / 2, sw);
 }
 
-function ornamentalRing(cx: number, cy: number, r1: number, r2: number, segments: number, rnd: () => number) {
-  const parts: string[] = [];
-  parts.push(circle(cx, cy, r1, "#1a1a1a", 1.5));
-  parts.push(circle(cx, cy, r2, "#1a1a1a", 1.5));
-  for (let i = 0; i < segments; i++) {
-    const a = (i / segments) * Math.PI * 2;
-    const na = ((i + 0.5) / segments) * Math.PI * 2;
-    parts.push(line(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1, cx + Math.cos(a) * r2, cy + Math.sin(a) * r2, "#1a1a1a", 1));
-    const pr = (r1 + r2) / 2;
-    const ps = (r2 - r1) * 0.25;
-    parts.push(ellipse(cx + Math.cos(na) * pr, cy + Math.sin(na) * pr, ps, ps * 0.5, "#1a1a1a", 1, "none", `rotate(${(na * 180) / Math.PI} ${cx + Math.cos(na) * pr} ${cy + Math.sin(na) * pr})`));
-  }
-  return parts.join("");
-}
-
-function featherDetail(cx: number, cy: number, length: number, angle: number, r: () => number) {
-  const parts: string[] = [];
-  parts.push(`<g transform="translate(${cx},${cy}) rotate(${angle})">`);
-  parts.push(path(`M0 0 Q${length * 0.1} ${-length * 0.02} ${length} 0`, "#1a1a1a", 2));
-  const barbs = ri(r, 8, 16);
-  for (let i = 1; i < barbs; i++) {
-    const t = i / barbs;
-    const x = length * t;
-    const barbLen = length * 0.2 * (1 - t * 0.5);
-    parts.push(path(`M${x} 0 Q${x + barbLen * 0.3} ${-barbLen} ${x + barbLen * 0.5} ${-barbLen * 0.8}`, "#1a1a1a", 0.8));
-    parts.push(path(`M${x} 0 Q${x + barbLen * 0.3} ${barbLen} ${x + barbLen * 0.5} ${barbLen * 0.8}`, "#1a1a1a", 0.8));
-    const d = ri(r, 2, 5);
-    parts.push(dotRow(x, 0, x + barbLen * 0.4, -barbLen * 0.6, d, 0.8));
-    parts.push(dotRow(x, 0, x + barbLen * 0.4, barbLen * 0.6, d, 0.8));
-  }
-  parts.push("</g>");
-  return parts.join("");
-}
-
-function furTexture(cx: number, cy: number, w: number, h: number, density: number, r: () => number) {
-  const parts: string[] = [];
-  for (let i = 0; i < density; i++) {
-    const x = cx + rr(r, -w / 2, w / 2);
-    const y = cy + rr(r, -h / 2, h / 2);
-    const len = rr(r, 5, 15);
-    const angle = rr(r, -0.5, 0.5);
-    parts.push(path(`M${x} ${y} Q${x + Math.cos(angle) * len * 0.5} ${y + Math.sin(angle) * len * 0.5 - 2} ${x + Math.cos(angle) * len} ${y + Math.sin(angle) * len}`, "#1a1a1a", 0.7));
-  }
-  return parts.join("");
-}
-
-function petalDetailed(cx: number, cy: number, size: number, angle: number, r: () => number) {
-  const parts: string[] = [];
+function petalPath(cx: number, cy: number, len: number, angle: number, curve: number) {
   const a = (angle * Math.PI) / 180;
-  const px = cx + Math.cos(a) * size * 0.5;
-  const py = cy + Math.sin(a) * size * 0.5;
   const perp = a + Math.PI / 2;
-  const w = size * 0.3;
-  parts.push(path(`M${cx} ${cy} Q${px + Math.cos(perp) * w} ${py + Math.sin(perp) * w} ${cx + Math.cos(a) * size} ${cy + Math.sin(a) * size} Q${px - Math.cos(perp) * w} ${py - Math.sin(perp) * w} ${cx} ${cy}`, "#1a1a1a", 1.5));
-  parts.push(path(`M${cx} ${cy} L${cx + Math.cos(a) * size * 0.85} ${cy + Math.sin(a) * size * 0.85}`, "#1a1a1a", 0.8));
-  const veinCount = ri(r, 2, 5);
-  for (let v = 0; v < veinCount; v++) {
-    const t = 0.2 + v * 0.2;
-    const vx = cx + Math.cos(a) * size * t;
-    const vy = cy + Math.sin(a) * size * t;
-    const vl = size * 0.15 * (1 - t);
-    parts.push(path(`M${vx} ${vy} Q${vx + Math.cos(perp) * vl} ${vy + Math.sin(perp) * vl} ${vx + Math.cos(a + 0.3) * vl} ${vy + Math.sin(a + 0.3) * vl}`, "#1a1a1a", 0.6));
-    parts.push(path(`M${vx} ${vy} Q${vx - Math.cos(perp) * vl} ${vy - Math.sin(perp) * vl} ${vx + Math.cos(a - 0.3) * vl} ${vy + Math.sin(a - 0.3) * vl}`, "#1a1a1a", 0.6));
-  }
-  return parts.join("");
+  const tipX = cx + Math.cos(a) * len;
+  const tipY = cy + Math.sin(a) * len;
+  const cp1x = cx + Math.cos(a) * len * 0.4 + Math.cos(perp) * curve;
+  const cp1y = cy + Math.sin(a) * len * 0.4 + Math.sin(perp) * curve;
+  const cp2x = cx + Math.cos(a) * len * 0.7 + Math.cos(perp) * curve * 0.6;
+  const cp2y = cy + Math.sin(a) * len * 0.7 + Math.sin(perp) * curve * 0.6;
+  const cp3x = cx + Math.cos(a) * len * 0.4 - Math.cos(perp) * curve;
+  const cp3y = cy + Math.sin(a) * len * 0.4 - Math.sin(perp) * curve;
+  const cp4x = cx + Math.cos(a) * len * 0.7 - Math.cos(perp) * curve * 0.6;
+  const cp4y = cy + Math.sin(a) * len * 0.7 - Math.sin(perp) * curve * 0.6;
+  return `M${cx} ${cy} C${cp1x} ${cp1y} ${cp2x} ${cp2y} ${tipX} ${tipY} C${cp4x} ${cp4y} ${cp3x} ${cp3y} ${cx} ${cy}`;
 }
 
-function eyeDetailed(cx: number, cy: number, size: number, r: () => number) {
-  const parts: string[] = [];
-  parts.push(ellipse(cx, cy, size, size * 1.2));
-  parts.push(circle(cx, cy, size * 0.55, "#1a1a1a", 2, "#1a1a1a"));
-  parts.push(circle(cx - size * 0.15, cy - size * 0.15, size * 0.15, "#1a1a1a", 1, "white"));
-  parts.push(ellipse(cx, cy, size * 0.85, size * 1.05, "#1a1a1a", 0.5));
-  const lashCount = ri(r, 5, 9);
-  for (let i = 0; i < lashCount; i++) {
-    const a = -Math.PI * 0.7 + (i / (lashCount - 1)) * Math.PI * 1.4;
-    const l = size * rr(r, 0.3, 0.6);
-    parts.push(path(`M${cx + Math.cos(a) * size} ${cy + Math.sin(a) * size * 1.2} Q${cx + Math.cos(a) * (size + l * 0.5)} ${cy + Math.sin(a) * (size * 1.2 + l * 0.3)} ${cx + Math.cos(a) * (size + l)} ${cy + Math.sin(a) * (size * 1.2 + l * 0.5)}`, "#1a1a1a", 0.8));
-  }
-  return parts.join("");
+function leafPath(cx: number, cy: number, len: number, angle: number, width: number) {
+  return petalPath(cx, cy, len, angle, width);
 }
 
-function noseDetailed(cx: number, cy: number, size: number, r: () => number) {
-  const parts: string[] = [];
-  parts.push(path(`M${cx} ${cy - size * 0.3} Q${cx - size * 0.6} ${cy} ${cx - size * 0.4} ${cy + size * 0.4} Q${cx} ${cy + size * 0.6} ${cx + size * 0.4} ${cy + size * 0.4} Q${cx + size * 0.6} ${cy} ${cx} ${cy - size * 0.3}`, "#1a1a1a", 2));
-  parts.push(path(`M${cx} ${cy - size * 0.1} L${cx} ${cy + size * 0.3}`, "#1a1a1a", 1));
-  parts.push(path(`M${cx - size * 0.15} ${cy + size * 0.3} Q${cx} ${cy + size * 0.5} ${cx + size * 0.15} ${cy + size * 0.3}`, "#1a1a1a", 1));
-  parts.push(dotArc(cx, cy + size * 0.1, size * 0.25, -Math.PI * 0.8, -Math.PI * 0.2, ri(r, 4, 8), 0.8));
-  return parts.join("");
+function scrollPath(cx: number, cy: number, size: number, angle: number, dir: number) {
+  const a = (angle * Math.PI) / 180;
+  const s = size;
+  let d = `M${cx} ${cy}`;
+  const pts = [
+    [s * 0.3, -s * 0.5 * dir],
+    [s * 0.7, -s * 0.3 * dir],
+    [s * 0.9, s * 0.1 * dir],
+    [s * 0.6, s * 0.5 * dir],
+    [s * 0.2, s * 0.4 * dir],
+    [s * 0.1, s * 0.15 * dir],
+  ];
+  const cos = Math.cos(a);
+  const sin = Math.sin(a);
+  for (const [px, py] of pts) {
+    const rx = cx + px * cos - py * sin;
+    const ry = cy + px * sin + py * cos;
+    d += ` L${rx} ${ry}`;
+  }
+  return d + "Z";
+}
+
+function frame(cx: number, cy: number, r: number, sw = 3) {
+  let o = C2(cx, cy, r, sw);
+  o += C2(cx, cy, r - 4, 0.8);
+  o += C2(cx, cy, r - 8, 0.5);
+  o += dotArc(cx, cy, r - 2, 0, Math.PI * 2, Math.floor(r * 0.3), 1.2);
+  return o;
+}
+
+function ornamentalBorder(cx: number, cy: number, r1: number, r2: number, count: number, r: () => number) {
+  let o = C2(cx, cy, r1, 1.5) + C2(cx, cy, r2, 1.5);
+  for (let i = 0; i < count; i++) {
+    const a = (i / count) * Math.PI * 2;
+    o += L(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1, cx + Math.cos(a) * r2, cy + Math.sin(a) * r2, 0.8);
+    const mid = (r1 + r2) / 2;
+    const da = ((i + 0.5) / count) * Math.PI * 2;
+    o += dot(cx + Math.cos(da) * mid, cy + Math.sin(da) * mid, 1.2);
+  }
+  return o;
+}
+
+function rose(cx: number, cy: number, size: number, r: () => number) {
+  let o = "";
+  const layers = ri(r, 4, 7);
+  for (let l = layers; l >= 1; l--) {
+    const lr = (l / layers) * size;
+    const petals = ri(r, 5, 8);
+    const offset = l * 23;
+    for (let p = 0; p < petals; p++) {
+      const a = (p / petals) * 360 + offset + rr(r, -10, 10);
+      const curve = lr * rr(r, 0.3, 0.5);
+      o += P(petalPath(cx, cy, lr, a, curve), 1.5);
+      o += P(petalPath(cx, cy, lr * 0.9, a, curve * 0.9), 0.6);
+    }
+  }
+  o += dotFillCircle(cx, cy, size * 0.12, 8, r, 1);
+  o += C2(cx, cy, size * 0.12, 1.5);
+  o += C2(cx, cy, size * 0.06, 1);
+  return o;
+}
+
+function dahlia(cx: number, cy: number, size: number, r: () => number) {
+  let o = "";
+  const rings = ri(r, 5, 8);
+  for (let ring = rings; ring >= 1; ring--) {
+    const rr2 = (ring / rings) * size;
+    const petals = ri(r, 8, 16);
+    for (let p = 0; p < petals; p++) {
+      const a = (p / petals) * 360 + ring * 17;
+      const plen = rr2 * rr(r, 0.2, 0.35);
+      o += P(petalPath(cx + Math.cos((a * Math.PI) / 180) * rr2 * 0.3, cy + Math.sin((a * Math.PI) / 180) * rr2 * 0.3, plen, a, plen * 0.3), 1);
+    }
+  }
+  o += dotFillCircle(cx, cy, size * 0.15, 6, r, 1.2);
+  o += C2(cx, cy, size * 0.15, 2);
+  return o;
+}
+
+function sunflower(cx: number, cy: number, size: number, r: () => number) {
+  let o = "";
+  const petals = ri(r, 16, 28);
+  for (let p = 0; p < petals; p++) {
+    const a = (p / petals) * 360 + rr(r, -5, 5);
+    o += P(petalPath(cx, cy, size, a, size * 0.15), 1.5);
+    o += P(petalPath(cx, cy, size * 0.85, a, size * 0.1), 0.5);
+  }
+  o += C2(cx, cy, size * 0.28, 2.5);
+  o += C2(cx, cy, size * 0.24, 1);
+  o += dotFillCircle(cx, cy, size * 0.24, 4, r, 1.5);
+  const spirals = ri(r, 8, 14);
+  for (let s = 0; s < spirals; s++) {
+    const a = (s / spirals) * Math.PI * 2;
+    for (let t = 0; t < 5; t++) {
+      const d = size * 0.05 + t * size * 0.04;
+      const ang = a + t * 0.4;
+      o += dot(cx + Math.cos(ang) * d, cy + Math.sin(ang) * d, 1.8);
+    }
+  }
+  return o;
+}
+
+function lily(cx: number, cy: number, size: number, r: () => number) {
+  let o = "";
+  const petals = ri(r, 5, 8);
+  for (let p = 0; p < petals; p++) {
+    const a = (p / petals) * 360;
+    o += P(petalPath(cx, cy, size, a, size * 0.4), 2);
+    o += L(cx, cy, cx + Math.cos((a * Math.PI) / 180) * size * 0.9, cy + Math.sin((a * Math.PI) / 180) * size * 0.9, 0.8);
+    for (let v = 1; v <= 3; v++) {
+      const t = v * 0.2;
+      const vx = cx + Math.cos((a * Math.PI) / 180) * size * t;
+      const vy = cy + Math.sin((a * Math.PI) / 180) * size * t;
+      const vl = size * 0.12 * (1 - t);
+      const perp = ((a + 90) * Math.PI) / 180;
+      o += P(`M${vx} ${vy} Q${vx + Math.cos(perp) * vl} ${vy + Math.sin(perp) * vl} ${vx + Math.cos(((a + 40) * Math.PI) / 180) * vl} ${vy + Math.sin(((a + 40) * Math.PI) / 180) * vl}`, 0.6);
+      o += P(`M${vx} ${vy} Q${vx - Math.cos(perp) * vl} ${vy - Math.sin(perp) * vl} ${vx + Math.cos(((a - 40) * Math.PI) / 180) * vl} ${vy + Math.sin(((a - 40) * Math.PI) / 180) * vl}`, 0.6);
+    }
+  }
+  o += C2(cx, cy, size * 0.08, 2, K);
+  const stamens = ri(r, 4, 7);
+  for (let s = 0; s < stamens; s++) {
+    const a = (s / stamens) * Math.PI * 2;
+    const sl = size * rr(r, 0.15, 0.3);
+    o += L(cx, cy, cx + Math.cos(a) * sl, cy + Math.sin(a) * sl, 1);
+    o += dot(cx + Math.cos(a) * sl, cy + Math.sin(a) * sl, 2.5);
+  }
+  return o;
+}
+
+function chrysanthemum(cx: number, cy: number, size: number, r: () => number) {
+  let o = "";
+  const layers = ri(r, 3, 5);
+  for (let l = 0; l < layers; l++) {
+    const lr = size * (0.5 + l * 0.17);
+    const petals = ri(r, 14, 24);
+    const pw = lr * rr(r, 0.06, 0.12);
+    for (let p = 0; p < petals; p++) {
+      const a = (p / petals) * 360 + l * 8;
+      o += P(petalPath(cx, cy, lr, a, pw), 1);
+    }
+  }
+  o += C2(cx, cy, size * 0.12, 2);
+  o += dotFillCircle(cx, cy, size * 0.1, 5, r, 1.2);
+  return o;
+}
+
+function flowerHead(cx: number, cy: number, size: number, r: () => number) {
+  return pick(r, [rose, dahlia, sunflower, lily, chrysanthemum])(cx, cy, size, r);
+}
+
+function detailedLeaf(cx: number, cy: number, len: number, angle: number, r: () => number) {
+  let o = "";
+  const w = len * rr(r, 0.25, 0.4);
+  o += P(leafPath(cx, cy, len, angle, w), 1.5);
+  const a = (angle * Math.PI) / 180;
+  o += L(cx, cy, cx + Math.cos(a) * len * 0.9, cy + Math.sin(a) * len * 0.9, 0.8);
+  const veins = ri(r, 3, 7);
+  for (let v = 1; v <= veins; v++) {
+    const t = v / (veins + 1);
+    const vx = cx + Math.cos(a) * len * t;
+    const vy = cy + Math.sin(a) * len * t;
+    const vl = w * 0.6 * (1 - t * 0.3);
+    const perp = a + Math.PI / 2;
+    o += P(`M${vx} ${vy} Q${vx + Math.cos(perp) * vl * 0.5 + Math.cos(a) * vl * 0.3} ${vy + Math.sin(perp) * vl * 0.5 + Math.sin(a) * vl * 0.3} ${vx + Math.cos(perp) * vl} ${vy + Math.sin(perp) * vl}`, 0.6);
+    o += P(`M${vx} ${vy} Q${vx - Math.cos(perp) * vl * 0.5 + Math.cos(a) * vl * 0.3} ${vy - Math.sin(perp) * vl * 0.5 + Math.sin(a) * vl * 0.3} ${vx - Math.cos(perp) * vl} ${vy - Math.sin(perp) * vl}`, 0.6);
+  }
+  o += dotFill(cx + Math.cos(a) * len * 0.5, cy + Math.sin(a) * len * 0.5, len * 0.6, w * 1.2, 30, r, 0.8);
+  return o;
+}
+
+function stem(x1: number, y1: number, x2: number, y2: number, curve: number, r: () => number) {
+  let o = "";
+  const mx = (x1 + x2) / 2 + curve;
+  const my = (y1 + y2) / 2;
+  o += P(`M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`, 2.5);
+  o += P(`M${x1 + 1} ${y1 + 1} Q${mx + 1} ${my + 1} ${x2 + 1} ${y2 + 1}`, 0.5);
+  return o;
 }
 
 function generatePitbulls(r: () => number): string {
-  const parts: string[] = [];
-  const bx = rr(r, 380, 650);
-  const by = rr(r, 500, 580);
-  const scale = rr(r, 0.95, 1.3);
-  const headTilt = rr(r, -10, 10);
+  let o = "";
+  const variant = ri(r, 0, 4);
+  const cx = C + rr(r, -80, 80);
+  const cy = C + rr(r, -40, 40);
+  const sc = rr(r, 0.9, 1.3);
 
-  parts.push(`<g transform="translate(${bx},${by}) scale(${scale})">`);
+  o += `<g transform="translate(${cx},${cy}) scale(${sc})">`;
 
-  parts.push(ellipse(0, 60, 140, 120));
-  parts.push(ellipse(0, 60, 135, 115, "#1a1a1a", 0.8));
-  parts.push(furTexture(0, 60, 250, 200, 60, r));
+  o += P(`M-110 40 C-130 0 -120 -60 -80 -90 C-50 -110 50 -110 80 -90 C120 -60 130 0 110 40 C100 80 80 120 60 140 L-60 140 C-80 120 -100 80 -110 40Z`, 3);
+  o += P(`M-108 40 C-128 0 -118 -58 -78 -88 C-48 -108 48 -108 78 -88 C118 -58 128 0 108 40 C98 78 78 118 58 138 L-58 138 C-78 118 -98 78 -108 40Z`, 0.8);
 
-  parts.push(ellipse(0, -60, 110, 90));
-  parts.push(ellipse(0, -60, 105, 85, "#1a1a1a", 0.8));
+  o += P(`M-60 -100 C-70 -130 -55 -160 -40 -150 C-30 -140 -35 -115 -50 -100`, 2.5);
+  o += P(`M60 -100 C70 -130 55 -160 40 -150 C30 -140 35 -115 50 -100`, 2.5);
+  o += P(`M-58 -98 C-65 -125 -52 -150 -42 -145`, 0.8);
+  o += P(`M58 -98 C65 -125 52 -150 42 -145`, 0.8);
+  o += dotFill(-48, -125, 20, 25, 12, r, 0.8);
+  o += dotFill(48, -125, 20, 25, 12, r, 0.8);
 
-  parts.push(`<g transform="rotate(${headTilt} 0 -60)">`);
-
-  const earSpread = rr(r, 60, 80);
-  for (const side of [-1, 1]) {
-    const ex = side * earSpread;
-    parts.push(ellipse(ex, -105, 38, 55, "#1a1a1a", 2.5, "none", `rotate(${side * (15 + rr(r, 0, 10))} ${ex} -105)`));
-    parts.push(ellipse(ex, -105, 28, 42, "#1a1a1a", 1, "none", `rotate(${side * (15 + rr(r, 0, 10))} ${ex} -105)`));
-    parts.push(crossHatch(ex, -105, 15, 25, 5, side * 0.3, 0.5));
-  }
-
-  const eyeSpacing = rr(r, 30, 42);
-  for (const side of [-1, 1]) {
-    parts.push(eyeDetailed(side * eyeSpacing, -72, 14, r));
-  }
-
-  const noseW = rr(r, 22, 32);
-  parts.push(noseDetailed(0, -30, noseW, r));
-
-  parts.push(path(`M0 ${-30 + noseW * 0.5} Q0 -5 ${-10 - rr(r, 0, 8)} ${rr(r, 2, 10)}`, "#1a1a1a", 2));
-  parts.push(path(`M0 ${-30 + noseW * 0.5} Q0 -5 ${10 + rr(r, 0, 8)} ${rr(r, 2, 10)}`, "#1a1a1a", 2));
-
-  const mouthW = rr(r, 35, 55);
-  parts.push(path(`M${-mouthW} ${rr(r, 8, 18)} Q0 ${rr(r, 25, 40)} ${mouthW} ${rr(r, 8, 18)}`, "#1a1a1a", 2.5));
-  parts.push(path(`M${-mouthW * 0.8} ${rr(r, 10, 20)} Q0 ${rr(r, 30, 45)} ${mouthW * 0.8} ${rr(r, 10, 20)}`, "#1a1a1a", 1));
-
-  const lipLines = ri(r, 3, 7);
-  for (let i = 0; i < lipLines; i++) {
-    const lx = -mouthW + (i / lipLines) * mouthW * 2;
-    parts.push(line(lx, rr(r, 5, 12), lx + rr(r, -3, 3), rr(r, 15, 25), "#1a1a1a", 0.5));
-  }
-
-  for (let i = 0; i < ri(r, 4, 8); i++) {
-    const wy = -50 + i * 8;
-    const ww = rr(r, 20, 40);
-    parts.push(path(`M${-ww} ${wy} Q0 ${wy + rr(r, 4, 10)} ${ww} ${wy}`, "#1a1a1a", 1.2));
-  }
-
-  parts.push(furTexture(0, -60, 180, 140, 40, r));
-
-  parts.push("</g>");
-
-  for (const side of [-1, 1]) {
-    const lx = side * rr(r, 65, 95);
-    parts.push(ellipse(lx, 150, 32, 65));
-    parts.push(ellipse(lx, 150, 28, 58, "#1a1a1a", 1));
-    parts.push(furTexture(lx, 140, 50, 100, 15, r));
-    parts.push(ellipse(lx, 220, rr(r, 32, 45), 20));
-    for (let t = 0; t < 4; t++) {
-      const tx = lx - 15 + t * 10;
-      parts.push(ellipse(tx, 215, 4, 8, "#1a1a1a", 1));
+  const esp = rr(r, 28, 38);
+  for (const s of [-1, 1]) {
+    const ex = s * esp;
+    o += E(ex, -45, 14, 16, 2);
+    o += E(ex, -45, 10, 12, 0.8);
+    o += C2(ex, -44, 7, 2, K);
+    o += C2(ex, -44, 3, 0, K);
+    o += dot(ex - 3, -48, 2);
+    const lashes = ri(r, 4, 7);
+    for (let l = 0; l < lashes; l++) {
+      const la = -Math.PI * 0.8 + (l / lashes) * Math.PI * 0.6;
+      o += P(`M${ex + Math.cos(la) * 14} ${-45 + Math.sin(la) * 16} Q${ex + Math.cos(la) * 22} ${-45 + Math.sin(la) * 22} ${ex + Math.cos(la) * 28} ${-45 + Math.sin(la) * 20}`, 0.7);
     }
   }
 
-  parts.push(path(`M130 20 Q${rr(r, 220, 320)} ${-rr(r, 60, 140)} ${rr(r, 200, 280)} ${rr(r, 30, 90)}`, "#1a1a1a", 3.5));
-  parts.push(path(`M130 20 Q${rr(r, 220, 320)} ${-rr(r, 50, 120)} ${rr(r, 200, 280)} ${rr(r, 30, 90)}`, "#1a1a1a", 1.5));
+  o += P(`M-20 -15 C-15 -5 15 -5 20 -15 C25 -5 20 5 0 8 C-20 5 -25 -5 -20 -15`, 2);
+  o += P(`M-18 -13 C-13 -5 13 -5 18 -13`, 0.8);
+  o += P(`M0 -5 L0 8`, 0.8);
+  o += dotFill(0, -10, 15, 8, 10, r, 0.8);
+  o += P(`M0 8 C-5 12 -10 10 -12 14`, 1.5);
+  o += P(`M0 8 C5 12 10 10 12 14`, 1.5);
 
-  const collarY = rr(r, 90, 120);
-  parts.push(path(`M-80 ${collarY} Q0 ${collarY + 15} 80 ${collarY}`, "#1a1a1a", 3));
-  parts.push(path(`M-75 ${collarY + 3} Q0 ${collarY + 18} 75 ${collarY + 3}`, "#1a1a1a", 1.5));
-  const tagX = rr(r, -10, 10);
-  parts.push(circle(tagX, collarY + 20, 8));
-  parts.push(dot(tagX, collarY + 20, 2));
+  o += P(`M-40 18 C-20 30 20 30 40 18`, 2.5);
+  o += P(`M-35 20 C-18 30 18 30 35 20`, 0.8);
 
-  parts.push("</g>");
-  return parts.join("\n");
+  for (let w = 0; w < ri(r, 4, 8); w++) {
+    const wy = -70 + w * 8;
+    const ww = rr(r, 25, 50);
+    o += P(`M${-ww} ${wy} C${-ww * 0.3} ${wy + rr(r, 3, 8)} ${ww * 0.3} ${wy + rr(r, 3, 8)} ${ww} ${wy}`, 1);
+  }
+
+  const spots = ri(r, 2, 6);
+  for (let i = 0; i < spots; i++) {
+    const sx = rr(r, -60, 60);
+    const sy = rr(r, -80, 20);
+    const sr = rr(r, 8, 25);
+    o += P(`M${sx - sr} ${sy} C${sx - sr} ${sy - sr * 0.6} ${sx + sr} ${sy - sr * 0.6} ${sx + sr} ${sy} C${sx + sr} ${sy + sr * 0.6} ${sx - sr} ${sy + sr * 0.6} ${sx - sr} ${sy}`, 1.2);
+    o += dotFill(sx, sy, sr * 1.5, sr * 1.5, 15, r, 0.6);
+  }
+
+  o += P(`M-80 80 C-85 110 -75 150 -60 165 C-50 175 -35 175 -30 165 L-30 145 C-40 140 -50 135 -55 120 C-60 105 -70 85 -80 80`, 2.5);
+  o += P(`M80 80 C85 110 75 150 60 165 C50 175 35 175 30 165 L30 145 C40 140 50 135 55 120 C60 105 70 85 80 80`, 2.5);
+
+  for (const s of [-1, 1]) {
+    for (let t = 0; t < 3; t++) {
+      const tx = s * (42 + t * 8);
+      o += E(tx, 168, 5, 9, 1);
+    }
+  }
+
+  o += P(`M-55 140 C-55 145 -45 148 -30 148 C-15 148 15 148 30 148 C45 148 55 145 55 140`, 1.5);
+
+  const collar = ri(r, 0, 2);
+  if (collar === 0) {
+    o += P(`M-65 55 C-30 65 30 65 65 55`, 3);
+    o += P(`M-60 58 C-28 67 28 67 60 58`, 1);
+    o += C2(0, 62, 8, 2);
+    o += C2(0, 62, 3, 0, K);
+  }
+
+  o += P(`M105 20 C160 -30 200 -80 180 -40 C165 -10 140 10 110 25`, 3.5);
+  o += P(`M105 20 C155 -25 195 -70 178 -38`, 1.2);
+
+  o += dotFill(0, 20, 180, 120, 40, r, 0.7);
+  o += dotFill(0, -50, 150, 100, 35, r, 0.6);
+
+  o += `</g>`;
+  return o;
 }
 
 function generateGardens(r: () => number): string {
-  const parts: string[] = [];
+  let o = "";
+  const groundY = rr(r, 900, 960);
 
-  const groundY = rr(r, 920, 960);
-  parts.push(path(`M0 ${groundY} Q${rr(r, 100, 200)} ${groundY - 20} ${rr(r, 300, 400)} ${groundY} Q${rr(r, 500, 600)} ${groundY + 15} ${rr(r, 700, 800)} ${groundY} Q${rr(r, 900, 950)} ${groundY - 10} 1024 ${groundY}`, "#1a1a1a", 2.5));
+  o += P(`M0 ${groundY + 20} C100 ${groundY - 10} 200 ${groundY + 15} 350 ${groundY} C500 ${groundY - 15} 650 ${groundY + 10} 800 ${groundY - 5} C900 ${groundY + 8} 1000 ${groundY - 12} 1024 ${groundY}`, 2.5);
 
-  for (let i = 0; i < ri(r, 3, 6); i++) {
-    const gx = rr(r, 50, 970);
-    const gy = groundY + rr(r, -5, 10);
+  const grassClumps = ri(r, 15, 30);
+  for (let g = 0; g < grassClumps; g++) {
+    const gx = rr(r, 20, 1004);
+    const gy = groundY + rr(r, -10, 10);
     const blades = ri(r, 4, 8);
     for (let b = 0; b < blades; b++) {
-      const bh = rr(r, 25, 60);
-      const bend = rr(r, -20, 20);
-      const bx = gx + b * 4;
-      parts.push(path(`M${bx} ${gy} Q${bx + bend * 0.5} ${gy - bh * 0.6} ${bx + bend} ${gy - bh}`, "#1a1a1a", 1.2));
-      if (r() > 0.5) parts.push(path(`M${bx + bend * 0.5} ${gy - bh * 0.4} Q${bx + bend * 0.5 + 5} ${gy - bh * 0.5} ${bx + bend * 0.5 + 8} ${gy - bh * 0.35}`, "#1a1a1a", 0.7));
+      const bh = rr(r, 20, 55);
+      const bend = rr(r, -25, 25);
+      o += P(`M${gx + b * 3} ${gy} C${gx + b * 3 + bend * 0.3} ${gy - bh * 0.4} ${gx + b * 3 + bend * 0.7} ${gy - bh * 0.8} ${gx + b * 3 + bend} ${gy - bh}`, 1);
     }
   }
 
-  const stemCount = ri(r, 5, 10);
-  const flowerPositions: Array<[number, number]> = [];
+  const flowers = ri(r, 7, 14);
+  for (let i = 0; i < flowers; i++) {
+    const fx = rr(r, 80, 944);
+    const stemH = rr(r, 150, 500);
+    const curve = rr(r, -60, 60);
+    const topX = fx + curve;
+    const topY = groundY - stemH;
 
-  for (let i = 0; i < stemCount; i++) {
-    const sx = rr(r, 100, 920);
-    const stemH = rr(r, 250, 550);
-    const curve = rr(r, -80, 80);
-    const fx = sx + curve * 0.6;
-    const fy = groundY - stemH;
-    flowerPositions.push([fx, fy]);
+    o += P(`M${fx} ${groundY} C${fx + curve * 0.2} ${groundY - stemH * 0.3} ${fx + curve * 0.6} ${groundY - stemH * 0.7} ${topX} ${topY}`, 2.5);
 
-    parts.push(path(`M${sx} ${groundY} Q${sx + curve * 0.3} ${groundY - stemH * 0.5} ${fx} ${fy}`, "#1a1a1a", 2.5));
-    parts.push(path(`M${sx + 2} ${groundY} Q${sx + curve * 0.3 + 2} ${groundY - stemH * 0.5} ${fx + 2} ${fy}`, "#1a1a1a", 0.8));
-
-    const leafCount = ri(r, 2, 5);
-    for (let j = 0; j < leafCount; j++) {
-      const t = 0.2 + j * 0.2;
-      const lx = sx + curve * 0.3 * t * 2;
+    const leaves = ri(r, 2, 5);
+    for (let l = 0; l < leaves; l++) {
+      const t = 0.2 + l * 0.18;
+      const lx = fx + curve * t;
       const ly = groundY - stemH * t;
-      const dir = j % 2 === 0 ? 1 : -1;
-      const ls = rr(r, 25, 55);
-      parts.push(petalDetailed(lx, ly, ls, dir * rr(r, 20, 60) + 90, r));
+      const dir = l % 2 === 0 ? 1 : -1;
+      o += detailedLeaf(lx, ly, rr(r, 25, 55), dir * rr(r, 30, 70) + (dir > 0 ? 80 : 260), r);
     }
 
-    const flowerType = ri(r, 0, 5);
-    if (flowerType === 0) {
-      const petals = ri(r, 7, 14);
-      const petalR = rr(r, 35, 70);
-      parts.push(circle(fx, fy, petalR * 0.25));
-      parts.push(circle(fx, fy, petalR * 0.15, "#1a1a1a", 1));
-      for (let p = 0; p < petals; p++) {
-        parts.push(petalDetailed(fx, fy, petalR, (p / petals) * 360 + rr(r, -5, 5), r));
-      }
-      parts.push(dotArc(fx, fy, petalR * 0.2, 0, Math.PI * 2, ri(r, 6, 12), 1));
-    } else if (flowerType === 1) {
-      const layers = ri(r, 4, 7);
-      for (let l = layers; l > 0; l--) {
-        const lr = l * rr(r, 10, 20);
-        parts.push(circle(fx, fy, lr));
-        if (l > 1) parts.push(circle(fx, fy, lr - 3, "#1a1a1a", 0.5));
-      }
-      parts.push(dot(fx, fy, 4));
-      parts.push(dotArc(fx, fy, layers * 8, 0, Math.PI * 2, ri(r, 8, 16), 1));
-    } else if (flowerType === 2) {
-      const rays = ri(r, 10, 18);
-      const outerR = rr(r, 35, 60);
-      for (let p = 0; p < rays; p++) {
-        const a = (p / rays) * Math.PI * 2;
-        parts.push(line(fx, fy, fx + Math.cos(a) * outerR, fy + Math.sin(a) * outerR, "#1a1a1a", 1.5));
-        const mid = outerR * 0.6;
-        parts.push(ellipse(fx + Math.cos(a) * mid, fy + Math.sin(a) * mid, 6, 3, "#1a1a1a", 0.8, "none", `rotate(${(a * 180) / Math.PI} ${fx + Math.cos(a) * mid} ${fy + Math.sin(a) * mid})`));
-      }
-      parts.push(circle(fx, fy, outerR * 0.35));
-      parts.push(circle(fx, fy, outerR * 0.2, "#1a1a1a", 1));
-      parts.push(dotArc(fx, fy, outerR * 0.28, 0, Math.PI * 2, ri(r, 5, 10), 1.2));
-    } else if (flowerType === 3) {
-      const budH = rr(r, 30, 55);
-      const budW = rr(r, 15, 28);
-      parts.push(path(`M${fx} ${fy} Q${fx - budW} ${fy - budH * 0.4} ${fx - budW * 0.3} ${fy - budH}`, "#1a1a1a", 2));
-      parts.push(path(`M${fx} ${fy} Q${fx + budW} ${fy - budH * 0.4} ${fx + budW * 0.3} ${fy - budH}`, "#1a1a1a", 2));
-      parts.push(path(`M${fx - budW * 0.3} ${fy - budH} Q${fx} ${fy - budH - budW * 0.5} ${fx + budW * 0.3} ${fy - budH}`, "#1a1a1a", 1.5));
-      parts.push(path(`M${fx} ${fy - budH * 0.5} L${fx} ${fy - budH}`, "#1a1a1a", 0.8));
-      parts.push(crossHatch(fx, fy - budH * 0.6, budW * 0.4, budH * 0.2, 4, 0, 0.4));
-    } else {
-      const dahliaR = rr(r, 25, 45);
-      const rings = ri(r, 3, 5);
-      for (let ring = rings; ring > 0; ring--) {
-        const rr2 = (ring / rings) * dahliaR;
-        const pCount = ri(r, 6, 12);
-        for (let p = 0; p < pCount; p++) {
-          const a = (p / pCount) * Math.PI * 2 + ring * 0.3;
-          const px = fx + Math.cos(a) * rr2;
-          const py = fy + Math.sin(a) * rr2;
-          parts.push(dot(px, py, 1.5 + (rings - ring) * 0.3));
-        }
-      }
-      parts.push(circle(fx, fy, dahliaR, "#1a1a1a", 1.5));
-    }
+    o += flowerHead(topX, topY, rr(r, 30, 70), r);
   }
 
-  const butterflyCount = ri(r, 1, 4);
-  for (let i = 0; i < butterflyCount; i++) {
-    const bx = rr(r, 100, 920);
-    const by = rr(r, 80, 400);
-    parts.push(generateButterflySmall(bx, by, rr(r, 0.4, 0.8), rr(r, -30, 30), r));
+  const butterflies = ri(r, 1, 4);
+  for (let i = 0; i < butterflies; i++) {
+    o += smallButterfly(rr(r, 100, 924), rr(r, 60, 400), rr(r, 0.4, 0.8), rr(r, -40, 40), r);
   }
 
-  return parts.join("\n");
+  return o;
 }
 
-function generateButterflySmall(cx: number, cy: number, scale: number, rot: number, r: () => number): string {
-  const parts: string[] = [];
-  parts.push(`<g transform="translate(${cx},${cy}) scale(${scale}) rotate(${rot})">`);
-  parts.push(ellipse(0, 0, 4, 30, "#1a1a1a", 2));
-  for (const side of [-1, 1]) {
-    parts.push(ellipse(side * 30, -10, 30, 22));
-    parts.push(ellipse(side * 30, -10, 20, 15, "#1a1a1a", 1));
-    parts.push(ellipse(side * 25, 15, 20, 15));
-    parts.push(ellipse(side * 25, 15, 12, 10, "#1a1a1a", 1));
-    parts.push(dotArc(side * 30, -10, 12, 0, Math.PI * 2, ri(r, 4, 8), 1));
+function smallButterfly(cx: number, cy: number, sc: number, rot: number, r: () => number): string {
+  let o = `<g transform="translate(${cx},${cy}) scale(${sc}) rotate(${rot})">`;
+  o += E(0, 0, 4, 28, 2);
+  for (const s of [-1, 1]) {
+    o += P(`M0 0 C${s * 15} ${-15} ${s * 40} ${-25} ${s * 35} ${-5} C${s * 40} ${5} ${s * 25} ${15} ${s * 15} ${10} Z`, 1.5);
+    o += P(`M0 0 C${s * 10} ${-10} ${s * 30} ${-18} ${s * 27} ${-3} C${s * 30} ${3} ${s * 18} ${10} ${s * 10} ${7} Z`, 0.8);
+    o += dotFill(s * 22, -5, 20, 18, 15, r, 1);
   }
-  parts.push(path(`M-3 -32 Q-12 -50 -8 -55`, "#1a1a1a", 1.5));
-  parts.push(path(`M3 -32 Q12 -50 8 -55`, "#1a1a1a", 1.5));
-  parts.push(dot(-8, -55, 2));
-  parts.push(dot(8, -55, 2));
-  parts.push("</g>");
-  return parts.join("\n");
+  o += P(`M-2 -30 C-6 -42 -4 -48 -2 -45`, 1.2);
+  o += P(`M2 -30 C6 -42 4 -48 2 -45`, 1.2);
+  o += dot(-2, -45, 1.5);
+  o += dot(2, -45, 1.5);
+  o += `</g>`;
+  return o;
 }
 
 function generateBirds(r: () => number): string {
-  const parts: string[] = [];
+  let o = "";
 
-  const branchCount = ri(r, 2, 5);
-  for (let i = 0; i < branchCount; i++) {
-    const by = rr(r, 480, 780);
-    const bstart = rr(r, -80, 150);
-    const bend = rr(r, 850, 1120);
+  const branches = ri(r, 2, 4);
+  for (let i = 0; i < branches; i++) {
+    const by = rr(r, 500, 800);
+    const x1 = rr(r, -50, 150);
+    const x2 = rr(r, 874, 1074);
     const sag = rr(r, 20, 80);
-    parts.push(path(`M${bstart} ${by} Q${(bstart + bend) / 2} ${by + sag} ${bend} ${by + sag * 0.5}`, "#1a1a1a", 3.5));
-    parts.push(path(`M${bstart} ${by + 3} Q${(bstart + bend) / 2} ${by + sag + 3} ${bend} ${by + sag * 0.5 + 3}`, "#1a1a1a", 1));
+    o += P(`M${x1} ${by} C${(x1 + x2) * 0.3} ${by + sag * 0.8} ${(x1 + x2) * 0.7} ${by + sag * 1.2} ${x2} ${by + sag * 0.5}`, 4);
+    o += P(`M${x1} ${by + 3} C${(x1 + x2) * 0.3} ${by + sag * 0.8 + 3} ${(x1 + x2) * 0.7} ${by + sag * 1.2 + 3} ${x2} ${by + sag * 0.5 + 3}`, 1);
 
-    const barkLines = ri(r, 3, 8);
-    for (let b = 0; b < barkLines; b++) {
-      const t = rr(r, 0.1, 0.9);
-      const bx = bstart + (bend - bstart) * t;
+    const barkCount = ri(r, 5, 12);
+    for (let b = 0; b < barkCount; b++) {
+      const t = rr(r, 0.05, 0.95);
+      const bx = x1 + (x2 - x1) * t;
       const bby = by + sag * (4 * t * (1 - t));
-      parts.push(line(bx, bby - 3, bx + rr(r, -5, 5), bby + 3, "#1a1a1a", 0.6));
+      o += L(bx, bby - 2, bx + rr(r, -4, 4), bby + 2, 0.5);
     }
 
-    const subCount = ri(r, 1, 5);
-    for (let s = 0; s < subCount; s++) {
-      const sx = rr(r, bstart + 80, bend - 80);
-      const sEnd = sx + rr(r, 80, 220) * (r() > 0.5 ? 1 : -1);
-      const sY = by + sag * ((sx - bstart) / (bend - bstart));
-      parts.push(path(`M${sx} ${sY} Q${(sx + sEnd) / 2} ${sY - rr(r, 30, 90)} ${sEnd} ${sY - rr(r, 10, 50)}`, "#1a1a1a", 2));
+    const subs = ri(r, 2, 5);
+    for (let s = 0; s < subs; s++) {
+      const sx = x1 + (x2 - x1) * rr(r, 0.15, 0.85);
+      const sy = by + sag * (4 * ((sx - x1) / (x2 - x1)) * (1 - (sx - x1) / (x2 - x1)));
+      const sLen = rr(r, 80, 200);
+      const sDir = r() > 0.5 ? 1 : -1;
+      const sEndX = sx + sDir * sLen;
+      const sEndY = sy - rr(r, 30, 100);
+      o += P(`M${sx} ${sy} C${sx + sDir * 30} ${sy - 20} ${sEndX - sDir * 30} ${sEndY + 10} ${sEndX} ${sEndY}`, 2);
 
-      const leafCount = ri(r, 2, 6);
-      for (let l = 0; l < leafCount; l++) {
-        const lx = sx + (sEnd - sx) * ((l + 1) / (leafCount + 1));
-        const ly = sY - rr(r, 10, 60);
-        const dir = r() > 0.5 ? 1 : -1;
-        parts.push(petalDetailed(lx, ly, rr(r, 20, 40), dir * rr(r, 30, 80), r));
+      const leaves = ri(r, 3, 7);
+      for (let l = 0; l < leaves; l++) {
+        const t = (l + 1) / (leaves + 1);
+        const lx = sx + (sEndX - sx) * t;
+        const ly = sy + (sEndY - sy) * t;
+        const dir = l % 2 === 0 ? 1 : -1;
+        o += detailedLeaf(lx, ly, rr(r, 18, 40), dir * rr(r, 25, 65) + (dir > 0 ? 60 : 240), r);
       }
     }
   }
 
   const birdCount = ri(r, 1, 3);
   for (let i = 0; i < birdCount; i++) {
-    const bx = rr(r, 200, 820);
-    const by = rr(r, 180, 450);
-    const bs = rr(r, 1, 1.5);
+    const bx = rr(r, 200, 824);
+    const by = rr(r, 180, 480);
+    const sc = rr(r, 0.9, 1.5);
     const facing = r() > 0.5 ? 1 : -1;
+    o += `<g transform="translate(${bx},${by}) scale(${sc * facing},${sc})">`;
 
-    parts.push(`<g transform="translate(${bx},${by}) scale(${bs * facing},${bs})">`);
-    parts.push(ellipse(0, 50, 70, 60));
-    parts.push(ellipse(0, 50, 65, 55, "#1a1a1a", 0.8));
-    parts.push(furTexture(0, 50, 120, 100, 30, r));
+    o += P(`M-45 30 C-60 10 -55 -20 -30 -40 C-10 -55 10 -55 30 -40 C55 -20 60 10 45 30 C35 55 20 70 0 75 C-20 70 -35 55 -45 30`, 2.5);
+    o += P(`M-43 30 C-58 10 -53 -18 -28 -38 C-8 -53 8 -53 28 -38 C53 -18 58 10 43 30 C33 53 18 68 0 73 C-18 68 -33 53 -43 30`, 0.8);
+    o += dotFill(0, 15, 70, 60, 30, r, 0.7);
 
-    parts.push(circle(0, -20, 42));
-    parts.push(circle(0, -20, 38, "#1a1a1a", 0.8));
+    o += C2(0, -60, 35, 2.5);
+    o += C2(0, -60, 32, 0.8);
+    o += dotFill(0, -60, 55, 55, 25, r, 0.6);
 
-    for (const side of [-1, 1]) {
-      parts.push(eyeDetailed(side * rr(r, 14, 22), -30, 8, r));
-    }
-
-    parts.push(path(`M0 -8 L${-10} 8 L0 15 L${10} 8 Z`, "#1a1a1a", 2.5));
-    parts.push(line(0, -8, 0, 15, "#1a1a1a", 0.8));
-
-    const wingSpan = rr(r, 70, 100);
-    for (const side of [-1, 1]) {
-      parts.push(path(`M${side * 60} 40 Q${side * (wingSpan + 30)} ${-rr(r, 30, 70)} ${side * (wingSpan + rr(r, 30, 60))} ${rr(r, 0, 40)}`, "#1a1a1a", 2.5));
-      parts.push(path(`M${side * 60} 40 Q${side * (wingSpan + 25)} ${-rr(r, 25, 60)} ${side * (wingSpan + rr(r, 25, 55))} ${rr(r, 5, 35)}`, "#1a1a1a", 1));
-      const featherCount = ri(r, 4, 8);
-      for (let f = 1; f < featherCount; f++) {
-        const ft = f / featherCount;
-        const fx = side * (60 + (wingSpan - 30) * ft);
-        const fy = 40 - (40 + rr(r, 10, 40)) * ft;
-        parts.push(featherDetail(fx, fy, rr(r, 20, 40), side * rr(r, 20, 50), r));
+    for (const s of [-1, 1]) {
+      o += E(s * 16, -68, 7, 8, 1.5);
+      o += C2(s * 16, -67, 4, 1.5, K);
+      o += dot(s * 14, -70, 1.5);
+      const lashes = ri(r, 3, 5);
+      for (let l = 0; l < lashes; l++) {
+        const la = -Math.PI * 0.7 + (l / lashes) * Math.PI * 0.5;
+        o += P(`M${s * 16 + Math.cos(la) * 7} ${-68 + Math.sin(la) * 8} Q${s * 16 + Math.cos(la) * 13} ${-68 + Math.sin(la) * 14} ${s * 16 + Math.cos(la) * 16} ${-68 + Math.sin(la) * 12}`, 0.6);
       }
     }
 
-    const tailLen = rr(r, 50, 80);
-    for (const side of [-1, 1]) {
-      parts.push(featherDetail(side * 5, 100, tailLen, side * rr(r, 10, 30) + 90, r));
+    o += P(`M0 -48 L-10 -35 L0 -28 L10 -35 Z`, 2.5);
+    o += L(0, -48, 0, -28, 0.8);
+
+    for (const s of [-1, 1]) {
+      const span = rr(r, 60, 90);
+      o += P(`M${s * 40} 15 C${s * (span + 10)} ${-20} ${s * (span + 30)} ${-40} ${s * (span + 40)} ${-10}`, 2.5);
+      o += P(`M${s * 40} 15 C${s * (span + 8)} ${-15} ${s * (span + 25)} ${-35} ${s * (span + 35)} ${-8}`, 0.8);
+
+      const feathers = ri(r, 5, 10);
+      for (let f = 1; f < feathers; f++) {
+        const ft = f / feathers;
+        const fx = s * (40 + (span) * ft);
+        const fy = 15 - (40 + 15) * ft;
+        const fl = rr(r, 15, 35);
+        const fa = s * rr(r, 15, 45);
+        o += P(petalPath(fx, fy, fl, fa, fl * 0.2), 0.8);
+        o += L(fx, fy, fx + Math.cos((fa * Math.PI) / 180) * fl * 0.8, fy + Math.sin((fa * Math.PI) / 180) * fl * 0.8, 0.4);
+      }
     }
 
-    for (const side of [-1, 1]) {
-      parts.push(line(side * 18, 105, side * 22, 165, "#1a1a1a", 2.5));
-      parts.push(line(side * 18, 105, side * 20, 165, "#1a1a1a", 0.8));
-      parts.push(path(`M${side * 35} 165 L${side * 12} 165 L${side * 22} 155 Z`, "#1a1a1a", 2));
-      parts.push(path(`M${side * 30} 162 L${side * 15} 162`, "#1a1a1a", 0.8));
+    const tailLen = rr(r, 40, 70);
+    for (let t = 0; t < ri(r, 3, 6); t++) {
+      const ta = 70 + t * 10 + rr(r, -8, 8);
+      o += P(petalPath(0, 70, tailLen + rr(r, -10, 10), ta, tailLen * 0.15), 1.5);
+      o += L(0, 70, Math.cos((ta * Math.PI) / 180) * tailLen * 0.9, 70 + Math.sin((ta * Math.PI) / 180) * tailLen * 0.9, 0.5);
     }
 
-    const crestH = rr(r, 20, 45);
-    parts.push(path(`M0 -62 Q${-rr(r, 8, 20)} ${-62 - crestH} ${rr(r, 5, 15)} ${-62 - crestH * 0.7}`, "#1a1a1a", 2));
-    parts.push(path(`M0 -62 Q${-rr(r, 5, 15)} ${-62 - crestH * 0.8} ${rr(r, 8, 18)} ${-62 - crestH * 0.5}`, "#1a1a1a", 1));
+    for (const s of [-1, 1]) {
+      o += P(`M${s * 12} 75 L${s * 14} 130`, 2.5);
+      o += P(`M${s * 12} 75 L${s * 13} 130`, 0.8);
+      o += P(`M${s * 25} 130 L${s * 5} 130 L${s * 14} 122 Z`, 2);
+      o += P(`M${s * 22} 128 L${s * 8} 128`, 0.6);
+    }
 
-    parts.push("</g>");
+    o += P(`M0 -95 C-8 -110 -3 -130 5 -120 C10 -115 8 -100 0 -95`, 2);
+    o += `</g>`;
   }
 
-  return parts.join("\n");
+  return o;
 }
 
 function generateButterflies(r: () => number): string {
-  const parts: string[] = [];
-
+  let o = "";
   const count = ri(r, 1, 3);
+
   for (let i = 0; i < count; i++) {
-    const bx = rr(r, 250, 770);
-    const by = rr(r, 200, 600);
-    const bs = rr(r, 1, 1.6);
-    const rot = rr(r, -25, 25);
+    const cx = rr(r, 200, 824);
+    const cy = rr(r, 200, 650);
+    const sc = rr(r, 1, 1.6);
+    const rot = rr(r, -30, 30);
+    o += `<g transform="translate(${cx},${cy}) scale(${sc}) rotate(${rot})">`;
 
-    parts.push(`<g transform="translate(${bx},${by}) scale(${bs}) rotate(${rot})">`);
-
-    const bodyW = rr(r, 12, 20);
-    parts.push(ellipse(0, 0, bodyW, 110, "#1a1a1a", 3));
-    parts.push(ellipse(0, 0, bodyW - 4, 105, "#1a1a1a", 0.8));
+    o += E(0, 0, 10, 100, 3);
+    o += E(0, 0, 7, 97, 0.8);
     for (let s = -4; s <= 4; s++) {
-      parts.push(line(-bodyW + 2, s * 20, bodyW - 2, s * 20, "#1a1a1a", 0.5));
+      o += L(-8, s * 20, 8, s * 20, 0.5);
     }
 
-    parts.push(circle(0, -120, bodyW * 1.2, "#1a1a1a", 2.5));
-    parts.push(circle(0, -120, bodyW * 0.8, "#1a1a1a", 0.8));
+    o += C2(0, -110, 14, 2.5);
+    o += C2(0, -110, 11, 0.8);
 
-    const antLen = rr(r, 60, 90);
-    for (const side of [-1, 1]) {
-      const acx = side * (bodyW * 0.3 + rr(r, 15, 30));
-      parts.push(path(`M${side * bodyW * 0.3} -125 Q${acx} ${-125 - antLen * 0.6} ${acx + side * 10} ${-125 - antLen}`, "#1a1a1a", 2));
-      parts.push(path(`M${side * bodyW * 0.3} -125 Q${acx - side * 5} ${-125 - antLen * 0.5} ${acx + side * 5} ${-125 - antLen}`, "#1a1a1a", 0.8));
-      parts.push(circle(acx + side * 10, -125 - antLen, 5, "#1a1a1a", 1.5));
-      parts.push(dot(acx + side * 10, -125 - antLen, 2));
+    for (const s of [-1, 1]) {
+      const al = rr(r, 50, 80);
+      o += P(`M${s * 5} -120 C${s * 15} -140 ${s * 25} -160 ${s * 20} -175`, 2);
+      o += P(`M${s * 5} -120 C${s * 12} -138 ${s * 20} -155 ${s * 18} -170`, 0.8);
+      o += C2(s * 20, -178, 5, 1.5);
+      o += dot(s * 20, -178, 2);
     }
 
-    for (const side of [-1, 1]) {
-      const upperW = rr(r, 130, 200);
-      const upperH = rr(r, 100, 160);
-      const ux = side * upperW * 0.5;
-      const uy = -upperH * 0.3;
+    for (const s of [-1, 1]) {
+      const uw = rr(r, 120, 190);
+      const uh = rr(r, 90, 150);
+      const ux = s * uw * 0.45;
+      const uy = -uh * 0.25;
 
-      parts.push(ellipse(ux, uy, upperW, upperH));
-      parts.push(ellipse(ux, uy, upperW * 0.85, upperH * 0.85, "#1a1a1a", 0.8));
+      o += P(`M0 -10 C${s * 20} ${-uh * 0.3} ${s * uw * 0.3} ${-uh * 0.6} ${ux} ${uy} C${s * uw * 0.6} ${uy + uh * 0.15} ${s * uw * 0.3} ${uy + uh * 0.5} 0 ${uy + uh * 0.4} Z`, 2.5);
+      o += P(`M0 -8 C${s * 18} ${-uh * 0.28} ${s * uw * 0.28} ${-uh * 0.55} ${ux * 0.9} ${uy * 0.9} C${s * uw * 0.55} ${uy + uh * 0.1} ${s * uw * 0.28} ${uy + uh * 0.45} 0 ${uy + uh * 0.35} Z`, 0.8);
 
       const rings = ri(r, 3, 6);
       for (let ring = 0; ring < rings; ring++) {
-        const ratio = 0.2 + ring * 0.13;
-        parts.push(ellipse(ux, uy, upperW * ratio, upperH * ratio, "#1a1a1a", ring === 0 ? 1.5 : 0.8));
+        const ratio = 0.3 + ring * 0.12;
+        const rx2 = uw * ratio * 0.4;
+        const ry2 = uh * ratio * 0.4;
+        o += E(ux * 0.5, uy * 0.5, rx2, ry2, 0.8, "none", s * 15);
       }
 
-      const spots = ri(r, 3, 8);
-      for (let s = 0; s < spots; s++) {
+      const spots = ri(r, 4, 10);
+      for (let sp = 0; sp < spots; sp++) {
         const sa = rr(r, 0, Math.PI * 2);
-        const sr = rr(r, 0.2, 0.7);
-        const spotX = ux + Math.cos(sa) * upperW * sr * 0.5;
-        const spotY = uy + Math.sin(sa) * upperH * sr * 0.5;
-        const spotR = rr(r, 4, 15);
-        parts.push(circle(spotX, spotY, spotR, "#1a1a1a", 1));
-        parts.push(dotArc(spotX, spotY, spotR * 0.6, 0, Math.PI * 2, ri(r, 3, 7), 0.8));
+        const sd = rr(r, 0.15, 0.7);
+        const spx = ux * 0.5 + Math.cos(sa) * uw * sd * 0.3;
+        const spy = uy * 0.5 + Math.sin(sa) * uh * sd * 0.3;
+        const spr = rr(r, 3, 12);
+        o += C2(spx, spy, spr, 1);
+        o += dotArc(spx, spy, spr * 0.6, 0, Math.PI * 2, ri(r, 3, 7), 0.7);
       }
 
-      parts.push(dotArc(ux, uy, upperW * 0.4, 0, Math.PI * 2, ri(r, 8, 16), 1));
+      o += dotFill(ux * 0.45, uy * 0.3, uw * 0.5, uh * 0.5, 25, r, 0.8);
 
-      const lowerW = rr(r, 75, 120);
-      const lowerH = rr(r, 65, 100);
-      const ly2 = upperH * 0.4;
-      parts.push(ellipse(side * lowerW * 0.45, ly2, lowerW, lowerH));
-      parts.push(ellipse(side * lowerW * 0.45, ly2, lowerW * 0.85, lowerH * 0.85, "#1a1a1a", 0.8));
-      parts.push(ellipse(side * lowerW * 0.45, ly2, lowerW * 0.5, lowerH * 0.5, "#1a1a1a", 1));
-      parts.push(ellipse(side * lowerW * 0.45, ly2, lowerW * 0.25, lowerH * 0.25, "#1a1a1a", 0.8));
+      const lw = rr(r, 60, 100);
+      const lh = rr(r, 50, 85);
+      const ly = uh * 0.4;
+
+      o += P(`M0 ${ly} C${s * 15} ${ly - 10} ${s * lw * 0.3} ${ly - lh * 0.4} ${s * lw * 0.45} ${ly} C${s * lw * 0.5} ${ly + lh * 0.2} ${s * lw * 0.2} ${ly + lh * 0.5} 0 ${ly + lh * 0.3} Z`, 2);
+      o += P(`M0 ${ly + 2} C${s * 12} ${ly - 8} ${s * lw * 0.25} ${ly - lh * 0.35} ${s * lw * 0.4} ${ly + 2} C${s * lw * 0.45} ${ly + lh * 0.15} ${s * lw * 0.18} ${ly + lh * 0.42} 0 ${ly + lh * 0.25} Z`, 0.8);
+      o += E(s * lw * 0.25, ly, lw * 0.15, lh * 0.15, 0.8);
 
       const tails = ri(r, 1, 3);
       for (let t = 0; t < tails; t++) {
         const ta = rr(r, Math.PI * 0.3, Math.PI * 0.7);
-        const tLen = rr(r, 20, 45);
-        parts.push(path(`M${side * lowerW * 0.45 + Math.cos(ta) * lowerW * 0.4} ${ly2 + Math.sin(ta) * lowerH * 0.4} Q${side * lowerW * 0.45 + Math.cos(ta) * (lowerW * 0.4 + tLen * 0.5)} ${ly2 + Math.sin(ta) * (lowerH * 0.4 + tLen * 0.3)} ${side * lowerW * 0.45 + Math.cos(ta) * (lowerW * 0.4 + tLen)} ${ly2 + Math.sin(ta) * (lowerH * 0.4 + tLen * 0.5)}`, "#1a1a1a", 1.5));
+        const tl = rr(r, 15, 40);
+        const tx = s * lw * 0.3 + Math.cos(ta) * lw * 0.15;
+        const ty = ly + Math.sin(ta) * lh * 0.15;
+        o += P(`M${tx} ${ty} C${tx + s * tl * 0.3} ${ty + tl * 0.2} ${tx + s * tl * 0.6} ${ty + tl * 0.5} ${tx + s * tl} ${ty + tl * 0.3}`, 1.5);
       }
     }
 
-    parts.push("</g>");
+    o += `</g>`;
   }
 
   const flowerCount = ri(r, 2, 5);
   for (let i = 0; i < flowerCount; i++) {
-    const fx = rr(r, 80, 940);
-    const fy = rr(r, 780, 950);
-    const stemH = rr(r, 50, 120);
-    parts.push(path(`M${fx} ${fy} Q${fx + rr(r, -15, 15)} ${fy - stemH / 2} ${fx + rr(r, -8, 8)} ${fy - stemH}`));
-    const petals = ri(r, 4, 8);
-    const pr = rr(r, 10, 20);
-    for (let p = 0; p < petals; p++) {
-      parts.push(petalDetailed(fx, fy - stemH, pr, (p / petals) * 360, r));
-    }
-    parts.push(dot(fx, fy - stemH, 3));
+    const fx = rr(r, 60, 964);
+    const fy = rr(r, 800, 980);
+    const stemH = rr(r, 40, 100);
+    o += P(`M${fx} ${fy} C${fx + rr(r, -10, 10)} ${fy - stemH * 0.4} ${fx + rr(r, -8, 8)} ${fy - stemH * 0.8} ${fx + rr(r, -5, 5)} ${fy - stemH}`, 1.5);
+    o += flowerHead(fx + rr(r, -5, 5), fy - stemH, rr(r, 8, 18), r);
   }
 
-  return parts.join("\n");
+  return o;
 }
 
 function generateMandalas(r: () => number): string {
-  const parts: string[] = [];
-  const cx = C;
-  const cy = C;
-  const maxR = rr(r, 400, 480);
+  let o = "";
+  const cx = C, cy = C;
+  const maxR = rr(r, 420, 480);
+  const symmetry = pick(r, [6, 8, 10, 12, 16, 24]);
 
-  const layers = ri(r, 7, 12);
+  o += frame(cx, cy, maxR, 3);
+  o += frame(cx, cy, maxR * 0.95, 1.5);
+
+  const layers = ri(r, 8, 15);
   for (let l = 0; l < layers; l++) {
-    const lr = ((l + 1) / layers) * maxR;
-    parts.push(circle(cx, cy, lr, "#1a1a1a", l === layers - 1 ? 3 : l === 0 ? 2 : 1.2));
-    if (l > 0 && l < layers - 1) {
-      parts.push(circle(cx, cy, lr - 2, "#1a1a1a", 0.5));
-    }
+    const lr = ((l + 1) / layers) * maxR * 0.92;
+    o += C2(cx, cy, lr, l === layers - 1 ? 2.5 : l % 3 === 0 ? 1.5 : 0.8);
+    if (l % 2 === 0) o += C2(cx, cy, lr - 2, 0.4);
   }
 
-  const sym = ri(r, 8, 24);
-  for (let s = 0; s < sym; s++) {
-    const angle = (s / sym) * Math.PI * 2;
-    parts.push(line(cx + Math.cos(angle) * maxR * 0.1, cy + Math.sin(angle) * maxR * 0.1, cx + Math.cos(angle) * maxR, cy + Math.sin(angle) * maxR, "#1a1a1a", 0.8));
+  for (let s = 0; s < symmetry; s++) {
+    const a = (s / symmetry) * Math.PI * 2;
+    o += L(cx + Math.cos(a) * maxR * 0.08, cy + Math.sin(a) * maxR * 0.08, cx + Math.cos(a) * maxR * 0.92, cy + Math.sin(a) * maxR * 0.92, 0.6);
   }
 
   for (let l = 0; l < layers - 1; l++) {
-    const lr = ((l + 1) / layers) * maxR;
-    const nextR = ((l + 2) / layers) * maxR;
-    const midR = (lr + nextR) / 2;
-    const elemCount = ri(r, sym, sym * 2);
+    const r1 = ((l + 1) / layers) * maxR * 0.92;
+    const r2 = ((l + 2) / layers) * maxR * 0.92;
+    const mid = (r1 + r2) / 2;
+    const count = symmetry * ri(r, 1, 3);
 
-    for (let e = 0; e < elemCount; e++) {
-      const angle = (e / elemCount) * Math.PI * 2;
-      const ex = cx + Math.cos(angle) * midR;
-      const ey = cy + Math.sin(angle) * midR;
-      const etype = ri(r, 0, 8);
+    o += ornamentalBorder(cx, cy, r1, r2, count, r);
 
-      if (etype === 0) {
-        parts.push(circle(ex, ey, rr(r, 4, 12), "#1a1a1a", 1.2));
-        parts.push(dot(ex, ey, 1.5));
-      } else if (etype === 1) {
-        const er = rr(r, 6, 16);
-        parts.push(ellipse(ex, ey, er, er * 0.4, "#1a1a1a", 1, "none", `rotate(${(angle * 180) / Math.PI} ${ex} ${ey})`));
-      } else if (etype === 2) {
-        parts.push(petalDetailed(cx, cy, midR * 0.3, (angle * 180) / Math.PI, r));
-      } else if (etype === 3) {
-        const sz = rr(r, 4, 10);
-        parts.push(`<rect x="${ex - sz}" y="${ey - sz}" width="${sz * 2}" height="${sz * 2}" fill="none" stroke="#1a1a1a" stroke-width="1" transform="rotate(${(angle * 180) / Math.PI + 45} ${ex} ${ey})"/>`);
-        parts.push(`<rect x="${ex - sz * 0.6}" y="${ey - sz * 0.6}" width="${sz * 1.2}" height="${sz * 1.2}" fill="none" stroke="#1a1a1a" stroke-width="0.5" transform="rotate(${(angle * 180) / Math.PI + 45} ${ex} ${ey})"/>`);
-      } else if (etype === 4) {
-        parts.push(dot(ex, ey, rr(r, 1.5, 3)));
-      } else if (etype === 5) {
-        const triS = rr(r, 5, 12);
-        const a1 = angle;
-        const a2 = angle + Math.PI * 0.15;
-        const a3 = angle - Math.PI * 0.15;
-        parts.push(path(`M${cx + Math.cos(a1) * midR} ${cy + Math.sin(a1) * midR} L${cx + Math.cos(a2) * (midR + triS)} ${cy + Math.sin(a2) * (midR + triS)} L${cx + Math.cos(a3) * (midR + triS)} ${cy + Math.sin(a3) * (midR + triS)} Z`, "#1a1a1a", 1));
-      } else if (etype === 6) {
-        const dotR = rr(r, 3, 8);
-        parts.push(dotArc(ex, ey, dotR, angle - 0.5, angle + 0.5, ri(r, 3, 6), 0.8));
-      } else {
-        const ls = rr(r, 4, 10);
-        parts.push(line(ex - ls, ey, ex + ls, ey, "#1a1a1a", 0.8));
-        parts.push(line(ex, ey - ls, ex, ey + ls, "#1a1a1a", 0.8));
+    for (let e = 0; e < count; e++) {
+      const a = (e / count) * Math.PI * 2;
+      const ex = cx + Math.cos(a) * mid;
+      const ey = cy + Math.sin(a) * mid;
+      const elem = ri(r, 0, 10);
+
+      if (elem === 0) o += C2(ex, ey, rr(r, 3, 10), 1);
+      else if (elem === 1) o += dot(ex, ey, rr(r, 1.5, 3));
+      else if (elem === 2) {
+        const ps = rr(r, 6, 15);
+        o += P(petalPath(ex, ey, ps, (a * 180) / Math.PI, ps * 0.3), 0.8);
+      }
+      else if (elem === 3) {
+        const sz = rr(r, 4, 9);
+        o += `<rect x="${ex - sz}" y="${ey - sz}" width="${sz * 2}" height="${sz * 2}" fill="none" stroke="${K}" stroke-width="0.8" transform="rotate(${(a * 180) / Math.PI + 45} ${ex} ${ey})"/>`;
+      }
+      else if (elem === 4) o += dotArc(ex, ey, rr(r, 3, 8), a - 0.5, a + 0.5, ri(r, 3, 6), 0.7);
+      else if (elem === 5) {
+        const ts = rr(r, 4, 10);
+        o += P(`M${ex + Math.cos(a) * ts} ${ey + Math.sin(a) * ts} L${ex + Math.cos(a + 0.2) * ts * 1.5} ${ey + Math.sin(a + 0.2) * ts * 1.5} L${ex + Math.cos(a - 0.2) * ts * 1.5} ${ey + Math.sin(a - 0.2) * ts * 1.5} Z`, 0.8);
+      }
+      else if (elem === 6) {
+        const ns = rr(r, 3, 7);
+        let d = "";
+        for (let n = 0; n < ns * 2; n++) {
+          const na = a + (n / (ns * 2)) * Math.PI * 2 / symmetry;
+          const nr = n % 2 === 0 ? ns * 1.5 : ns * 0.6;
+          d += (n === 0 ? "M" : "L") + `${ex + Math.cos(na) * nr} ${ey + Math.sin(na) * nr}`;
+        }
+        o += P(d + "Z", 0.8);
+      }
+      else if (elem === 7) {
+        o += L(ex - rr(r, 3, 7), ey, ex + rr(r, 3, 7), ey, 0.6);
+      }
+      else if (elem === 8) {
+        const cs = rr(r, 4, 10);
+        o += E(ex, ey, cs, cs * 0.4, 0.8, "none", (a * 180) / Math.PI);
+      }
+      else {
+        const fs = rr(r, 3, 8);
+        o += P(scrollPath(ex, ey, fs, (a * 180) / Math.PI, e % 2 === 0 ? 1 : -1), 0.6);
       }
     }
 
-    if (l % 2 === 0) {
-      parts.push(dotArc(cx, cy, midR, 0, Math.PI * 2, ri(r, sym * 2, sym * 4), 0.8));
+    if (l % 2 === 0) o += dotArc(cx, cy, mid, 0, Math.PI * 2, count * 2, 0.6);
+  }
+
+  const innerRings = ri(r, 3, 7);
+  for (let ring = 0; ring < innerRings; ring++) {
+    const rr2 = ((ring + 1) / (innerRings + 1)) * maxR * 0.25;
+    o += ornamentalBorder(cx, cy, rr2, rr2 + rr(r, 6, 12), ri(r, symmetry / 2, symmetry * 2), r);
+  }
+
+  const petalRings = ri(r, 2, 5);
+  for (let pr = 0; pr < petalRings; pr++) {
+    const prR = maxR * (0.3 + pr * 0.12);
+    const pCount = ri(r, symmetry, symmetry * 2);
+    for (let p = 0; p < pCount; p++) {
+      const a = (p / pCount) * Math.PI * 2 + pr * 0.5;
+      const pl = prR * rr(r, 0.15, 0.3);
+      o += P(petalPath(cx + Math.cos(a) * prR * 0.7, cy + Math.sin(a) * prR * 0.7, pl, (a * 180) / Math.PI, pl * 0.3), 0.8);
     }
   }
 
-  const innerRings = ri(r, 3, 6);
-  for (let ring = 0; ring < innerRings; ring++) {
-    const rr2 = ((ring + 1) / (innerRings + 1)) * maxR * 0.25;
-    parts.push(ornamentalRing(cx, cy, rr2, rr2 + rr(r, 8, 15), ri(r, sym / 2, sym), r));
+  o += C2(cx, cy, maxR * 0.06, 3, K);
+  o += C2(cx, cy, maxR * 0.035, 1.5);
+  o += dotArc(cx, cy, maxR * 0.048, 0, Math.PI * 2, 8, 1.2);
+  o += dotFillCircle(cx, cy, maxR * 0.03, 5, r, 1);
+
+  const scrollR = maxR * 0.15;
+  for (let s = 0; s < symmetry; s++) {
+    const a = (s / symmetry) * Math.PI * 2;
+    const sx = cx + Math.cos(a) * scrollR;
+    const sy = cy + Math.sin(a) * scrollR;
+    o += P(scrollPath(sx, sy, scrollR * 0.5, (a * 180) / Math.PI, s % 2 === 0 ? 1 : -1), 0.8);
   }
 
-  parts.push(circle(cx, cy, maxR * 0.06, "#1a1a1a", 3, "#1a1a1a"));
-  parts.push(circle(cx, cy, maxR * 0.03, "#1a1a1a", 1));
-  parts.push(dotArc(cx, cy, maxR * 0.045, 0, Math.PI * 2, 8, 1));
-
-  for (let i = 0; i < ri(r, 2, 5); i++) {
-    const scrollR = rr(r, maxR * 0.3, maxR * 0.7);
-    const scrollA = rr(r, 0, Math.PI * 2);
-    parts.push(filigreeScroll(cx + Math.cos(scrollA) * scrollR, cy + Math.sin(scrollA) * scrollR, rr(r, 20, 40), (scrollA * 180) / Math.PI, r));
-  }
-
-  return parts.join("\n");
+  return o;
 }
 
 function generateCats(r: () => number): string {
-  const parts: string[] = [];
+  let o = "";
+  const pose = ri(r, 0, 2);
+  const cx = C + rr(r, -60, 60);
+  const cy = C + rr(r, -30, 30);
+  const sc = rr(r, 0.9, 1.3);
 
-  const bx = rr(r, 350, 680);
-  const by = rr(r, 450, 580);
-  const scale = rr(r, 0.9, 1.3);
-  const pose = ri(r, 0, 3);
-
-  parts.push(`<g transform="translate(${bx},${by}) scale(${scale})">`);
+  o += `<g transform="translate(${cx},${cy}) scale(${sc})">`;
 
   if (pose === 0) {
-    parts.push(ellipse(0, 60, 110, 80));
-    parts.push(ellipse(0, 60, 105, 75, "#1a1a1a", 0.8));
-    parts.push(furTexture(0, 60, 190, 140, 50, r));
+    o += P(`M-70 40 C-90 20 -85 -10 -50 -40 C-25 -60 25 -60 50 -40 C85 -10 90 20 70 40 C60 70 40 100 20 120 L-20 120 C-40 100 -60 70 -70 40`, 2.5);
+    o += P(`M-68 40 C-88 20 -83 -8 -48 -38 C-23 -58 23 -58 48 -38 C83 -8 88 20 68 40 C58 68 38 98 18 118 L-18 118 C-38 98 -58 68 -68 40`, 0.8);
+    o += dotFill(0, 20, 120, 80, 30, r, 0.6);
 
-    parts.push(ellipse(0, -50, 75, 65));
-    parts.push(ellipse(0, -50, 70, 60, "#1a1a1a", 0.8));
-    parts.push(furTexture(0, -50, 130, 110, 35, r));
+    o += P(`M-40 -55 C-50 -80 -40 -110 -25 -100 C-15 -90 -20 -65 -35 -55`, 2.5);
+    o += P(`M40 -55 C50 -80 40 -110 25 -100 C15 -90 20 -65 35 -55`, 2.5);
+    o += dotFill(-35, -80, 18, 25, 10, r, 0.7);
+    o += dotFill(35, -80, 18, 25, 10, r, 0.7);
 
-    for (const side of [-1, 1]) {
-      parts.push(path(`M${side * 50} -90 L${side * rr(r, 48, 62)} ${-rr(r, 140, 175)} L${side * rr(r, 22, 38)} -78`, "#1a1a1a", 2.5));
-      parts.push(path(`M${side * 48} -88 L${side * rr(r, 46, 58)} ${-rr(r, 135, 168)} L${side * rr(r, 24, 36)} -76`, "#1a1a1a", 1));
-      parts.push(crossHatch(side * 50, -130, 12, 20, 4, side * 0.2, 0.4));
+    const esp = rr(r, 22, 32);
+    for (const s of [-1, 1]) {
+      o += P(`M${s * esp - 12} -40 C${s * esp - 12} -48 ${s * esp + 12} -48 ${s * esp + 12} -40 C${s * esp + 12} -32 ${s * esp - 12} -32 ${s * esp - 12} -40`, 1.5);
+      o += E(s * esp, -40, 3, 7, 1.5, K);
+      o += dot(s * esp - 1, -42, 1.2);
     }
 
-    const eyeX = rr(r, 22, 32);
-    for (const side of [-1, 1]) {
-      parts.push(eyeDetailed(side * eyeX, -58, 12, r));
-    }
+    o += P(`M0 -20 C-3 -15 3 -15 0 -20`, 1.5);
+    o += L(0, -18, 0, -12, 0.8);
+    o += P(`M0 -12 C-4 -8 -8 -10 -10 -8`, 1);
+    o += P(`M0 -12 C4 -8 8 -10 10 -8`, 1);
 
-    parts.push(noseDetailed(0, -30, 10, r));
-
-    parts.push(path(`M0 -20 Q${-rr(r, 6, 14)} ${-rr(r, 6, 12)} ${-rr(r, 14, 24)} ${-rr(r, 10, 18)}`, "#1a1a1a", 1.5));
-    parts.push(path(`M0 -20 Q${rr(r, 6, 14)} ${-rr(r, 6, 12)} ${rr(r, 14, 24)} ${-rr(r, 10, 18)}`, "#1a1a1a", 1.5));
-
-    for (const side of [-1, 1]) {
+    for (const s of [-1, 1]) {
       for (let w = 0; w < ri(r, 3, 5); w++) {
-        const wy = -35 + w * 8;
-        const wl = rr(r, 55, 90);
-        parts.push(line(side * 28, wy, side * wl, wy + rr(r, -5, 5), "#1a1a1a", 1));
-        parts.push(dotRow(side * 30, wy, side * (wl - 5), wy, ri(r, 3, 6), 0.6));
+        const wl = rr(r, 40, 70);
+        o += L(s * 18, -28 + w * 6, s * wl, -30 + w * 6 + rr(r, -3, 3), 0.8);
+        o += dotLine(s * 20, -28 + w * 6, s * (wl - 5), -30 + w * 6, ri(r, 3, 6), 0.6);
       }
     }
 
-    for (const side of [-1, 1]) {
-      parts.push(ellipse(side * 55, 135, 28, 18));
-      parts.push(ellipse(side * 55, 135, 24, 14, "#1a1a1a", 0.8));
-      for (let t = 0; t < 3; t++) {
-        parts.push(ellipse(side * 55 + (t - 1) * 8, 132, 3, 6, "#1a1a1a", 0.8));
-      }
+    o += dotFill(0, -40, 100, 60, 25, r, 0.5);
+
+    for (const s of [-1, 1]) {
+      o += P(`M${s * 35} 110 C${s * 38} 125 ${s * 30} 140 ${s * 22} 145 C${s * 15} 148 ${s * 10} 142 ${s * 12} 135 L${s * 20} 120`, 2);
     }
 
-    const tailCurve = rr(r, 160, 300);
-    parts.push(path(`M100 50 Q${tailCurve} ${-rr(r, 30, 100)} ${rr(r, 140, 220)} ${rr(r, 30, 90)}`, "#1a1a1a", 3.5));
-    parts.push(path(`M100 50 Q${tailCurve + 3} ${-rr(r, 25, 95)} ${rr(r, 143, 223)} ${rr(r, 33, 93)}`, "#1a1a1a", 1.2));
+    o += P(`M60 30 C100 10 140 -20 160 0 C175 15 165 40 140 45 C120 48 100 40 80 35`, 3);
+    o += P(`M60 30 C95 12 135 -15 155 2`, 1);
 
-    for (let s = 0; s < ri(r, 5, 10); s++) {
+    for (let s = 0; s < ri(r, 4, 8); s++) {
       const sy = -30 + s * 10;
-      const sw = rr(r, 25, 55);
-      parts.push(path(`M${-sw} ${sy} Q0 ${sy + rr(r, 3, 8)} ${sw} ${sy}`, "#1a1a1a", 1.2));
+      const sw = rr(r, 20, 50);
+      o += P(`M${-sw} ${sy} C${-sw * 0.3} ${sy + rr(r, 3, 7)} ${sw * 0.3} ${sy + rr(r, 3, 7)} ${sw} ${sy}`, 1);
     }
   } else if (pose === 1) {
-    parts.push(ellipse(0, 35, 130, 55));
-    parts.push(ellipse(0, 35, 125, 50, "#1a1a1a", 0.8));
-    parts.push(furTexture(0, 35, 230, 90, 45, r));
+    o += P(`M-100 20 C-120 5 -115 -15 -80 -35 C-50 -50 50 -50 80 -35 C115 -15 120 5 100 20 C85 40 65 55 40 60 L-40 60 C-65 55 -85 40 -100 20`, 2.5);
+    o += dotFill(0, 10, 180, 50, 30, r, 0.6);
 
-    parts.push(path(`M-110 25 Q-140 55 -120 85`, "#1a1a1a", 3));
-    parts.push(path(`M110 25 Q140 55 120 85`, "#1a1a1a", 3));
-    parts.push(ellipse(-110, 90, 22, 14));
-    parts.push(ellipse(110, 90, 22, 14));
+    o += P(`M-90 15 C-110 30 -105 55 -95 65 L-85 55`, 2.5);
+    o += P(`M90 15 C110 30 105 55 95 65 L85 55`, 2.5);
+    o += E(-90, 68, 18, 10, 1.5);
+    o += E(90, 68, 18, 10, 1.5);
 
-    parts.push(path(`M-90 35 Q-130 -25 -100 -70`, "#1a1a1a", 3.5));
-    parts.push(path(`M-100 -70 Q-105 -82 -90 -78`, "#1a1a1a", 2));
-    parts.push(circle(-100, -72, 3.5, "#1a1a1a", 1.5, "#1a1a1a"));
+    o += P(`M-70 20 C-100 -10 -110 -50 -95 -70 C-85 -80 -75 -75 -80 -60`, 3);
+    o += P(`M-80 -60 C-78 -68 -72 -65 -75 -58`, 1.5);
+    o += C2(-80, -62, 2.5, 1, K);
 
-    parts.push(path(`M90 35 Q105 -15 85 -45`, "#1a1a1a", 3));
-    parts.push(circle(85, -45, 28));
-    parts.push(circle(85, -45, 24, "#1a1a1a", 0.8));
+    o += P(`M70 20 C90 -5 95 -30 85 -45`, 2.5);
+    o += P(`M65 -40 C70 -55 80 -60 85 -50 C88 -42 82 -35 75 -40`, 2);
+    o += P(`M105 -40 C110 -55 100 -60 95 -50 C92 -42 98 -35 105 -40`, 2);
 
-    for (const side of [-1, 1]) {
-      parts.push(path(`M${85 + side * 18} -68 L${85 + side * 28} -95 L${85 + side * 10} -75`, "#1a1a1a", 2));
-    }
+    o += P(`M72 -38 C76 -36 80 -36 84 -38`, 1.5);
+    o += P(`M92 -38 C96 -36 100 -36 104 -38`, 1.5);
 
-    const sleepEye = rr(r, 3, 8);
-    parts.push(path(`M70 -52 Q78 ${-52 + sleepEye} 85 -52`, "#1a1a1a", 2));
-    parts.push(path(`M85 -52 Q92 ${-52 + sleepEye} 100 -52`, "#1a1a1a", 2));
+    o += P(`M85 -25 C83 -22 87 -22 85 -25`, 1.2);
 
-    parts.push(noseDetailed(85, -28, 8, r));
+    o += P(`M-100 60 C-130 45 -160 20 -170 40 C-178 55 -165 70 -140 72 C-120 73 -105 65 -100 60`, 3);
+    o += P(`M-100 60 C-125 48 -155 25 -165 42`, 1);
 
-    const curlTail = rr(r, 50, 90);
-    parts.push(path(`M-120 75 Q${-140 - curlTail} 35 ${-110 - curlTail * 0.5} 65`, "#1a1a1a", 3.5));
-    parts.push(path(`M-120 75 Q${-138 - curlTail} 38 ${-108 - curlTail * 0.5} 68`, "#1a1a1a", 1.2));
-
-    parts.push(furTexture(0, 35, 200, 50, 30, r));
+    o += dotFill(0, 10, 160, 40, 25, r, 0.5);
   } else {
-    parts.push(ellipse(0, 0, 65, 170));
-    parts.push(ellipse(0, 0, 60, 165, "#1a1a1a", 0.8));
-    parts.push(furTexture(0, 0, 110, 300, 50, r));
+    o += P(`M-45 80 C-55 40 -50 -20 -40 -80 C-30 -130 -20 -160 0 -175 C20 -160 30 -130 40 -80 C50 -20 55 40 45 80 C35 120 20 140 0 150 C-20 140 -35 120 -45 80`, 2.5);
+    o += P(`M-43 80 C-53 40 -48 -18 -38 -78 C-28 -128 -18 -158 0 -173 C18 -158 28 -128 38 -78 C48 -18 53 40 43 80 C33 118 18 138 0 148 C-18 138 -33 118 -43 80`, 0.8);
+    o += dotFill(0, -20, 70, 180, 35, r, 0.6);
 
-    parts.push(ellipse(0, -180, 55, 50));
-    parts.push(ellipse(0, -180, 50, 45, "#1a1a1a", 0.8));
+    o += P(`M-25 -170 C-30 -195 -20 -220 -10 -210 C-5 -205 -8 -185 -20 -170`, 2.5);
+    o += P(`M25 -170 C30 -195 20 -220 10 -210 C5 -205 8 -185 20 -170`, 2.5);
+    o += dotFill(-18, -195, 12, 20, 8, r, 0.6);
+    o += dotFill(18, -195, 12, 20, 8, r, 0.6);
 
-    for (const side of [-1, 1]) {
-      parts.push(path(`M${side * 38} -215 L${side * rr(r, 35, 50)} ${-rr(r, 260, 295)} L${side * rr(r, 12, 28)} -205`, "#1a1a1a", 2.5));
-      parts.push(crossHatch(side * 40, -255, 10, 15, 4, side * 0.2, 0.4));
+    for (const s of [-1, 1]) {
+      o += P(`M${s * 14} -185 C${s * 14} -190 ${s * 22} -190 ${s * 22} -185 C${s * 22} -180 ${s * 14} -180 ${s * 14} -185`, 1.5);
+      o += E(s * 18, -185, 2.5, 5, 1.2, K);
+      o += dot(s * 17, -187, 1);
     }
 
-    for (const side of [-1, 1]) {
-      parts.push(eyeDetailed(side * 20, -188, 10, r));
-    }
-    parts.push(noseDetailed(0, -165, 10, r));
+    o += P(`M0 -165 C-2 -162 2 -162 0 -165`, 1.2);
 
-    for (const side of [-1, 1]) {
-      parts.push(ellipse(side * 32, 155, 25, 16));
-      parts.push(ellipse(side * 32, 155, 21, 12, "#1a1a1a", 0.8));
+    for (const s of [-1, 1]) {
+      o += P(`M${s * 25} 140 C${s * 28} 150 ${s * 22} 160 ${s * 15} 162 C${s * 10} 163 ${s * 8} 158 ${s * 10} 152 L${s * 18} 142`, 2);
     }
 
-    const bushyTail = rr(r, 35, 65);
-    parts.push(path(`M0 165 Q${-bushyTail} 190 ${-bushyTail * 1.6} 140`, "#1a1a1a", 4.5));
-    parts.push(path(`M${-bushyTail * 1.6} 140 Q${-bushyTail * 1.9} 115 ${-bushyTail * 1.3} 120`, "#1a1a1a", 3.5));
-    parts.push(furTexture(-bushyTail * 1.4, 140, 40, 40, 15, r));
+    const tailDir = r() > 0.5 ? -1 : 1;
+    o += P(`M${tailDir * 25} 145 C${tailDir * 45} 155 ${tailDir * 60} 140 ${tailDir * 70} 120 C${tailDir * 78} 105 ${tailDir * 72} 95 ${tailDir * 60} 100`, 3.5);
+    o += P(`M${tailDir * 25} 145 C${tailDir * 42} 153 ${tailDir * 57} 138 ${tailDir * 67} 120`, 1.2);
+    o += dotFill(tailDir * 55, 125, 20, 30, 15, r, 0.6);
   }
 
-  parts.push("</g>");
+  o += `</g>`;
 
-  for (let i = 0; i < ri(r, 1, 5); i++) {
-    const ax = rr(r, 50, 970);
-    const ay = rr(r, 50, 970);
-    const atype = ri(r, 0, 4);
-    if (atype === 0) {
-      parts.push(dot(ax, ay, rr(r, 1.5, 4)));
-    } else if (atype === 1) {
-      parts.push(path(`M${ax - 6} ${ay + 3} L${ax} ${ay - 8} L${ax + 6} ${ay + 3}`, "#1a1a1a", 1));
-    } else if (atype === 2) {
-      parts.push(star(ax, ay, rr(r, 5, 10), ri(r, 4, 6), r));
-    } else {
-      parts.push(path(`M${ax} ${ay} Q${ax + rr(r, 10, 25)} ${ay - rr(r, 10, 20)} ${ax + rr(r, 20, 40)} ${ay}`, "#1a1a1a", 0.8));
-    }
+  for (let i = 0; i < ri(r, 2, 6); i++) {
+    const ax = rr(r, 50, 974);
+    const ay = rr(r, 50, 974);
+    const at = ri(r, 0, 3);
+    if (at === 0) o += dot(ax, ay, rr(r, 1, 3));
+    else if (at === 1) o += P(`M${ax - 5} ${ay + 2} L${ax} ${ay - 6} L${ax + 5} ${ay + 2}`, 0.8);
+    else o += P(`M${ax} ${ay} C${ax + rr(r, 8, 20)} ${ay - rr(r, 8, 15)} ${ax + rr(r, 15, 30)} ${ay} ${ax + rr(r, 20, 40)} ${ay + rr(r, -5, 5)}`, 0.8);
   }
 
-  return parts.join("\n");
-}
-
-function star(cx: number, cy: number, size: number, points: number, r: () => number) {
-  const parts: string[] = [];
-  let d = "";
-  for (let i = 0; i < points * 2; i++) {
-    const a = (i / (points * 2)) * Math.PI * 2 - Math.PI / 2;
-    const rad = i % 2 === 0 ? size : size * 0.4;
-    const px = cx + Math.cos(a) * rad;
-    const py = cy + Math.sin(a) * rad;
-    d += (i === 0 ? "M" : "L") + `${px} ${py}`;
-  }
-  d += "Z";
-  parts.push(path(d, "#1a1a1a", 1.2));
-  return parts.join("");
+  return o;
 }
 
 function generateCoastal(r: () => number): string {
-  const parts: string[] = [];
+  let o = "";
+  const horizon = rr(r, 300, 400);
 
-  const horizonY = rr(r, 300, 400);
+  const sunX = rr(r, 200, 824);
+  const sunY = rr(r, 60, 180);
+  const sunR = rr(r, 45, 90);
+  o += C2(sunX, sunY, sunR, 3);
+  o += C2(sunX, sunY, sunR - 4, 0.8);
+  o += C2(sunX, sunY, sunR - 8, 0.5);
+  o += dotFillCircle(sunX, sunY, sunR * 0.8, 8, r, 1.2);
 
-  const sunX = rr(r, 200, 820);
-  const sunY = rr(r, 80, 180);
-  const sunR = rr(r, 45, 85);
-  parts.push(circle(sunX, sunY, sunR, "#1a1a1a", 3));
-  parts.push(circle(sunX, sunY, sunR - 4, "#1a1a1a", 0.8));
-
-  const rayCount = ri(r, 12, 24);
-  for (let i = 0; i < rayCount; i++) {
-    const angle = (i / rayCount) * Math.PI * 2;
-    const rLen = rr(r, 25, 60);
-    const innerR = sunR + 8;
-    const outerR = sunR + rLen;
-    parts.push(line(sunX + Math.cos(angle) * innerR, sunY + Math.sin(angle) * innerR, sunX + Math.cos(angle) * outerR, sunY + Math.sin(angle) * outerR, "#1a1a1a", i % 2 === 0 ? 1.5 : 0.8));
-    if (i % 3 === 0) {
-      parts.push(dot(sunX + Math.cos(angle) * (outerR + 5), sunY + Math.sin(angle) * (outerR + 5), 1.5));
-    }
+  const rays = ri(r, 12, 24);
+  for (let i = 0; i < rays; i++) {
+    const a = (i / rays) * Math.PI * 2;
+    const rl = rr(r, 25, 65);
+    o += L(sunX + Math.cos(a) * (sunR + 6), sunY + Math.sin(a) * (sunR + 6), sunX + Math.cos(a) * (sunR + rl), sunY + Math.sin(a) * (sunR + rl), i % 2 === 0 ? 1.5 : 0.6);
+    if (i % 3 === 0) o += dot(sunX + Math.cos(a) * (sunR + rl + 4), sunY + Math.sin(a) * (sunR + rl + 4), 1.2);
   }
 
-  parts.push(dotArc(sunX, sunY, sunR * 0.7, 0, Math.PI * 2, ri(r, 12, 20), 1));
-
-  const cloudCount = ri(r, 1, 4);
-  for (let i = 0; i < cloudCount; i++) {
-    const ccx = rr(r, 100, 920);
-    const ccy = rr(r, 50, 220);
+  for (let i = 0; i < ri(r, 1, 4); i++) {
+    const ccx = rr(r, 80, 944);
+    const ccy = rr(r, 40, 220);
     const puffs = ri(r, 3, 7);
     for (let p = 0; p < puffs; p++) {
       const px = ccx + p * rr(r, 25, 50);
-      const py = ccy + rr(r, -18, 18);
-      const pr = rr(r, 22, 50);
-      parts.push(circle(px, py, pr, "#1a1a1a", 1.5));
-      parts.push(circle(px, py + 3, pr - 3, "#1a1a1a", 0.5));
+      const py = ccy + rr(r, -15, 15);
+      const pr = rr(r, 20, 50);
+      o += P(`M${px - pr} ${py} C${px - pr} ${py - pr * 0.7} ${px + pr} ${py - pr * 0.7} ${px + pr} ${py} C${px + pr} ${py + pr * 0.4} ${px - pr} ${py + pr * 0.4} ${px - pr} ${py}`, 1.5);
+      o += dotFill(px, py, pr * 1.5, pr, 20, r, 0.6);
     }
   }
 
-  const lighthouseX = rr(r, 600, 900);
-  const lhH = rr(r, 200, 300);
-  const lhW = rr(r, 32, 55);
-  parts.push(`<rect x="${lighthouseX - lhW}" y="${horizonY - lhH}" width="${lhW * 2}" height="${lhH}" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>`);
-  parts.push(`<rect x="${lighthouseX - lhW + 3}" y="${horizonY - lhH + 3}" width="${lhW * 2 - 6}" height="${lhH - 6}" fill="none" stroke="#1a1a1a" stroke-width="0.8"/>`);
-  parts.push(path(`M${lighthouseX - lhW - 12} ${horizonY - lhH} L${lighthouseX + lhW + 12} ${horizonY - lhH} L${lighthouseX + lhW * 0.5} ${horizonY - lhH - 35} L${lighthouseX - lhW * 0.5} ${horizonY - lhH - 35} Z`, "#1a1a1a", 2.5));
+  const lhX = rr(r, 600, 920);
+  const lhH = rr(r, 180, 300);
+  const lhW = rr(r, 30, 50);
+  o += `<rect x="${lhX - lhW}" y="${horizon - lhH}" width="${lhW * 2}" height="${lhH}" fill="none" stroke="${K}" stroke-width="2.5"/>`;
+  o += `<rect x="${lhX - lhW + 3}" y="${horizon - lhH + 3}" width="${lhW * 2 - 6}" height="${lhH - 6}" fill="none" stroke="${K}" stroke-width="0.6"/>`;
+  o += P(`M${lhX - lhW - 15} ${horizon - lhH} L${lhX + lhW + 15} ${horizon - lhH} L${lhX + lhW * 0.6} ${horizon - lhH - 35} L${lhX - lhW * 0.6} ${horizon - lhH - 35} Z`, 2.5);
 
-  const stripeCount = ri(r, 4, 8);
-  for (let s = 0; s < stripeCount; s++) {
-    const sy = horizonY - lhH + s * (lhH / stripeCount);
-    parts.push(line(lighthouseX - lhW, sy, lighthouseX + lhW, sy, "#1a1a1a", s % 2 === 0 ? 2.5 : 1));
+  const stripes = ri(r, 4, 8);
+  for (let s = 0; s < stripes; s++) {
+    const sy = horizon - lhH + s * (lhH / stripes);
+    o += L(lhX - lhW, sy, lhX + lhW, sy, s % 2 === 0 ? 2 : 0.8);
   }
 
-  parts.push(circle(lighthouseX, horizonY - lhH - 18, 12, "#1a1a1a", 2.5));
-  parts.push(dot(lighthouseX, horizonY - lhH - 18, 4));
-  parts.push(dotArc(lighthouseX, horizonY - lhH - 18, 8, 0, Math.PI * 2, 8, 0.8));
+  o += C2(lhX, horizon - lhH - 18, 12, 2.5);
+  o += dot(lhX, horizon - lhH - 18, 4);
+  o += dotArc(lhX, horizon - lhH - 18, 8, 0, Math.PI * 2, 8, 0.8);
 
   for (let i = 0; i < ri(r, 4, 8); i++) {
-    const angle = -0.9 + (i / 8) * 1.8;
-    const rLen = rr(r, 100, 250);
-    parts.push(line(lighthouseX, horizonY - lhH - 18, lighthouseX + Math.cos(angle) * rLen, horizonY - lhH - 18 + Math.sin(angle) * rLen, "#1a1a1a", 0.8));
+    const a = -0.9 + (i / 8) * 1.8;
+    const rl = rr(r, 80, 200);
+    o += L(lhX, horizon - lhH - 18, lhX + Math.cos(a) * rl, horizon - lhH - 18 + Math.sin(a) * rl, 0.6);
   }
 
-  parts.push(path(`M${lighthouseX - lhW - 20} ${horizonY} Q${lighthouseX - 10} ${horizonY + 15} ${lighthouseX + lhW + 20} ${horizonY}`, "#1a1a1a", 2));
+  o += P(`M${lhX - lhW - 25} ${horizon} C${lhX - 20} ${horizon + 12} ${lhX + 20} ${horizon + 12} ${lhX + lhW + 25} ${horizon}`, 2);
 
-  const waveCount = ri(r, 4, 8);
-  for (let w = 0; w < waveCount; w++) {
-    const wy = horizonY + 25 + w * rr(r, 35, 70);
+  const rocks = ri(r, 2, 5);
+  for (let i = 0; i < rocks; i++) {
+    const rx = rr(r, 100, 924);
+    const ry = horizon + rr(r, 5, 30);
+    const rw = rr(r, 15, 40);
+    const rh = rr(r, 10, 25);
+    o += P(`M${rx - rw} ${ry} C${rx - rw} ${ry - rh} ${rx + rw} ${ry - rh} ${rx + rw} ${ry} C${rx + rw * 0.5} ${ry + rh * 0.3} ${rx - rw * 0.5} ${ry + rh * 0.3} ${rx - rw} ${ry}`, 2);
+    o += dotFill(rx, ry - rh * 0.3, rw * 1.5, rh * 1.2, 15, r, 0.8);
+  }
+
+  const waves = ri(r, 5, 10);
+  for (let w = 0; w < waves; w++) {
+    const wy = horizon + 20 + w * rr(r, 30, 60);
+    const segLen = rr(r, 30, 60);
     let d = `M0 ${wy}`;
-    const segLen = rr(r, 25, 50);
     for (let x = 0; x <= SIZE; x += segLen) {
-      const amp = rr(r, 8, 20);
-      d += ` Q${x + segLen * 0.5} ${wy - amp} ${x + segLen} ${wy}`;
+      const amp = rr(r, 8, 22);
+      d += ` C${x + segLen * 0.3} ${wy - amp} ${x + segLen * 0.7} ${wy - amp} ${x + segLen} ${wy}`;
     }
-    parts.push(path(d, "#1a1a1a", w === 0 ? 2.5 : 1.2));
+    o += P(d, w < 2 ? 2 : 1);
     if (w < 3) {
-      parts.push(path(d.replace(/Q/g, "Q").replace(/\d+/g, (m) => String(Number(m) + 2)), "#1a1a1a", 0.5));
+      let d2 = `M0 ${wy + 3}`;
+      for (let x = 0; x <= SIZE; x += segLen) {
+        const amp = rr(r, 5, 15);
+        d2 += ` C${x + segLen * 0.3} ${wy + 3 - amp} ${x + segLen * 0.7} ${wy + 3 - amp} ${x + segLen} ${wy + 3}`;
+      }
+      o += P(d2, 0.5);
     }
   }
 
-  const shellCount = ri(r, 3, 8);
-  for (let i = 0; i < shellCount; i++) {
-    const sx = rr(r, 80, 940);
-    const sy = rr(r, horizonY + 120, 950);
-    const stype = ri(r, 0, 4);
-    if (stype === 0) {
-      const sr = rr(r, 14, 30);
+  const shells = ri(r, 3, 8);
+  for (let i = 0; i < shells; i++) {
+    const sx = rr(r, 60, 964);
+    const sy = rr(r, horizon + 80, 980);
+    const st = ri(r, 0, 4);
+    if (st === 0) {
+      const sr = rr(r, 12, 28);
       let d = `M${sx} ${sy}`;
-      const turns = rr(r, 2.5, 5);
-      for (let t = 0; t < turns * 12; t++) {
-        const angle = (t / 12) * Math.PI;
-        const r2 = (t / (turns * 12)) * sr;
-        d += ` L${sx + Math.cos(angle) * r2} ${sy + Math.sin(angle) * r2}`;
+      for (let t = 0; t < 40; t++) {
+        const a = (t / 12) * Math.PI;
+        const rad = (t / 40) * sr;
+        d += ` L${sx + Math.cos(a) * rad} ${sy + Math.sin(a) * rad}`;
       }
-      parts.push(path(d, "#1a1a1a", 1.5));
-      parts.push(dotArc(sx, sy, sr * 0.5, 0, Math.PI, ri(r, 4, 8), 0.8));
-    } else if (stype === 1) {
-      parts.push(path(`M${sx - 18} ${sy + 12} Q${sx} ${sy - 18} ${sx + 18} ${sy + 12}`, "#1a1a1a", 2));
-      parts.push(line(sx, sy - 12, sx, sy + 12, "#1a1a1a", 1));
-      const ribs = ri(r, 3, 6);
-      for (let rib = 0; rib < ribs; rib++) {
-        const ry = sy - 10 + (rib / ribs) * 22;
-        const rw = 15 * (1 - Math.abs(rib / ribs - 0.5) * 2);
-        parts.push(path(`M${sx - rw} ${ry} Q${sx} ${ry + 3} ${sx + rw} ${ry}`, "#1a1a1a", 0.6));
+      o += P(d, 1.5);
+      o += dotArc(sx, sy, sr * 0.4, 0, Math.PI, ri(r, 4, 8), 0.7);
+    } else if (st === 1) {
+      o += P(`M${sx - 15} ${sy + 10} C${sx - 10} ${sy - 10} ${sx + 10} ${sy - 10} ${sx + 15} ${sy + 10}`, 2);
+      o += L(sx, sy - 8, sx, sy + 10, 0.8);
+      for (let rib = 0; rib < ri(r, 3, 6); rib++) {
+        const ry2 = sy - 6 + rib * 4;
+        const rw = 12 * (1 - Math.abs(rib / 5 - 0.4));
+        o += P(`M${sx - rw} ${ry2} C${sx - rw * 0.3} ${ry2 + 2} ${sx + rw * 0.3} ${ry2 + 2} ${sx + rw} ${ry2}`, 0.6);
       }
-    } else if (stype === 2) {
-      parts.push(ellipse(sx, sy, rr(r, 12, 24), rr(r, 7, 14), "#1a1a1a", 1.5, "none", `rotate(${rr(r, -30, 30)} ${sx} ${sy})`));
-      parts.push(ellipse(sx, sy, rr(r, 8, 16), rr(r, 4, 9), "#1a1a1a", 0.8, "none", `rotate(${rr(r, -30, 30)} ${sx} ${sy})`));
+    } else if (st === 2) {
+      o += E(sx, sy, rr(r, 10, 22), rr(r, 6, 12), 1.5, "none", rr(r, -30, 30));
+      o += E(sx, sy, rr(r, 6, 14), rr(r, 3, 7), 0.6, "none", rr(r, -30, 30));
+      o += dotFill(sx, sy, 20, 12, 20, r, 0.5);
     } else {
-      const ps = rr(r, 10, 20);
+      const ps = rr(r, 8, 18);
       for (let p = 0; p < 5; p++) {
-        const pa = (p / 5) * Math.PI * 2 - Math.PI / 2;
-        parts.push(ellipse(sx + Math.cos(pa) * ps * 0.5, sy + Math.sin(pa) * ps * 0.5, ps * 0.4, ps * 0.2, "#1a1a1a", 1, "none", `rotate(${(pa * 180) / Math.PI} ${sx + Math.cos(pa) * ps * 0.5} ${sy + Math.sin(pa) * ps * 0.5})`));
+        const a = (p / 5) * Math.PI * 2 - Math.PI / 2;
+        o += P(petalPath(sx, sy, ps, (a * 180) / Math.PI, ps * 0.25), 1);
       }
-      parts.push(dot(sx, sy, 2));
+      o += dot(sx, sy, 2);
     }
   }
 
-  const birdCount = ri(r, 3, 10);
-  for (let i = 0; i < birdCount; i++) {
-    const bx = rr(r, 80, 940);
-    const by = rr(r, 30, 180);
+  const birds = ri(r, 3, 10);
+  for (let i = 0; i < birds; i++) {
+    const bx = rr(r, 60, 964);
+    const by = rr(r, 20, 180);
     const bs = rr(r, 8, 22);
-    parts.push(path(`M${bx - bs} ${by} Q${bx} ${by - bs * 0.8} ${bx + bs} ${by}`, "#1a1a1a", 1.5));
-    parts.push(path(`M${bx - bs * 0.7} ${by + 2} Q${bx} ${by - bs * 0.5} ${bx + bs * 0.7} ${by + 2}`, "#1a1a1a", 0.6));
+    o += P(`M${bx - bs} ${by} C${bx - bs * 0.3} ${by - bs * 0.9} ${bx + bs * 0.3} ${by - bs * 0.9} ${bx + bs} ${by}`, 1.5);
+    o += P(`M${bx - bs * 0.7} ${by + 2} C${bx - bs * 0.2} ${by - bs * 0.5} ${bx + bs * 0.2} ${by - bs * 0.5} ${bx + bs * 0.7} ${by + 2}`, 0.6);
   }
 
-  return parts.join("\n");
+  return o;
 }
 
 function generateFlorals(r: () => number): string {
-  const parts: string[] = [];
+  let o = "";
+  const cx = C + rr(r, -40, 40);
+  const cy = C + rr(r, -40, 40);
 
-  const bouquetCx = C;
-  const bouquetCy = rr(r, 320, 430);
-
-  const stemCount = ri(r, 6, 12);
-  const stemEnds: Array<[number, number]> = [];
+  const stemCount = ri(r, 7, 14);
+  const tops: Array<[number, number]> = [];
 
   for (let i = 0; i < stemCount; i++) {
     const angle = -Math.PI * 0.45 + (i / (stemCount - 1)) * Math.PI * 0.9;
-    const stemLen = rr(r, 220, 450);
-    const curve = rr(r, -90, 90);
-    const endX = bouquetCx + Math.sin(angle) * stemLen * 0.6 + curve;
-    const endY = bouquetCy - Math.cos(angle) * stemLen * 0.3 - stemLen * 0.6;
-    stemEnds.push([endX, endY]);
+    const sl = rr(r, 200, 480);
+    const curve = rr(r, -80, 80);
+    const tx = cx + Math.sin(angle) * sl * 0.5 + curve;
+    const ty = cy - Math.cos(angle) * sl * 0.2 - sl * 0.65;
+    tops.push([tx, ty]);
 
-    parts.push(path(`M${bouquetCx + i * 3 - stemCount * 1.5} ${bouquetCy + 220} Q${bouquetCx + curve * 0.5} ${(bouquetCy + endY) / 2} ${endX} ${endY}`, "#1a1a1a", 2.5));
-    parts.push(path(`M${bouquetCx + i * 3 - stemCount * 1.5 + 2} ${bouquetCy + 220} Q${bouquetCx + curve * 0.5 + 2} ${(bouquetCy + endY) / 2} ${endX + 2} ${endY}`, "#1a1a1a", 0.8));
+    o += P(`M${cx + i * 2 - stemCount} ${cy + 200} C${cx + curve * 0.3} ${cy + 50} ${cx + curve * 0.7} ${ty + 100} ${tx} ${ty}`, 2.5);
 
-    const leafCount = ri(r, 2, 4);
-    for (let l = 0; l < leafCount; l++) {
-      const t = 0.2 + l * 0.22;
-      const lx = bouquetCx + (endX - bouquetCx) * t;
-      const ly = bouquetCy + 220 + (endY - bouquetCy - 220) * t;
+    const leaves = ri(r, 2, 5);
+    for (let l = 0; l < leaves; l++) {
+      const t = 0.15 + l * 0.2;
+      const lx = cx + (tx - cx) * t + curve * t * 0.3;
+      const ly = cy + 200 + (ty - cy - 200) * t;
       const dir = l % 2 === 0 ? 1 : -1;
-      parts.push(petalDetailed(lx, ly, rr(r, 25, 50), dir * rr(r, 25, 55) + 90, r));
+      o += detailedLeaf(lx, ly, rr(r, 22, 50), dir * rr(r, 25, 60) + (dir > 0 ? 80 : 260), r);
     }
   }
 
-  for (const [fx, fy] of stemEnds) {
-    const ftype = ri(r, 0, 6);
-
-    if (ftype === 0) {
-      const petals = ri(r, 7, 14);
-      const petalR = rr(r, 35, 65);
-      parts.push(circle(fx, fy, petalR * 0.22));
-      parts.push(dotArc(fx, fy, petalR * 0.18, 0, Math.PI * 2, ri(r, 5, 10), 1));
-      for (let p = 0; p < petals; p++) {
-        parts.push(petalDetailed(fx, fy, petalR, (p / petals) * 360 + rr(r, -8, 8), r));
-      }
-    } else if (ftype === 1) {
-      const layers = ri(r, 4, 7);
-      for (let l = layers; l > 0; l--) {
-        const lr = l * rr(r, 9, 16);
-        parts.push(circle(fx, fy, lr));
-        if (l > 1) parts.push(circle(fx, fy, lr - 2.5, "#1a1a1a", 0.5));
-      }
-      parts.push(dot(fx, fy, 5));
-      parts.push(dotArc(fx, fy, layers * 7, 0, Math.PI * 2, ri(r, 8, 15), 0.8));
-    } else if (ftype === 2) {
-      const rays = ri(r, 10, 20);
-      const outerR = rr(r, 35, 60);
-      for (let p = 0; p < rays; p++) {
-        const angle = (p / rays) * Math.PI * 2;
-        parts.push(line(fx, fy, fx + Math.cos(angle) * outerR, fy + Math.sin(angle) * outerR, "#1a1a1a", 1.2));
-        const mid = outerR * 0.6;
-        parts.push(ellipse(fx + Math.cos(angle) * mid, fy + Math.sin(angle) * mid, 5, 3, "#1a1a1a", 0.8, "none", `rotate(${(angle * 180) / Math.PI} ${fx + Math.cos(angle) * mid} ${fy + Math.sin(angle) * mid})`));
-      }
-      parts.push(circle(fx, fy, outerR * 0.35));
-      parts.push(circle(fx, fy, outerR * 0.22, "#1a1a1a", 1));
-      parts.push(dotArc(fx, fy, outerR * 0.28, 0, Math.PI * 2, ri(r, 6, 12), 1));
-    } else if (ftype === 3) {
-      const budH = rr(r, 30, 55);
-      const budW = rr(r, 15, 28);
-      parts.push(path(`M${fx} ${fy} Q${fx - budW} ${fy - budH * 0.45} ${fx - budW * 0.3} ${fy - budH}`, "#1a1a1a", 2));
-      parts.push(path(`M${fx} ${fy} Q${fx + budW} ${fy - budH * 0.45} ${fx + budW * 0.3} ${fy - budH}`, "#1a1a1a", 2));
-      parts.push(path(`M${fx - budW * 0.3} ${fy - budH} Q${fx} ${fy - budH - budW * 0.6} ${fx + budW * 0.3} ${fy - budH}`, "#1a1a1a", 1.5));
-      parts.push(path(`M${fx} ${fy - budH * 0.5} L${fx} ${fy - budH}`, "#1a1a1a", 0.8));
-      parts.push(path(`M${fx - budW * 0.15} ${fy - budH * 0.3} L${fx - budW * 0.2} ${fy - budH * 0.7}`, "#1a1a1a", 0.5));
-      parts.push(path(`M${fx + budW * 0.15} ${fy - budH * 0.3} L${fx + budW * 0.2} ${fy - budH * 0.7}`, "#1a1a1a", 0.5));
-    } else if (ftype === 4) {
-      const dahliaR = rr(r, 28, 50);
-      const rings = ri(r, 4, 7);
-      for (let ring = rings; ring > 0; ring--) {
-        const rr2 = (ring / rings) * dahliaR;
-        const pCount = ri(r, 8, 16);
-        for (let p = 0; p < pCount; p++) {
-          const a = (p / pCount) * Math.PI * 2 + ring * 0.4;
-          parts.push(dot(fx + Math.cos(a) * rr2, fy + Math.sin(a) * rr2, 1.2 + (rings - ring) * 0.4));
-        }
-      }
-      parts.push(circle(fx, fy, dahliaR, "#1a1a1a", 1.5));
-      parts.push(circle(fx, fy, dahliaR * 0.9, "#1a1a1a", 0.5));
-    } else {
-      const petals = ri(r, 5, 9);
-      const pr = rr(r, 20, 40);
-      for (let p = 0; p < petals; p++) {
-        const a = (p / petals) * Math.PI * 2;
-        const px = fx + Math.cos(a) * pr * 0.4;
-        const py = fy + Math.sin(a) * pr * 0.4;
-        parts.push(path(`M${fx} ${fy} Q${px + Math.cos(a + 0.3) * pr * 0.5} ${py + Math.sin(a + 0.3) * pr * 0.5} ${fx + Math.cos(a) * pr} ${fy + Math.sin(a) * pr} Q${px + Math.cos(a - 0.3) * pr * 0.5} ${py + Math.sin(a - 0.3) * pr * 0.5} ${fx} ${fy}`, "#1a1a1a", 1.2));
-      }
-      parts.push(dot(fx, fy, 3));
-    }
+  for (const [fx, fy] of tops) {
+    o += flowerHead(fx, fy, rr(r, 28, 70), r);
   }
 
-  const ribbonX = bouquetCx;
-  const ribbonY = bouquetCy + 160;
-  parts.push(path(`M${ribbonX - 70} ${ribbonY} Q${ribbonX - 35} ${ribbonY + 25} ${ribbonX} ${ribbonY} Q${ribbonX + 35} ${ribbonY - 25} ${ribbonX + 70} ${ribbonY}`, "#1a1a1a", 3));
-  parts.push(path(`M${ribbonX - 65} ${ribbonY + 4} Q${ribbonX - 30} ${ribbonY + 28} ${ribbonX + 5} ${ribbonY + 4}`, "#1a1a1a", 1));
-  parts.push(path(`M${ribbonX - 55} ${ribbonY + 12} Q${ribbonX - 75} ${ribbonY + 55} ${ribbonX - 45} ${ribbonY + 80}`, "#1a1a1a", 2.5));
-  parts.push(path(`M${ribbonX + 55} ${ribbonY + 12} Q${ribbonX + 75} ${ribbonY + 55} ${ribbonX + 45} ${ribbonY + 80}`, "#1a1a1a", 2.5));
-  parts.push(path(`M${ribbonX - 52} ${ribbonY + 15} Q${ribbonX - 70} ${ribbonY + 50} ${ribbonX - 42} ${ribbonY + 75}`, "#1a1a1a", 0.8));
-  parts.push(path(`M${ribbonX + 52} ${ribbonY + 15} Q${ribbonX + 70} ${ribbonY + 50} ${ribbonX + 42} ${ribbonY + 75}`, "#1a1a1a", 0.8));
+  const ribbonY = cy + 170;
+  o += P(`M${cx - 80} ${ribbonY} C${cx - 40} ${ribbonY + 25} ${cx + 40} ${ribbonY - 25} ${cx + 80} ${ribbonY}`, 3);
+  o += P(`M${cx - 75} ${ribbonY + 3} C${cx - 35} ${ribbonY + 27} ${cx + 35} ${ribbonY - 23} ${cx + 75} ${ribbonY + 3}`, 1);
+  o += P(`M${cx - 60} ${ribbonY + 15} C${cx - 80} ${ribbonY + 50} ${cx - 55} ${ribbonY + 80} ${cx - 40} ${ribbonY + 85}`, 2.5);
+  o += P(`M${cx + 60} ${ribbonY + 15} C${cx + 80} ${ribbonY + 50} ${cx + 55} ${ribbonY + 80} ${cx + 40} ${ribbonY + 85}`, 2.5);
+  o += P(`M${cx - 58} ${ribbonY + 18} C${cx - 76} ${ribbonY + 48} ${cx - 52} ${ribbonY + 76} ${cx - 38} ${ribbonY + 82}`, 0.8);
+  o += P(`M${cx + 58} ${ribbonY + 18} C${cx + 76} ${ribbonY + 48} ${cx + 52} ${ribbonY + 76} ${cx + 38} ${ribbonY + 82}`, 0.8);
 
-  for (let i = 0; i < ri(r, 2, 5); i++) {
-    const sx = rr(r, 100, 920);
-    const sy = rr(r, 50, 250);
-    parts.push(filigreeScroll(sx, sy, rr(r, 15, 30), rr(r, 0, 360), r));
-  }
-
-  return parts.join("\n");
+  return o;
 }
 
 function generateCustom(r: () => number): string {
-  const parts: string[] = [];
-  const cx = C;
-  const cy = C;
+  let o = "";
+  const cx = C, cy = C;
 
-  const elemCount = ri(r, 4, 8);
-  for (let i = 0; i < elemCount; i++) {
-    const angle = (i / elemCount) * Math.PI * 2;
-    const dist = rr(r, 100, 350);
-    const ex = cx + Math.cos(angle) * dist;
-    const ey = cy + Math.sin(angle) * dist;
-    const choice = ri(r, 0, 5);
+  o += frame(cx, cy, 460, 3);
 
-    if (choice === 0) {
-      parts.push(generateButterflySmall(ex, ey, rr(r, 0.6, 1.2), (angle * 180) / Math.PI + rr(r, -20, 20), r));
-    } else if (choice === 1) {
-      const petals = ri(r, 6, 12);
-      const pr = rr(r, 30, 60);
-      for (let p = 0; p < petals; p++) {
-        parts.push(petalDetailed(ex, ey, pr, (p / petals) * 360 + rr(r, -8, 8), r));
+  const sym = pick(r, [4, 6, 8, 12]);
+  const rings = ri(r, 4, 8);
+  for (let ring = 0; ring < rings; ring++) {
+    const rr2 = ((ring + 1) / rings) * 420;
+    o += C2(cx, cy, rr2, ring % 2 === 0 ? 1.5 : 0.8);
+    const count = sym * (ring + 1);
+    for (let e = 0; e < count; e++) {
+      const a = (e / count) * Math.PI * 2;
+      const ex = cx + Math.cos(a) * rr2;
+      const ey = cy + Math.sin(a) * rr2;
+      const t = ri(r, 0, 6);
+      if (t === 0) o += C2(ex, ey, rr(r, 3, 10), 0.8);
+      else if (t === 1) o += dot(ex, ey, rr(r, 1, 2.5));
+      else if (t === 2) o += P(petalPath(ex, ey, rr(r, 5, 15), (a * 180) / Math.PI, rr(r, 2, 6)), 0.8);
+      else if (t === 3) o += dotArc(ex, ey, rr(r, 3, 8), a - 0.4, a + 0.4, ri(r, 3, 6), 0.6);
+      else if (t === 4) {
+        const sz = rr(r, 3, 8);
+        o += `<rect x="${ex - sz}" y="${ey - sz}" width="${sz * 2}" height="${sz * 2}" fill="none" stroke="${K}" stroke-width="0.6" transform="rotate(${(a * 180) / Math.PI + 45} ${ex} ${ey})"/>`;
       }
-      parts.push(circle(ex, ey, pr * 0.2));
-      parts.push(dotArc(ex, ey, pr * 0.15, 0, Math.PI * 2, 6, 1));
-    } else if (choice === 2) {
-      parts.push(featherDetail(ex, ey, rr(r, 40, 80), (angle * 180) / Math.PI + rr(r, -30, 30), r));
-    } else if (choice === 3) {
-      const rings = ri(r, 3, 6);
-      for (let ring = rings; ring > 0; ring--) {
-        parts.push(circle(ex, ey, ring * rr(r, 8, 15)));
-      }
-      parts.push(dot(ex, ey, 3));
-      parts.push(dotArc(ex, ey, rings * 10, 0, Math.PI * 2, ri(r, 6, 14), 1));
-    } else {
-      parts.push(filigreeScroll(ex, ey, rr(r, 20, 45), (angle * 180) / Math.PI, r));
+      else if (t === 5) o += P(scrollPath(ex, ey, rr(r, 4, 10), (a * 180) / Math.PI, e % 2 === 0 ? 1 : -1), 0.6);
+      else o += L(ex - rr(r, 3, 6), ey, ex + rr(r, 3, 6), ey, 0.5);
     }
   }
 
-  const frameR = rr(r, 380, 460);
-  parts.push(circle(cx, cy, frameR, "#1a1a1a", 3));
-  parts.push(circle(cx, cy, frameR - 5, "#1a1a1a", 1));
-  parts.push(circle(cx, cy, frameR - 10, "#1a1a1a", 0.5));
-  parts.push(dotArc(cx, cy, frameR - 2, 0, Math.PI * 2, ri(r, 30, 60), 1.2));
+  const elemCount = ri(r, 5, 10);
+  for (let i = 0; i < elemCount; i++) {
+    const a = (i / elemCount) * Math.PI * 2;
+    const dist = rr(r, 100, 350);
+    const ex = cx + Math.cos(a) * dist;
+    const ey = cy + Math.sin(a) * dist;
+    const choice = ri(r, 0, 4);
 
-  const scrollCount = ri(r, 6, 12);
-  for (let i = 0; i < scrollCount; i++) {
-    const a = (i / scrollCount) * Math.PI * 2;
-    parts.push(filigreeScroll(cx + Math.cos(a) * (frameR - 25), cy + Math.sin(a) * (frameR - 25), rr(r, 15, 30), (a * 180) / Math.PI + 90, r));
+    if (choice === 0) o += smallButterfly(ex, ey, rr(r, 0.5, 1), (a * 180) + rr(r, -30, 30), r);
+    else if (choice === 1) o += flowerHead(ex, ey, rr(r, 20, 45), r);
+    else if (choice === 2) o += detailedLeaf(ex, ey, rr(r, 30, 60), (a * 180) + rr(r, -30, 30), r);
+    else if (choice === 3) {
+      const rings2 = ri(r, 3, 6);
+      for (let ring = rings2; ring > 0; ring--) o += C2(ex, ey, ring * rr(r, 5, 12), 0.8);
+      o += dot(ex, ey, 3);
+    } else {
+      o += rose(ex, ey, rr(r, 15, 35), r);
+    }
   }
 
-  const innerR = rr(r, 150, 250);
-  parts.push(ornamentalRing(cx, cy, innerR, innerR + 12, ri(r, 12, 24), r));
+  o += ornamentalBorder(cx, cy, 180, 195, sym * 3, r);
+  o += ornamentalBorder(cx, cy, 280, 292, sym * 4, r);
 
-  return parts.join("\n");
+  o += C2(cx, cy, 15, 2.5, K);
+  o += dotFillCircle(cx, cy, 12, 6, r, 1);
+
+  return o;
 }
 
 const generators: Record<string, (r: () => number) => string> = {
@@ -1143,63 +1130,49 @@ const generators: Record<string, (r: () => number) => string> = {
 };
 
 function generateIvyBorder(r: () => number): string {
-  const parts: string[] = [];
+  let o = "";
 
   for (const side of [-1, 1]) {
-    const x = side === -1 ? 18 : SIZE - 18;
-    const vineSegs = ri(r, 14, 24);
+    const x = side === -1 ? 15 : SIZE - 15;
+    const segs = ri(r, 10, 18);
     let d = `M${x} ${SIZE}`;
-    for (let i = 0; i < vineSegs; i++) {
-      const y = SIZE - (i / vineSegs) * SIZE;
-      const cx2 = x + side * rr(r, 15, 40);
-      d += ` Q${cx2} ${y + rr(r, 10, 30)} ${x} ${y}`;
+    for (let i = 0; i < segs; i++) {
+      const y = SIZE - (i / segs) * SIZE;
+      const cx2 = x + side * rr(r, 15, 35);
+      d += ` C${cx2} ${y + rr(r, 10, 25)} ${cx2} ${y - rr(r, 10, 25)} ${x} ${y}`;
     }
-    parts.push(path(d, "#1a1a1a", 3));
-    parts.push(path(d, "#1a1a1a", 1));
+    o += P(d, 3);
+    o += P(d, 0.8);
 
-    for (let i = 0; i < vineSegs * 2; i++) {
-      const y = SIZE - (i / (vineSegs * 2)) * SIZE;
+    for (let i = 0; i < segs * 2; i++) {
+      const y = SIZE - (i / (segs * 2)) * SIZE;
       const dir = side * (i % 2 === 0 ? 1 : -1);
-      const leafSize = rr(r, 18, 38);
-      const lx = x + dir * leafSize * 1.5;
-      const ly = y + rr(r, -10, 10);
-
-      parts.push(petalDetailed(x, y, leafSize, dir * rr(r, 30, 70), r));
-
-      const tendrils = ri(r, 1, 3);
-      for (let t = 0; t < tendrils; t++) {
-        const tx = x + dir * rr(r, 5, 20);
-        const ty = y + rr(r, -15, 15);
-        const tLen = rr(r, 10, 25);
-        parts.push(path(`M${tx} ${ty} Q${tx + dir * tLen * 0.5} ${ty - tLen * 0.3} ${tx + dir * tLen} ${ty - tLen * 0.8} Q${tx + dir * tLen * 1.1} ${ty - tLen * 0.5} ${tx + dir * tLen * 0.9} ${ty - tLen * 0.3}`, "#1a1a1a", 0.8));
-      }
+      o += detailedLeaf(x, y, rr(r, 18, 35), dir * rr(r, 30, 70) + (dir > 0 ? 0 : 180), r);
     }
   }
 
-  let topVine = `M0 ${SIZE - 18}`;
-  const segments = ri(r, 6, 12);
-  for (let i = 0; i <= segments; i++) {
-    const x = (i / segments) * SIZE;
-    const y = SIZE - 18 + rr(r, -28, 28);
-    topVine += ` Q${x - SIZE / segments * 0.3} ${y + rr(r, -10, 10)} ${x} ${y}`;
+  const segs = ri(r, 6, 12);
+  let d = `M0 ${SIZE - 15}`;
+  for (let i = 0; i <= segs; i++) {
+    const x = (i / segs) * SIZE;
+    const y = SIZE - 15 + rr(r, -20, 20);
+    d += ` C${x - SIZE / segs * 0.3} ${y + rr(r, -8, 8)} ${x + SIZE / segs * 0.3} ${y + rr(r, -8, 8)} ${x} ${y}`;
   }
-  parts.push(path(topVine, "#1a1a1a", 2.5));
-  parts.push(path(topVine, "#1a1a1a", 0.8));
+  o += P(d, 2.5);
+  o += P(d, 0.6);
 
-  for (let i = 0; i < segments * 2; i++) {
-    const x = rr(r, 30, SIZE - 30);
-    const y = SIZE - 18 + rr(r, -18, 18);
+  for (let i = 0; i < segs * 2; i++) {
+    const x = rr(r, 25, SIZE - 25);
+    const y = SIZE - 15 + rr(r, -15, 15);
     const dir = r() > 0.5 ? 1 : -1;
-    parts.push(petalDetailed(x, y, rr(r, 12, 25), dir * rr(r, 30, 70) + (dir > 0 ? 180 : 0), r));
+    o += detailedLeaf(x, y, rr(r, 10, 22), dir * rr(r, 30, 70) + (dir > 0 ? 270 : 90), r);
   }
 
-  for (let i = 0; i < ri(r, 4, 10); i++) {
-    const bx = rr(r, 80, 940);
-    const by = rr(r, 60, SIZE - 60);
-    parts.push(generateButterflySmall(bx, by, rr(r, 0.15, 0.35), rr(r, -40, 40), r));
+  for (let i = 0; i < ri(r, 3, 8); i++) {
+    o += smallButterfly(rr(r, 60, 964), rr(r, 40, SIZE - 40), rr(r, 0.15, 0.35), rr(r, -40, 40), r);
   }
 
-  return parts.join("\n");
+  return o;
 }
 
 export function generateColoringPage(categoryId: string, addIvy: boolean, seed: number, customPrompt?: string): string {
