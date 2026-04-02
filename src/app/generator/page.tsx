@@ -12,21 +12,32 @@ export default function GeneratorPage() {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lastGenerated, setLastGenerated] = useState<{ categoryId: string; customPrompt: string } | null>(null);
+
+  const isCustom = selectedCategory === "custom";
 
   const generate = useCallback(() => {
-    if (!selectedCategory && !customPrompt.trim()) {
-      setError("Select a category or enter a custom prompt");
+    if (!selectedCategory) {
+      setError("Select a category");
+      return;
+    }
+    if (isCustom && !customPrompt.trim()) {
+      setError("Enter a description for your custom scene");
       return;
     }
 
     setIsGenerating(true);
     setError(null);
 
+    const categoryId = selectedCategory;
+    const prompt = isCustom ? customPrompt.trim() : "";
+
+    setLastGenerated({ categoryId, customPrompt: prompt });
+
     requestAnimationFrame(() => {
       try {
-        const categoryId = selectedCategory || "mandalas";
         const seed = Date.now() + Math.floor(Math.random() * 100000);
-        const imageUrl = generateColoringPage(categoryId, addIvyLeaves, seed);
+        const imageUrl = generateColoringPage(categoryId, addIvyLeaves, seed, prompt || undefined);
         setGeneratedImage(imageUrl);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Something went wrong");
@@ -34,14 +45,33 @@ export default function GeneratorPage() {
         setIsGenerating(false);
       }
     });
-  }, [selectedCategory, customPrompt, addIvyLeaves]);
+  }, [selectedCategory, customPrompt, addIvyLeaves, isCustom]);
 
   function handleGenerate() {
     generate();
   }
 
   function handleRegenerate() {
-    generate();
+    if (lastGenerated) {
+      setIsGenerating(true);
+      setError(null);
+      requestAnimationFrame(() => {
+        try {
+          const seed = Date.now() + Math.floor(Math.random() * 100000);
+          const imageUrl = generateColoringPage(
+            lastGenerated.categoryId,
+            addIvyLeaves,
+            seed,
+            lastGenerated.customPrompt || undefined
+          );
+          setGeneratedImage(imageUrl);
+        } catch (err) {
+          setError(err instanceof Error ? err.message : "Something went wrong");
+        } finally {
+          setIsGenerating(false);
+        }
+      });
+    }
   }
 
   function handleDownload() {
@@ -77,27 +107,33 @@ export default function GeneratorPage() {
                 description={category.description}
                 emoji={category.emoji}
                 isSelected={selectedCategory === category.id}
-                onClick={() => {
-                  setSelectedCategory(category.id);
-                  setCustomPrompt("");
-                }}
+                onClick={() => setSelectedCategory(category.id)}
               />
             ))}
+            <CategoryCard
+              name="Custom"
+              description="Describe your own unique scene"
+              emoji="✏️"
+              isSelected={isCustom}
+              onClick={() => setSelectedCategory("custom")}
+            />
           </div>
         </section>
 
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold mb-4">Custom Description</h2>
-          <textarea
-            value={customPrompt}
-            onChange={(e) => {
-              setCustomPrompt(e.target.value);
-              if (e.target.value.trim()) setSelectedCategory(null);
-            }}
-            placeholder="Describe your own coloring page scene..."
-            className="w-full h-28 px-4 py-3 rounded-xl bg-stone-800 border border-stone-700 text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400 resize-none"
-          />
-        </section>
+        {isCustom && (
+          <section className="mb-10">
+            <h2 className="text-2xl font-semibold mb-4">Your Description</h2>
+            <textarea
+              value={customPrompt}
+              onChange={(e) => setCustomPrompt(e.target.value)}
+              placeholder="Describe your coloring page scene... (e.g., 'a wolf howling at the moon on a mountain cliff with pine trees')"
+              className="w-full h-32 px-4 py-3 rounded-xl bg-stone-800 border-2 border-emerald-500/50 text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400 resize-none text-base"
+            />
+            <p className="text-stone-500 text-sm mt-2">
+              Your description creates a unique design. Different descriptions produce different results.
+            </p>
+          </section>
+        )}
 
         <section className="mb-10 flex items-center gap-4">
           <label className="flex items-center gap-3 cursor-pointer select-none group">
@@ -120,7 +156,7 @@ export default function GeneratorPage() {
         <div className="flex flex-col items-center gap-4">
           <button
             onClick={handleGenerate}
-            disabled={isGenerating || (!selectedCategory && !customPrompt.trim())}
+            disabled={isGenerating || !selectedCategory || (isCustom && !customPrompt.trim())}
             className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-stone-700 disabled:text-stone-500 text-white font-semibold rounded-xl transition-colors text-lg"
           >
             {isGenerating ? "Generating..." : "Generate Coloring Page"}
