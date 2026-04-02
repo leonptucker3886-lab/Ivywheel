@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { FallingLeaves } from "@/components/FallingLeaves";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-stone-950 flex items-center justify-center">
-      <div className="text-center px-6">
+    <main className="min-h-screen bg-stone-950 flex items-center justify-center relative overflow-hidden">
+      <FallingLeaves />
+      <div className="text-center px-6 relative z-10">
         <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
           Ivy&apos;s Peace
         </h1>
