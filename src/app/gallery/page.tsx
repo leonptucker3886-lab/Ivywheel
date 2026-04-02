@@ -11,7 +11,7 @@ const categoryCounts = allCategories.reduce((acc, cat) => {
 }, {} as Record<string, number>);
 
 const validCategories = Object.entries(categoryCounts)
-  .filter(([_, count]) => count >= 5)
+  .filter(([_, count]) => count >= 3)
   .map(([cat, _]) => cat);
 
 // Add Pit Bulls as the first category if it doesn't exist
@@ -19,15 +19,15 @@ const categoryList = validCategories.includes('Pit Bulls') ? validCategories : [
 
 // Filter coloring pages to only include valid categories
 const coloringPages = [
-  // Add some Pit Bull themed pages
+  // Add real Pit Bull images from scraped data
   {
-    id: "pitbull-1",
-    title: "Friendly Pit Bull Portrait",
-    description: "Beautiful pit bull portrait perfect for finding peace in coloring",
+    id: "openclipart-238800",
+    title: "Pitbull Frame",
+    description: "A fierce pit bull guarding a decorative frame",
     category: "Pit Bulls",
-    source: "Custom",
-    sourceUrl: "#",
-    imageUrl: "https://openclipart.org/image/800px/187790",
+    source: "Openclipart",
+    sourceUrl: "https://openclipart.org/detail/238800/pitbull-frame",
+    imageUrl: "https://openclipart.org/image/800px/238800",
     fallbackSvg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="800" fill="#f8f8f8"/>
       <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -45,13 +45,13 @@ const coloringPages = [
     </svg>`,
   },
   {
-    id: "pitbull-2",
-    title: "Playful Pit Bull Puppy",
-    description: "Adorable pit bull puppy design for peaceful coloring sessions",
+    id: "openclipart-221125",
+    title: "Pit Bull Puppy",
+    description: "Blue nose pit bull puppy - perfect for peaceful coloring",
     category: "Pit Bulls",
-    source: "Custom",
-    sourceUrl: "#",
-    imageUrl: "https://openclipart.org/image/800px/187790",
+    source: "Openclipart",
+    sourceUrl: "https://openclipart.org/detail/221125/pit-bull-puppy",
+    imageUrl: "https://openclipart.org/image/800px/221125",
     fallbackSvg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="800" fill="#f8f8f8"/>
       <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -64,6 +64,54 @@ const coloringPages = [
         <polygon points="400,355 397,365 403,365"/>
         <ellipse cx="400" cy="450" rx="30" ry="50"/>
         <text x="400" y="650" text-anchor="middle" font-family="serif" font-size="20" fill="black">Pit Bull Puppy</text>
+      </g>
+      <text x="400" y="780" text-anchor="middle" font-family="serif" font-size="18" fill="black">Ivy's Peace</text>
+    </svg>`,
+  },
+  {
+    id: "openclipart-217187",
+    title: "Pit Bull Puppy",
+    description: "Another adorable pit bull puppy for coloring",
+    category: "Pit Bulls",
+    source: "Openclipart",
+    sourceUrl: "https://openclipart.org/detail/217187/pit-bull-puppy",
+    imageUrl: "https://openclipart.org/image/800px/217187",
+    fallbackSvg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="800" fill="#f8f8f8"/>
+      <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="400" cy="500" rx="60" ry="80"/>
+        <circle cx="400" cy="350" r="50"/>
+        <circle cx="385" cy="335" r="8"/>
+        <circle cx="415" cy="335" r="8"/>
+        <circle cx="385" cy="335" r="4" fill="black"/>
+        <circle cx="415" cy="335" r="4" fill="black"/>
+        <polygon points="400,355 397,365 403,365"/>
+        <ellipse cx="400" cy="450" rx="30" ry="50"/>
+        <text x="400" y="650" text-anchor="middle" font-family="serif" font-size="20" fill="black">Pit Bull Puppy</text>
+      </g>
+      <text x="400" y="780" text-anchor="middle" font-family="serif" font-size="18" fill="black">Ivy's Peace</text>
+    </svg>`,
+  },
+  {
+    id: "openclipart-233373",
+    title: "Pit Bull Dog Silhouette",
+    description: "Striking silhouette of a pit bull - great for coloring",
+    category: "Pit Bulls",
+    source: "Openclipart",
+    sourceUrl: "https://openclipart.org/detail/233373/pit-bull-dog-silhouette",
+    imageUrl: "https://openclipart.org/image/800px/233373",
+    fallbackSvg: `<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="800" fill="#f8f8f8"/>
+      <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="400" cy="500" rx="80" ry="100"/>
+        <circle cx="400" cy="350" r="70"/>
+        <circle cx="375" cy="330" r="15"/>
+        <circle cx="425" cy="330" r="15"/>
+        <circle cx="375" cy="330" r="8" fill="black"/>
+        <circle cx="425" cy="330" r="8" fill="black"/>
+        <polygon points="400,360 395,375 405,375"/>
+        <ellipse cx="400" cy="450" rx="40" ry="70"/>
+        <text x="400" y="650" text-anchor="middle" font-family="serif" font-size="24" fill="black">Pit Bull</text>
       </g>
       <text x="400" y="780" text-anchor="middle" font-family="serif" font-size="18" fill="black">Ivy's Peace</text>
     </svg>`,
