@@ -20,7 +20,7 @@ export function CategoryCard({
       onClick={onClick}
       className={`flex flex-col items-start p-6 rounded-2xl border-2 transition-all duration-200 text-left w-full ${
         isSelected
-          ? "border-rose-400 bg-rose-400/10 shadow-lg shadow-rose-400/20"
+          ? "border-emerald-400 bg-emerald-400/10 shadow-lg shadow-emerald-400/20"
           : "border-neutral-700 bg-neutral-800 hover:border-neutral-500 hover:bg-neutral-750"
       }`}
     >

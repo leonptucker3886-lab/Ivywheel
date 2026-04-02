@@ -4,8 +4,8 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-neutral-950 flex items-center justify-center">
       <div className="text-center px-6">
-        <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-rose-400 to-amber-300 bg-clip-text text-transparent">
-          Coloring Book Generator
+        <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+          Ivy&apos;s peace
         </h1>
         <p className="text-xl text-neutral-400 mb-4 max-w-xl mx-auto">
           Create beautiful printable coloring pages featuring pitbulls, gardens,
@@ -16,7 +16,7 @@ export default function Home() {
         </p>
         <Link
           href="/generator"
-          className="inline-block px-8 py-4 bg-rose-500 hover:bg-rose-400 text-white font-semibold rounded-xl transition-colors text-lg"
+          className="inline-block px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors text-lg"
         >
           Start Creating
         </Link>

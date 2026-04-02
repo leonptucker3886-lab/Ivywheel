@@ -70,8 +70,8 @@ export default function GeneratorPage() {
     <main className="min-h-screen bg-neutral-950 text-white">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <header className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-rose-400 to-amber-300 bg-clip-text text-transparent">
-            Coloring Book Generator
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+            Ivy&apos;s peace
           </h1>
           <p className="text-neutral-400 text-lg max-w-2xl mx-auto">
             Create beautiful coloring pages to print and enjoy. Pick a scene, add
@@ -107,7 +107,7 @@ export default function GeneratorPage() {
               if (e.target.value.trim()) setSelectedCategory(null);
             }}
             placeholder="Describe your own coloring page scene..."
-            className="w-full h-28 px-4 py-3 rounded-xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-rose-400 resize-none"
+            className="w-full h-28 px-4 py-3 rounded-xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-emerald-400 resize-none"
           />
         </section>
 
@@ -133,7 +133,7 @@ export default function GeneratorPage() {
           <button
             onClick={handleGenerate}
             disabled={isGenerating || (!selectedCategory && !customPrompt.trim())}
-            className="px-8 py-4 bg-rose-500 hover:bg-rose-400 disabled:bg-neutral-700 disabled:text-neutral-500 text-white font-semibold rounded-xl transition-colors text-lg"
+            className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-neutral-700 disabled:text-neutral-500 text-white font-semibold rounded-xl transition-colors text-lg"
           >
             {isGenerating ? "Generating..." : "Generate Coloring Page"}
           </button>

@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Coloring Book Generator",
+  title: "Ivy's peace",
   description: "Create beautiful printable coloring pages featuring pitbulls, gardens, butterflies, mandalas, and more",
 };
 
