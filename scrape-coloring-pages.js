@@ -237,7 +237,20 @@ async function scrapeColoringPages() {
     { query: 'pitbull', pages: 1 },
     { query: 'pit+bull', pages: 1 },
     { query: 'dog+line+art', pages: 2 },
-    { query: 'dog+silhouette', pages: 1 }
+    { query: 'dog+silhouette', pages: 1 },
+    { query: 'dog+outline', pages: 3 },
+    { query: 'bulldog', pages: 1 },
+    { query: 'staffordshire+terrier', pages: 1 },
+    { query: 'american+pit+bull+terrier', pages: 1 },
+    { query: 'pitbull+line+art', pages: 1 },
+    { query: 'pitbull+outline', pages: 1 },
+    { query: 'trailer+park', pages: 1 },
+    { query: 'mobile+home', pages: 1 },
+    { query: 'rv', pages: 1 },
+    { query: 'marijuana', pages: 1 },
+    { query: 'cannabis', pages: 1 },
+    { query: 'weed', pages: 1 },
+    { query: 'drug', pages: 1 }
   ];
 
   console.log('Starting to scrape Openclipart coloring pages...');

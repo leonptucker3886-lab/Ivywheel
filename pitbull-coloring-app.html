@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Pitbull Coloring Book Collection - Personal Use Only</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #b8c5d6;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* Search and Filters */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+            min-width: 250px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 12px 45px 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #4ecdc4;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        #searchInput::placeholder {
+            color: #8892a0;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8892a0;
+            font-size: 18px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #4ecdc4;
+            border-color: #4ecdc4;
+            transform: translateY(-2px);
+        }
+
+        /* Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .coloring-page {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+
+        .coloring-page:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .thumbnail-container {
+            position: relative;
+            aspect-ratio: 4/3;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .thumbnail {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .coloring-page:hover .thumbnail {
+            transform: scale(1.05);
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 107, 107, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .select-checkbox {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .page-info {
+            padding: 15px;
+        }
+
+        .page-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        .page-description {
+            font-size: 14px;
+            color: #b8c5d6;
+            line-height: 1.4;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            border-radius: 20px;
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 70vh;
+            display: block;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+        }
+
+        .modal-actions {
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #45b7d1;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff5252;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Bulk Actions */
+        .bulk-actions {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4ecdc4;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .bulk-actions.show {
+            display: flex;
+        }
+
+        .bulk-count {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .coloring-page {
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #8892a0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #4ecdc4;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            header, .controls, .bulk-actions, .modal-actions {
+                display: none !important;
+            }
+            .gallery {
+                display: block !important;
+            }
+            .coloring-page {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+            .thumbnail-container {
+                background: white !important;
+                border: 1px solid #ccc;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-container {
+                max-width: none;
+            }
+            .filters {
+                justify-content: center;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus states */
+        .filter-btn:focus,
+        .modal-btn:focus,
+        #searchInput:focus {
+            outline: 2px solid #4ecdc4;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>My Pitbull Coloring Book Collection</h1>
+            <p class="subtitle">Personal Use Only - High-Quality Pitbull Coloring Pages</p>
+            <div class="subtitle">Built with ❤️ for pitbull lovers everywhere</div>
+        </header>
+
+        <div class="controls">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search pitbull coloring pages...">
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="filters">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="realistic">Realistic Adult</button>
+                <button class="filter-btn" data-category="puppies">Cute Puppies</button>
+                <button class="filter-btn" data-category="muscular">Muscular/Strong</button>
+                <button class="filter-btn" data-category="mandala">Mandala/Detailed</button>
+                <button class="filter-btn" data-category="edgy">Aggressive/Edgy</button>
+                <button class="filter-btn" data-category="custom">Custom Generated</button>
+            </div>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading your pitbull coloring collection...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for viewing images -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <img id="modalImage" src="" alt="" class="modal-image">
+            <div class="modal-actions">
+                <button class="modal-btn btn-primary" id="downloadBtn">Download PNG</button>
+                <button class="modal-btn btn-secondary" id="printBtn">Print</button>
+                <button class="modal-btn btn-secondary" id="addToZipBtn">Add to ZIP</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk actions -->
+    <div class="bulk-actions" id="bulkActions">
+        <span class="bulk-count" id="bulkCount">0 selected</span>
+        <button class="modal-btn btn-primary" id="downloadZipBtn">Download ZIP</button>
+        <button class="modal-btn btn-danger" id="clearSelectionBtn">Clear</button>
+    </div>
+
+    <script>
+        // Pitbull coloring pages data
+        const coloringPages = [
+            {
+                id: 1,
+                title: "Majestic Pit Bull Portrait",
+                description: "Beautiful realistic adult pit bull portrait perfect for detailed coloring",
+                category: "realistic",
+                imageUrl: "https://openclipart.org/image/800px/238800",
+                thumbnailUrl: "https://openclipart.org/image/400px/238800"
+            },
+            {
+                id: 2,
+                title: "Pit Bull Puppy Playtime",
+                description: "Adorable pit bull puppy with playful expression",
+                category: "puppies",
+                imageUrl: "https://openclipart.org/image/800px/221125",
+                thumbnailUrl: "https://openclipart.org/image/400px/221125"
+            },
+            {
+                id: 3,
+                title: "Muscular Pit Bull Profile",
+                description: "Strong and muscular pit bull side profile",
+                category: "muscular",
+                imageUrl: "https://openclipart.org/image/800px/217187",
+                thumbnailUrl: "https://openclipart.org/image/400px/217187"
+            },
+            {
+                id: 4,
+                title: "Pit Bull Silhouette",
+                description: "Clean black silhouette of a pit bull - great for bold coloring",
+                category: "edgy",
+                imageUrl: "https://openclipart.org/image/800px/233373",
+                thumbnailUrl: "https://openclipart.org/image/400px/233373"
+            },
+            {
+                id: 5,
+                title: "Pit Bull Mandala",
+                description: "Intricate mandala design featuring pit bull elements",
+                category: "mandala",
+                imageUrl: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgZmlsbD0iI2Y4ZjhmOCIvPgogIDxnIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMzUwIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMzAwIi8+CiAgICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSI0MDAiIHI9IjI1MCIvPgogICAgPGNpcmNsZSBjeD0iNDAwIiBjeT0iNDAwIiByPSIxNTAiLz4KICAgIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMTAwIi8+CiAgICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSI0MDAiIHI9IjUwIi8+CiAgICA8bGluZSB4MT0iNDAwIiB5MT0iNTAiIHgyPSI0MDAiIHkyPSI3NTAiLz4KICAgIDxsaW5lIHgxPSI0MDAiIHkxPSI1MCIgeDI9IjY1MCIgeTI9IjY1MCIvPgogICAgPGxpbmUgeDE9IjQwMCIgeTE9IjUwIiB4Mj0iMTUwIiB5Mj0iNjUwIi8+CiAgICA8bGluZSB4MT0iNDAwIiB5MT0iNTAiIHgyPSI3MDAiIHkyPSI0MDAiLz4KICAgIDxsaW5lIHgxPSI0MDAiIHkxPSI1MCIgeDI9IjEwMCIgeTI9IjQwMCIvPgogICAgPHBhdGggZD0iTSAyMDAgNDAwIEwgMjAwIDM1MCBMIDI1MCAzNTAgTCAyNTAgNDAwIFoiIGZpbGw9Im5vbmUiLz4KICAgIDxwYXRoIGQ9Ik0gNjAwIDQwMCBMIDYwMCAzNTAgTCA2NTAgMzUwIEwgNjUwIDQwMCBaIiBmaWxsPSJub25lIi8+CiAgPC9nPgogIDx0ZXh0IHg9IjQwMCIgeT0iNzgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9ImJsYWNrIj5QaXQgQnVsbCBNYW5kYWxhPC90ZXh0Pgo8L3N2Zz4=",
+                thumbnailUrl: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgZmlsbD0iI2Y4ZjhmOCIvPgogIDxnIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMzUwIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMzAwIi8+CiAgICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSI0MDAiIHI9IjI1MCIvPgogICAgPGNpcmNsZSBjeD0iNDAwIiBjeT0iNDAwIiByPSIxNTAiLz4KICAgIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMTAwIi8+CiAgICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSI0MDAiIHI9IjUwIi8+CiAgICA8bGluZSB4MT0iNDAwIiB5MT0iNTAiIHgyPSI0MDAiIHkyPSI3NTAiLz4KICAgIDxsaW5lIHgxPSI0MDAiIHkxPSI1MCIgeDI9IjY1MCIgeTI9IjY1MCIvPgogICAgPGxpbmUgeDE9IjQwMCIgeTE9IjUwIiB4Mj0iMTUwIiB5Mj0iNjUwIi8+CiAgICA8bGluZSB4MT0iNDAwIiB5MT0iNTAiIHgyPSI3MDAiIHkyPSI0MDAiLz4KICAgIDxsaW5lIHgxPSI0MDAiIHkxPSI1MCIgeDI9IjEwMCIgeTI9IjQwMCIvPgogICAgPHBhdGggZD0iTSAyMDAgNDAwIEwgMjAwIDM1MCBMIDI1MCAzNTAgTCAyNTAgNDAwIFoiIGZpbGw9Im5vbmUiLz4KICAgIDxwYXRoIGQ9Ik0gNjAwIDQwMCBMIDYwMCAzNTAgTCA2NTAgMzUwIEwgNjUwIDQwMCBaIiBmaWxsPSJub25lIi8+CiAgPC9nPgogIDx0ZXh0IHg9IjQwMCIgeT0iNzgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9ImJsYWNrIj5QaXQgQnVsbCBNYW5kYWxhPC90ZXh0Pgo8L3N2Zz4="
+            },
+            {
+                id: 6,
+                title: "Fierce Pit Bull Stare",
+                description: "Intense pit bull portrait with detailed facial features",
+                category: "edgy",
+                imageUrl: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgZmlsbD0iI2Y4ZjhmOCIvPgogIDxnIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDxlbGxpcHNlIGN4PSI0MDAiIGN5PSI1MDAiIHJ4PSI4MCIgcnk9IjEwMCIvPgogICAgPGNpcmNsZSBjeD0iNDAwIiBjeT0iMzUwIiByPSI3MCIvPgogICAgPGNpcmNsZSBjeD0iMzc1IiBjeT0iMzMwIiByPSIxNSIgZmlsbD0iYmxhY2siLz4KICAgIDxjaXJjbGUgY3g9IjQyNSIgY3k9IjMzMCIgcj0iMTUiIGZpbGw9ImJsYWNrIi8+CiAgICA8cG9seWdvbiBwb2ludHM9IjQwMCwzNjAgMzk1LDM3NSI+CiAgICA8ZWxsaXBzZSBjeD0iNDAwIiBjeT0iNDUwIiByeD0iNDAiIHJ5PSI3MCIvPgogICAgPGVsbGlwc2UgY3g9IjQ4MCIgY3k9IjQ1MCIgcng9IjQwIiByeT0iNzAiLz4KICA8L2c+CiAgPHRleHQgeD0iNDAwIiB5PSI3ODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iYmxhY2siPkZpZXJjZSBQaXQgQnVsbDwvdGV4dD4KPC9zdmc+",
+                thumbnailUrl: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgZmlsbD0iI2Y4ZjhmOCIvPgogIDxnIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDxlbGxpcHNlIGN4PSI0MDAiIGN5PSI1MDAiIHJ4PSI4MCIgcnk9IjEwMCIvPgogICAgPGNpcmNsZSBjeD0iNDAwIiBjeT0iMzUwIiByPSI3MCIvPgogICAgPGNpcmNsZSBjeD0iMzc1IiBjeT0iMzMwIiByPSIxNSIgZmlsbD0iYmxhY2siLz4KICAgIDxjaXJjbGUgY3g9IjQyNSIgY3k9IjMzMCIgcj0iMTUiIGZpbGw9ImJsYWNrIi8+CiAgICA8cG9seWdvbiBwb2ludHM9IjQwMCwzNjAgMzk1LDM3NSI+CiAgICA8ZWxsaXBzZSBjeD0iNDAwIiBjeT0iNDUwIiByeD0iNDAiIHJ5PSI3MCIvPgogICAgPGVsbGlwc2UgY3g9IjQ4MCIgY3k9IjQ1MCIgcng9IjQwIiByeT0iNzAiLz4KICA8L2c+CiAgPHRleHQgeD0iNDAwIiB5PSI3ODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iYmxhY2siPkZpZXJjZSBQaXQgQnVsbDwvdGV4dD4KPC9zdmc+"
+            },
+            {
+                id: 7,
+                title: "Custom Generated Pit Bull",
+                description: "AI-generated pit bull coloring page with unique patterns",
+                category: "custom",
+                imageUrl: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgZmlsbD0iI2Y4ZjhmOCIvPgogIDxnIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDxwYXRoIGQ9Ik0gMzAwIDUwMCBRIDIwMCA0MDAgMjAwIDMwMCBRIDI1MCAyMDAgMzAwIDI1MCBRIDM1MCAyMDAgNDAwIDI1MCBRIDQ1MCAyMDAgNTAwIDI1MCBRIDU1MCAyMDAgNjAwIDMwMCBRIDYwMCA0MDAgNjAwIDUwMCBaIi8+CiAgICA8Y2lyY2xlIGN4PSIzNTAiIGN5PSIzMDAiIHI9IjMwIi8+CiAgICA8Y2lyY2xlIGN4PSI0NTAiIGN5PSIzMDAiIHI9IjMwIi8+CiAgICA8ZWxsaXBzZSBjeD0iMzUwIiBjeT0iNDIwIiByeD0iNDAiIHJ5PSI2MCIvPgogICAgPGVsbGlwc2UgY3g9IjQ1MCIgY3k9IjQyMCIgcng9IjQwIiByeT0iNjAiLz4KICAgIDxwYXRoIGQ9Ik0gMzAwIDUwMCBMIDMwMCA2MDAgTCAyNDAgNjUwIEwgMjQwIDcwMCBMIDM2MCA3MDAgTCAzNjAgNjUwIEwgMzAwIDYwMCBaIi8+CiAgICA8cGF0aCBkPSJNIDUwMCA1MDAgTCA1MDAgNjAwIEwgNTYwIDY1MCBMIDU2MCA3MDAgTCA0NDAgNzAwIEwgNDQwIDY1MCBMIDUwMCA2MDAgWiIvPgogIDwvZz4KICA8dGV4dCB4PSI0MDAiIHk9Ijc4MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSJibGFjayI+Q3VzdG9tIFBpdCBCdWxsPC90ZXh0Pgo8L3N2Zz4=",
+                thumbnailUrl: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgZmlsbD0iI2Y4ZjhmOCIvPgogIDxnIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDxwYXRoIGQ9Ik0gMzAwIDUwMCBRIDIwMCA0MDAgMjAwIDMwMCBRIDI1MCAyMDAgMzAwIDI1MCBRIDM1MCAyMDAgNDAwIDI1MCBRIDQ1MCAyMDAgNTAwIDI1MCBRIDU1MCAyMDAgNjAwIDMwMCBRIDYwMCA0MDAgNjAwIDUwMCBaIi8+CiAgICA8Y2lyY2xlIGN4PSIzNTAiIGN5PSIzMDAiIHI9IjMwIi8+CiAgICA8Y2lyY2xlIGN4PSI0NTAiIGN5PSIzMDAiIHI9IjMwIi8+CiAgICA8ZWxsaXBzZSBjeD0iMzUwIiBjeT0iNDIwIiByeD0iNDAiIHJ5PSI2MCIvPgogICAgPGVsbGlwc2UgY3g9IjQ1MCIgY3k9IjQyMCIgcng9IjQwIiByeT0iNjAiLz4KICAgIDxwYXRoIGQ9Ik0gMzAwIDUwMCBMIDMwMCA2MDAgTCAyNDAgNjUwIEwgMjQwIDcwMCBMIDM2MCA3MDAgTCAzNjAgNjUwIEwgMzAwIDYwMCBaIi8+CiAgICA8cGF0aCBkPSJNIDUwMCA1MDAgTCA1MDAgNjAwIEwgNTYwIDY1MCBMIDU2MCA3MDAgTCA0NDAgNzAwIEwgNDQwIDY1MCIgTCA1MDAgNjAwIFoiLz4KICA8L2c+CiAgPHRleHQgeD0iNDAwIiB5PSI3ODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iYmxhY2siPkN1c3RvbSBQaXQgQnVsbDwvdGV4dD4KPC9zdmc+"
+            }
+        ];
+
+        // Selected pages for bulk download
+        let selectedPages = new Set();
+
+        // DOM elements
+        const gallery = document.getElementById('gallery');
+        const searchInput = document.getElementById('searchInput');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeModal = document.getElementById('closeModal');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const printBtn = document.getElementById('printBtn');
+        const addToZipBtn = document.getElementById('addToZipBtn');
+        const bulkActions = document.getElementById('bulkActions');
+        const bulkCount = document.getElementById('bulkCount');
+        const downloadZipBtn = document.getElementById('downloadZipBtn');
+        const clearSelectionBtn = document.getElementById('clearSelectionBtn');
+
+        let currentImageData = null;
+
+        // Initialize the gallery
+        function initGallery() {
+            renderGallery(coloringPages);
+        }
+
+        // Render gallery items
+        function renderGallery(pages) {
+            gallery.innerHTML = '';
+
+            if (pages.length === 0) {
+                gallery.innerHTML = '<div class="loading"><p>No coloring pages found matching your criteria.</p></div>';
+                return;
+            }
+
+            pages.forEach((page, index) => {
+                const pageElement = document.createElement('div');
+                pageElement.className = 'coloring-page';
+                pageElement.style.animationDelay = `${index * 0.1}s`;
+
+                pageElement.innerHTML = `
+                    <div class="thumbnail-container">
+                        <div class="category-badge">${getCategoryName(page.category)}</div>
+                        <input type="checkbox" class="select-checkbox" data-id="${page.id}">
+                        <img src="${page.thumbnailUrl}" alt="${page.title}" class="thumbnail" loading="lazy" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgZmlsbD0iI2Y4ZjhmOCIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjYWFhIiBmb250LXNpemU9IjI0Ij5JbWFnZSBOb3QgRm91bmQ8L3RleHQ+Cjwvc3ZnPg=='">
+                    </div>
+                    <div class="page-info">
+                        <div class="page-title">${page.title}</div>
+                        <div class="page-description">${page.description}</div>
+                    </div>
+                `;
+
+                // Add click handler for modal
+                pageElement.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('select-checkbox')) {
+                        openModal(page);
+                    }
+                });
+
+                // Add checkbox handler
+                const checkbox = pageElement.querySelector('.select-checkbox');
+                checkbox.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    toggleSelection(page.id, checkbox.checked);
+                });
+
+                gallery.appendChild(pageElement);
+            });
+        }
+
+        // Get readable category name
+        function getCategoryName(category) {
+            const names = {
+                'realistic': 'Realistic Adult',
+                'puppies': 'Cute Puppies',
+                'muscular': 'Muscular/Strong',
+                'mandala': 'Mandala/Detailed',
+                'edgy': 'Aggressive/Edgy',
+                'custom': 'Custom Generated'
+            };
+            return names[category] || category;
+        }
+
+        // Filter pages
+        function filterPages() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.category;
+
+            const filtered = coloringPages.filter(page => {
+                const matchesSearch = page.title.toLowerCase().includes(searchTerm) ||
+                                    page.description.toLowerCase().includes(searchTerm);
+                const matchesFilter = activeFilter === 'all' || page.category === activeFilter;
+
+                return matchesSearch && matchesFilter;
+            });
+
+            renderGallery(filtered);
+        }
+
+        // Open modal
+        function openModal(page) {
+            currentImageData = page;
+            modalImage.src = page.imageUrl;
+            modalImage.alt = page.title;
+            modal.classList.add('show');
+        }
+
+        // Close modal
+        function closeModalHandler() {
+            modal.classList.remove('show');
+            currentImageData = null;
+        }
+
+        // Toggle selection for bulk download
+        function toggleSelection(id, checked) {
+            if (checked) {
+                selectedPages.add(id);
+            } else {
+                selectedPages.delete(id);
+            }
+
+            updateBulkActions();
+        }
+
+        // Update bulk actions visibility
+        function updateBulkActions() {
+            bulkCount.textContent = `${selectedPages.size} selected`;
+
+            if (selectedPages.size > 0) {
+                bulkActions.classList.add('show');
+            } else {
+                bulkActions.classList.remove('show');
+            }
+        }
+
+        // Download individual image
+        async function downloadImage() {
+            if (!currentImageData) return;
+
+            try {
+                const response = await fetch(currentImageData.imageUrl);
+                const blob = await response.blob();
+
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${currentImageData.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Download failed:', error);
+                alert('Download failed. Please try again.');
+            }
+        }
+
+        // Print image
+        function printImage() {
+            if (!currentImageData) return;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${currentImageData.title}</title>
+                    <style>
+                        body { margin: 0; padding: 20px; text-align: center; }
+                        img { max-width: 100%; max-height: 80vh; }
+                        h1 { margin-bottom: 20px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>${currentImageData.title}</h1>
+                    <img src="${currentImageData.imageUrl}" alt="${currentImageData.title}">
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Add to ZIP selection
+        function addToZip() {
+            if (!currentImageData) return;
+            selectedPages.add(currentImageData.id);
+            updateBulkActions();
+            closeModalHandler();
+        }
+
+        // Download ZIP of selected images
+        async function downloadZip() {
+            if (selectedPages.size === 0) return;
+
+            try {
+                // For this demo, we'll create a simple download
+                // In a real implementation, you'd use a ZIP library
+                alert(`Downloading ZIP with ${selectedPages.size} coloring pages. This feature would create a ZIP file with all selected images.`);
+
+                // Clear selection
+                selectedPages.clear();
+                updateBulkActions();
+
+                // Uncheck all checkboxes
+                document.querySelectorAll('.select-checkbox').forEach(cb => {
+                    cb.checked = false;
+                });
+
+            } catch (error) {
+                console.error('ZIP creation failed:', error);
+                alert('ZIP creation failed. Please try again.');
+            }
+        }
+
+        // Clear selection
+        function clearSelection() {
+            selectedPages.clear();
+            updateBulkActions();
+
+            // Uncheck all checkboxes
+            document.querySelectorAll('.select-checkbox').forEach(cb => {
+                cb.checked = false;
+            });
+        }
+
+        // Event listeners
+        searchInput.addEventListener('input', filterPages);
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                filterPages();
+            });
+        });
+
+        closeModal.addEventListener('click', closeModalHandler);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModalHandler();
+            }
+        });
+
+        downloadBtn.addEventListener('click', downloadImage);
+        printBtn.addEventListener('click', printImage);
+        addToZipBtn.addEventListener('click', addToZip);
+
+        downloadZipBtn.addEventListener('click', downloadZip);
+        clearSelectionBtn.addEventListener('click', clearSelection);
+
+        // Initialize
+        initGallery();
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('show')) {
+                closeModalHandler();
+            }
+            if (e.key === '/' && e.target !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -36,6 +36,10 @@ data.forEach(item => {
       item.category = 'Abstract';
     } else if (title.includes('dachshund') || title.includes('german shepherd') || title.includes('golden retriever') || title.includes('irish terrier') || title.includes('animal heads')) {
       item.category = 'Cute Animals';
+    } else if (title.includes('mobile home') || title.includes('trailer') || title.includes('rv') || title.includes('camper')) {
+      item.category = 'Trailer Park';
+    } else if (title.includes('marijuana') || title.includes('cannabis') || title.includes('weed') || title.includes('drug')) {
+      item.category = 'Drug';
     } else {
       // Keep as miscellaneous for now - these will be few
       console.log('Still miscellaneous:', item.title);
